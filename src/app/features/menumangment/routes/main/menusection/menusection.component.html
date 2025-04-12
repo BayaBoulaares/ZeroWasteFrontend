@@ -1,0 +1,72 @@
+<section id="menu" class="menu section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Menu</h2>
+    <p><span>Check Our</span> <span class="description-title"> Menu</span></p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <ul class="nav front-nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+      <li class="nav-item" *ngFor="let category of categories">
+        <a class="front-nav-link" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
+          <h4>{{ category }}</h4>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+      <div class="tab-pane fade active show" id="menu-starters">
+
+        <div class="tab-header text-center">
+          <p>Menu</p>
+          <h3>{{ selectedCategory }}</h3>
+        </div>
+
+        <div class="row gy-5">
+          <div class="col-lg-4 menu-item" *ngFor="let meal of filteredMeals">
+            <a [href]="meal.imagePath" class="glightbox">
+              <img *ngIf="meal.imagePath" [src]="'http://localhost:8089/gaspillagezero' + meal.imagePath"
+                class="menu-img img-fluid" alt="">
+            </a>
+            <h4>{{ meal.name }}</h4>
+            <p class="ingredients">{{ meal.description }}</p>
+            <p class="price">{{ meal.price }} <span class="currency">TND</span></p>
+            <button class="btn-low-radius" (click)="orderMeal(meal)">Order</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section id="events" class="events section">
+
+  <div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="swiper init-swiper">
+      <div class="swiper-wrapper">
+
+        <div *ngFor="let item of menus; let i = index"
+          class="swiper-slide event-item d-flex flex-column justify-content-end"
+          [style.backgroundImage]="'url(http://localhost:8089/gaspillagezero' + item.imagePath + ')'">
+          <h3>{{ item.name }}</h3>
+          <div class="price align-self-start">{{ item.price }} <span class="currency">TND</span></div>
+          <p class="description">
+            {{ item.description }}
+          </p>
+          <p><strong>Available: </strong>{{ item.startDate | date }} - {{ item.endDate | date }}</p>
+        </div><!-- End Event item -->
+
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+
+  </div>
+
+</section>

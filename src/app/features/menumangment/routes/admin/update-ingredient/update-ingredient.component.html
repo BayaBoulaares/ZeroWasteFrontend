@@ -1,0 +1,80 @@
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>New ingredient</h4>
+  
+      <!-- Basic Layout -->
+      <div class="row">
+        <div class="col-xl">
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Ingredient</h5>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="ingredientForm" (ngSubmit)="update()">
+                <div class="mb-3" class="form-group">
+                  <label class="form-label" for="name">Name</label>
+                  <input type="text" class="form-control" id="name" formControlName="name" name="name" required />
+                  <div *ngIf="ingredientForm.controls['name'].invalid && ingredientForm.controls['name'].touched" class="text-danger">
+                    <div *ngIf="ingredientForm.controls['name'].errors?.['required']">Name is required.</div>
+                    <div *ngIf="ingredientForm.controls['name'].errors?.['minlength']">Name must be at least 3 characters.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="quantity">Quantity</label>
+                  <input type="number" class="form-control" id="quantity" formControlName="quantity" name="quantity"
+                    required />
+                  <div *ngIf="ingredientForm.controls['quantity'].invalid && ingredientForm.controls['quantity'].touched" class="text-danger">
+                      <div *ngIf="ingredientForm.controls['quantity'].errors?.['required']">Quantity is required.</div>
+                      <div *ngIf="ingredientForm.controls['quantity'].errors?.['min']">Quantity must be greater than 0.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="unit">Unit</label>
+                  <select class="form-control" id="unit" formControlName="unit"name="unit" required>
+                    <option *ngFor="let unit of units" [value]="unit">{{ unit }}</option>
+                  </select>
+                  <div *ngIf="ingredientForm.controls['unit'].invalid && ingredientForm.controls['unit'].touched" class="text-danger">
+                    <div *ngIf="ingredientForm.controls['unit'].errors?.['required']">Unit is required.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" value="" id="required" formControlName="required"
+                      name="required" />
+                    <label class="form-label" for="required">Required</label>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="pricePerUnit">Price per unit</label>
+                  <input type="number" class="form-control" id="pricePerUnit" formControlName="pricePerUnit"
+                    name="pricePerUnit" placeholder="Price per unit" required />
+                  <div *ngIf="ingredientForm.controls['pricePerUnit'].invalid && ingredientForm.controls['pricePerUnit'].touched" class="text-danger">
+                      <div *ngIf="ingredientForm.controls['pricePerUnit'].errors?.['required']">Price is required.</div>
+                      <div *ngIf="ingredientForm.controls['pricePerUnit'].errors?.['min']">Price must be greater than or equal to 0.</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="expirationDate">Expiration Date</label>
+                  <input type="date" class="form-control" id="expirationDate" formControlName="expirationDate"
+                    name="expirationDate" required />
+                    <div
+                    *ngIf="ingredientForm.get('expirationDate')?.hasError('expirationTooSoon') && ingredientForm.get('expirationDate')?.touched"
+                    class="text-danger">
+                    Expiration date must be at least 6 months from today.
+                  </div>
+                  <div
+                    *ngIf="ingredientForm.get('expirationDate')?.hasError('required') && ingredientForm.get('expirationDate')?.touched"
+                    class="text-danger">
+                    Expiration date is required.
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" (click)="update()" [disabled]="ingredientForm.invalid">Update</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-backdrop fade"></div>
+  </div>

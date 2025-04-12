@@ -1,0 +1,136 @@
+
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>Meals</h4>
+
+      <!-- Basic Layout -->
+      <div class="row">
+        <div class="col-xl">
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">New meal</h5>
+            </div>
+            <div class="card-body">
+              <form (ngSubmit)="onSubmit()" [formGroup]="mealForm" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label class="form-label" for="name">Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    formControlName="name"
+                    name="name"
+                    placeholder="Meal Name"
+                    required
+                  />
+                  <div *ngIf="mealForm.get('name')?.invalid && mealForm.get('name')?.touched"
+                  class="text-danger">
+                  Name is required (min 3 characters).
+                 </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="description">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    formControlName="description"
+                    name="description"
+                    placeholder="Description"
+                    required
+                  />
+                  <div *ngIf="mealForm.get('description')?.invalid && mealForm.get('description')?.touched"
+                  class="text-danger">
+                  Description is required (min 10 characters).
+                 </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="category">Category</label>
+                    <select
+                      class="form-control"
+                      id="category"
+                      formControlName="category"
+                      name="category"
+                      placeholder="Category"
+                      
+                    >
+                      <option *ngFor="let cat of mealCategories" [value]="cat">
+                        {{ cat }}
+                      </option>
+                    </select>
+                    <div *ngIf="mealForm.get('category')?.invalid && mealForm.get('category')?.touched"
+                    class="text-danger">
+                    Category is required .
+                   </div>
+                  </div>
+                <div class="mb-3">
+                  <label class="form-label" for="price">Price</label>
+                  <input
+                   type="number"
+                    class="form-control"
+                    id="price"
+                    formControlName="price"
+                    name="price"
+                    placeholder="Price"
+                  />
+                  <div *ngIf="mealForm.get('price')?.invalid && mealForm.get('price')?.touched"
+                  class="text-danger">
+                  Price is required .
+                 </div>
+                </div>  
+                <div class="mb-3">
+                  <label class="form-label" for="file">Upload Image</label>
+                  <input type="file" id="imagePath" class="form-control" (change)="onFileSelected($event)" />
+                  <div *ngIf="mealForm.touched && !selectedFile" class="text-danger"> 
+                    Image is required.
+                  </div> 
+                </div>
+                <div *ngIf="selectedFile">
+                  <label>Selected Image:</label>
+                  <img [src]="imagePreviewUrl" alt="Selected Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"/>
+                </div>   
+                <div class="col-lg-6">
+                  <label class="form-label" for="file">Ingrédients</label>
+                  <div class="demo-inline-spacing mt-3">
+                    <div class="list-group" *ngIf="allIngredients.length > 0">
+                      <div class="list-group-item" *ngFor="let ingredient of allIngredients">
+                        <input
+                          class="form-check-input me-1"
+                          type="checkbox"
+                          [checked]="selectedIngredients.has(ingredient.ingId)"
+                          (change)="onIngredientChange($event, ingredient)"
+                        />
+                        {{ ingredient.name }} (Dispo : {{ ingredient.quantity }})
+                
+                        <input 
+                        type="number" 
+                        [formControlName]="ingredient.ingId" 
+                        class="form-control" 
+                        placeholder="Quantité" 
+                        [min]="1" 
+                        [max]="ingredient.quantity" 
+                        required 
+                        (change)="onQuantityChange(ingredient?.ingId, $event)"
+                      />
+                      
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <br>
+                <button type="submit" class="btn btn-primary" [disabled]="!mealForm.valid">Add</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / Content -->
+    <div class="content-backdrop fade"></div>
+  </div>
+
+
+

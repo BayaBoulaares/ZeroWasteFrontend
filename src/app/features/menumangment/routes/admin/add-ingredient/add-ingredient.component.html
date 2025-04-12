@@ -1,0 +1,81 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>Ingredients</h4>
+    <div class="row">
+      <div class="col-xl">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">New ingredient</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="ingredientForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label class="form-label" for="name">Name</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Ingredient Name"
+                  required />
+                <div *ngIf="ingredientForm.get('name')?.invalid && ingredientForm.get('name')?.touched"
+                  class="text-danger">
+                  Name is required (min 3 characters).
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="quantity" formControlName="quantity" name="quantity"
+                  placeholder="Quantity" required />
+                <div *ngIf="ingredientForm.get('quantity')?.invalid && ingredientForm.get('quantity')?.touched"
+                  class="text-danger">
+                  Quantity must be at least 1.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="unit">Unit</label>
+                <select class="form-control" id="unit" formControlName="unit" name="unit" required>
+                  <option *ngFor="let unit of units" [value]="unit">{{ unit }}</option>
+                </select>
+                <div *ngIf="ingredientForm.get('unit')?.invalid && ingredientForm.get('unit')?.touched"
+                  class="text-danger">
+                  Please select a unit.
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="form-check mt-3">
+                  <input class="form-check-input" type="checkbox" value="" id="required" formControlName="required"
+                    name="required" />
+                  <label class="form-label" for="required">Required</label>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="pricePerUnit">Price per unit</label>
+                <input type="number" class="form-control" id="pricePerUnit" formControlName="pricePerUnit"
+                  name="pricePerUnit" placeholder="Price per unit" required />
+                <div *ngIf="ingredientForm.get('pricePerUnit')?.invalid && ingredientForm.get('pricePerUnit')?.touched"
+                  class="text-danger">
+                  Price must be a positive number.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="expirationDate">Expiration Date</label>
+                <input type="date" class="form-control" id="expirationDate" formControlName="expirationDate"
+                  name="expirationDate" required />
+                <div
+                  *ngIf="ingredientForm.get('expirationDate')?.hasError('expirationTooSoon') && ingredientForm.get('expirationDate')?.touched"
+                  class="text-danger">
+                  Expiration date must be at least 6 months from today.
+                </div>
+                <div
+                  *ngIf="ingredientForm.get('expirationDate')?.hasError('required') && ingredientForm.get('expirationDate')?.touched"
+                  class="text-danger">
+                  Expiration date is required.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" [disabled]="!ingredientForm.valid">Add</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="content-backdrop fade"></div>
+</div>
