@@ -9,7 +9,7 @@ export class DashboardSidebarComponent {
   collapsed: boolean = false;
 
   menuItems = [
-
+    { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
     {
       name: 'menuItems', label: 'Menu Management', link: '#', icon: 'bx bx-food-menu', submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },

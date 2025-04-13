@@ -19,6 +19,13 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
+import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
+import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
+import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
+import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
+import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
+import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +44,13 @@ import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-l
     DashboardLayoutComponent,
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
-    DashboardSidebarComponent
+    DashboardSidebarComponent,
+    LoginComponent,
+    RegisterComponent,
+    UsersManagementComponent,
+    UserUpdateComponent,
+    UserCreateComponent,
+    LoginFComponent,
 
 
 

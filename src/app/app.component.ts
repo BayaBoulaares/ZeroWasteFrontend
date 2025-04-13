@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModalService } from './features/userManagement/Services/modal.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'FrontOffice';
+  showLogin = false;
+
+  constructor(private modalService: ModalService) {}
+
+  ngOnInit(): void {
+    this.modalService.loginModalVisible$.subscribe(visible => {
+      this.showLogin = visible;
+    });
+  }
+
+  closeLogin() {
+    this.modalService.closeLoginModal();
+  }
 }

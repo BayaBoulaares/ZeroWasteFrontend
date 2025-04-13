@@ -1,0 +1,80 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">Update User</h4>
+  
+    <div class="row">
+      <div class="col-xl">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">User</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="update()">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  [(ngModel)]="formdata.email"
+                  name="email"
+                  required
+                />
+              </div>
+          
+              <div class="mb-3">
+                <label for="name" class="form-label">Username</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  [(ngModel)]="formdata.name"
+                  name="name"
+                  required
+                />
+              </div>
+          
+              <div class="mb-3">
+                <label for="city" class="form-label">City</label>
+                <input
+                  type="text"
+                  id="city"
+                  class="form-control"
+                  [(ngModel)]="formdata.city"
+                  name="city"
+                />
+              </div>
+          
+              <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <select
+                  class="form-select"
+                  id="role"
+                  [(ngModel)]="formdata.role"
+                  name="role"
+                  required
+                >
+                  <option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                  </option>
+                </select>
+              </div>
+          
+              <div class="mb-3 form-check">
+                <input
+                  type="checkbox"
+                  id="enabled"
+                  class="form-check-input"
+                  [(ngModel)]="formdata.enabled"
+                  name="enabled"
+                />
+                <label class="form-check-label" for="enabled">Enabled</label>
+              </div>
+          
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

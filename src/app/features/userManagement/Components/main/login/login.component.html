@@ -1,0 +1,185 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+<div class="modal-wrapper">
+  <div class="modal-content">
+    <div class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <h1>Welcome Back</h1>
+          <p>Please sign in to continue</p>
+        </div>
+
+        <form *ngIf="!isSignup" (ngSubmit)="handleSubmit()">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-container">
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+                [(ngModel)]="email"
+                name="email"
+                autocomplete="email"
+              />
+              <div class="input-icon">
+                <!-- SVG Email Icon -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="password-label-container">
+              <label for="password">Password</label>
+              <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+            <div class="input-container">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                placeholder="Enter your password"
+                required
+                [(ngModel)]="password"
+                name="password"
+                autocomplete="current-password"
+              />
+              <div class="input-icon toggle-password" (click)="togglePasswordVisibility()">
+                <!-- SVG Eye Icon -->
+              </div>
+            </div>
+          </div>
+
+          <div class="remember-me">
+            <label class="checkbox-container">
+              <input type="checkbox" id="remember" />
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+          </div>
+
+          <button type="submit" class="login-button">Sign In</button>
+
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+
+          <div class="divider">
+            <span>OR</span>
+          </div>
+
+          <div class="social-login">
+            <button type="button" class="social-button google">
+              <!-- Google Icon SVG -->
+              Sign in with Google
+            </button>
+            <button type="button" class="social-button facebook">
+              <!-- Facebook Icon SVG -->
+              Sign in with Facebook
+            </button>
+          </div>
+        </form>
+
+        <!-- Signup Form -->
+<form *ngIf="isSignup" #form="ngForm" (ngSubmit)="handleRegister()">
+  <div class="form-group">
+    <label for="name">Full Name</label>
+    <div class="input-container">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        [(ngModel)]="signupData.name"
+        placeholder="Enter your full name"
+        required
+        minlength="3"
+        #name="ngModel"
+      />
+    </div>
+    <div *ngIf="name.invalid && name.touched" class="text-danger">
+      <small *ngIf="name.errors?.['required']">Name is required.</small>
+      <small *ngIf="name.errors?.['minlength']">At least 3 characters.</small>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="form-group">
+    <label for="email">Email</label>
+    <div class="input-container">
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="signupData.email"
+        placeholder="Enter your email"
+        required
+        email
+        #email="ngModel"
+      />
+    </div>
+    <div *ngIf="email.invalid && email.touched" class="text-danger">
+      <small *ngIf="email.errors?.['required']">Email is required.</small>
+      <small *ngIf="email.errors?.['email']">Invalid email format.</small>
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <div class="input-container">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        [(ngModel)]="signupData.password"
+        required
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+        #password="ngModel"
+      />
+      <div class="input-icon toggle-password" (click)="togglePasswordVisibility()">
+        <!-- SVG Eye Icon -->
+      </div>
+    </div>
+    <div *ngIf="password.invalid && password.touched" class="text-danger">
+      <small *ngIf="password.errors?.['required']">Password is required.</small>
+      <small *ngIf="password.errors?.['pattern']">
+        Must contain 8+ characters, uppercase, lowercase, number, and symbol.
+      </small>
+    </div>
+  </div>
+
+  <!-- City -->
+  <div class="form-group">
+    <label for="city">City</label>
+    <div class="input-container">
+      <input
+        type="text"
+        id="city"
+        name="city"
+        [(ngModel)]="signupData.city"
+        placeholder="Enter your city"
+        required
+        #city="ngModel"
+      />
+    </div>
+    <div *ngIf="city.invalid && city.touched" class="text-danger">
+      <small *ngIf="city.errors?.['required']">City is required.</small>
+    </div>
+  </div>
+
+  <button type="submit" class="login-button" [disabled]="form.invalid">Register</button>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+</form>
+
+<div class="form-toggle">
+  <a (click)="toggleFormMode()">
+    {{ isSignup ? 'Already have an account? Sign In' : 'Don\'t have an account? Sign Up' }}
+  </a>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
