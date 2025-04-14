@@ -11,6 +11,10 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  async loginWithGoogle(idToken: string):Promise<any> {
+    return this.http.post<any>('http://localhost:8089/auth/google-login', { idToken }).toPromise();
+  }
+
   async login(email:string, password:string):Promise<any>{
     const url = `${this.BASE_URL}/auth/login`;
     try{
@@ -153,5 +157,6 @@ export class UserService {
     return user ? JSON.parse(user) : null;
   }
 
-
+  
+  
 }
