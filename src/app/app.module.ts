@@ -21,6 +21,14 @@ import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/component
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
 import { NgChartsModule } from 'ng2-charts';
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
+import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
+import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
+import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
+import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
+import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +48,13 @@ import { DashboardComponent } from './Pages/dashboard/dashboard.component';
     DashboardNavbarComponent,
     DashboardSidebarComponent,
     DashboardComponent,
+    DashboardSidebarComponent,
+    LoginComponent,
+    RegisterComponent,
+    UsersManagementComponent,
+    UserUpdateComponent,
+    UserCreateComponent,
+    LoginFComponent,
 
 
 

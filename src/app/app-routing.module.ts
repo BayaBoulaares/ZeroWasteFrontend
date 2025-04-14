@@ -11,11 +11,24 @@ import { UpdateMealComponent } from './features/menumangment/routes/admin/update
 import { AddIngredientComponent } from './features/menumangment/routes/admin/add-ingredient/add-ingredient.component';
 import { UpdateIngredientComponent } from './features/menumangment/routes/admin/update-ingredient/update-ingredient.component';
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
+import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
+import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
+import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
+import { noAuthGuard , adminGuard, userGuard } from './features/userManagement/Services/guards/user.guard';
+import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
+import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
 
 const routes: Routes = [
+  //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
+  {
+    path: 'login', component: LoginFComponent, canActivate: [noAuthGuard],
+  },
   {
     path: 'admin',
     component: DashboardLayoutComponent,
+    canActivate: [adminGuard],
     children: [
       {path:'dashboard',component:DashboardComponent},
       {
@@ -30,6 +43,9 @@ const routes: Routes = [
 
         ],
       },
+      { path: 'usersmanagement', component: UsersManagementComponent },
+      { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
+      { path: 'usersmanagement/add', component: UserCreateComponent },
     ],
   },
   {

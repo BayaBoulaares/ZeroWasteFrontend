@@ -1,0 +1,198 @@
+.login-card {
+    background-color: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    padding: 10px 10px 5px 10px; 
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6);
+    z-index: 1000;
+}
+
+.modal-wrapper {
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    max-height: 80vh;
+    overflow-y: auto;
+    max-width: 480px;
+    width: 90%;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px; 
+}
+
+.modal-content {
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    padding: 25px 40px; 
+}
+
+/* Input field styling */
+.input-container {
+    position: relative;
+    border-radius: 12px;
+    background-color: var(--input-bg);
+    border: 1px solid #B0B0B0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 14px 16px; /* Slightly reduced padding */
+    font-size: 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+}
+
+.input-container input:focus {
+    outline: none;
+}
+
+.form-group.focused .input-container {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+/* Button styling */
+.login-button {
+    position: relative;
+    width: 100%;
+    padding: 14px 16px; /* Slightly reduced padding */
+    background-color: #51A576;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.login-button:hover {
+    background-color: #70c695;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+}
+
+.login-button:active {
+    background-color: var(--primary-active);
+    transform: translateY(0);
+}
+
+/* Social buttons */
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 15px;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 12px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.social-button:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.social-button.google {
+    color: #ea4335;
+    border-color: rgba(234, 67, 53, 0.2);
+}
+
+.social-button.facebook {
+    color: #1877f2;
+    border-color: rgba(24, 119, 242, 0.2);
+}
+
+/* Spacing adjustments */
+.login-header {
+    margin-bottom: 20px; /* Reduced from 32px */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Added smaller margin-bottom */
+}
+
+.password-label-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.remember-me {
+    margin: 10px 0 15px 0; /* Adjusted spacing */
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.divider span {
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.form-toggle {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Input icon positioning */
+.input-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.input-icon.toggle-password {
+    right: 16px;
+    cursor: pointer;
+}

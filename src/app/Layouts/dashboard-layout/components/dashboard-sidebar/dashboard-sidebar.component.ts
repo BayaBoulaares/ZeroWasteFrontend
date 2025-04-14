@@ -13,6 +13,7 @@ export class DashboardSidebarComponent {
       name: 'dashboard', label: 'Dashboard', link: '/admin/dashboard', icon: 'bx bx-home-circle', submenu: []
     },
 
+    { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
     {
       name: 'menuItems', label: 'Menu Management', link: '#', icon: 'bx bx-food-menu', submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },
