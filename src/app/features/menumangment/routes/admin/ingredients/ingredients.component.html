@@ -1,0 +1,84 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>All ingredients</h4>
+    <div *ngFor="let alert of alerts" class="alert" [ngClass]="alert.type" role="alert">
+      {{ alert.message }}
+    </div>
+    <!-- Hoverable Table rows -->
+    <div class="card">
+      <div class="table-header">
+        <h5>Ingredients</h5>
+        <div class="table-actions">
+          <input class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchTerm"
+            (input)="searchIngredient()" value="Search ..." id="html5-search-input" />
+          <button routerLink="/admin/mealsmanagement/ingredients/add" type="button" class="btn btn-primary">Add</button>
+        </div>
+
+      </div>
+      <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Required</th>
+              <th>Price per unit</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            <tr *ngFor="let ing of ingredients">
+              <td>{{ing.name}}</td>
+              <td>{{ing.quantity}}</td>
+              <td>{{ing.unit}}</td>
+              <td>{{ing.required}}</td>
+              <td>{{ing.pricePerUnit}}</td>
+              <td>{{ing.stock}}</td>
+              <td>
+                <span [class]="getStatusClass(ing.status)">
+                  {{ ing.status }}
+                </span>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <!-- Edit option, visible only if ingId is present -->
+                    <a *ngIf="ing.ingId" class="dropdown-item" href="javascript:void(0);" (click)="update(ing.ingId)"
+                      [routerLink]="['/admin/mealsmanagement/ingredients/update', ing.ingId]">
+                      <i class="bx bx-edit-alt me-1"></i> Edit
+                    </a>
+
+                    <!-- Delete option, visible only if ingId is present -->
+                    <a *ngIf="ing.ingId" class="dropdown-item" href="javascript:void(0);"
+                      (click)="deleteItem(ing.ingId)">
+                      <i class="bx bx-trash me-1"></i> Delete
+                    </a>
+                  </div>
+                </div>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="ingredient-container">
+
+
+      <!--<h3>Recettes recommandées :</h3>
+                  <ul>
+                    <li *ngFor="let recipe of getSuggestedRecipes()">
+                      {{ recipe }}
+                    </li>
+                  </ul>!-->
+    </div>
+  </div>
+  <div class="content-backdrop fade"></div>
+</div>

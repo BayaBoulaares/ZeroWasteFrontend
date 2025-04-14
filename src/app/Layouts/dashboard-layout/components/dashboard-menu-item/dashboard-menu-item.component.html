@@ -1,0 +1,18 @@
+    <a  class="menu-link"      [routerLink]="menu.submenu && menu.submenu.length === 0 ? menu.link : null"
+        [ngClass]="{'menu-toggle': menu.submenu && menu.submenu.length > 0}"
+        (click)="menu.submenu.length > 0 && toggleMenu(menu.name)">
+      <i class="menu-icon tf-icons" [ngClass]="menu.icon"></i>
+      <div>{{menu.label}}</div>
+      <!-- Only show the toggle button if there are submenus -->
+   
+    </a>
+  
+    <!-- Show submenu only if there are any submenus -->
+    <ul *ngIf="menu.submenu && menu.submenu.length > 0" class="menu-sub" [style.display]="isMenuOpen(menu.name) ? 'block' : 'none'">
+      <li *ngFor="let subItem of menu.submenu" class="menu-item">
+        <a [routerLink]="subItem.link" routerLinkActive="active" class="menu-link">
+          <div>{{subItem.label}}</div>
+        </a>
+      </li>
+    </ul>
+  

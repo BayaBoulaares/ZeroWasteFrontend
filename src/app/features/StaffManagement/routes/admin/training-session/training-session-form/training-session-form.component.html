@@ -1,0 +1,96 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Staff Management / Training Sessions /</span> {{ isEditMode ? 'Edit' : 'New' }} Training Session
+    </h4>
+  
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ isEditMode ? 'Edit' : 'Create' }} Training Session</h5>
+          </div>
+          <div class="card-body">
+            <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  
+            <form [formGroup]="sessionForm" (ngSubmit)="onSubmit()">
+              <!-- Topic -->
+              <div class="mb-3">
+                <label class="form-label" for="topic">Topic</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="topic"
+                  placeholder="Enter training topic"
+                  formControlName="topic"
+                  [ngClass]="{ 'is-invalid': submitted && sessionForm.controls['topic'].errors }"
+                />
+                <div *ngIf="submitted && sessionForm.controls['topic'].errors" class="invalid-feedback">
+                  <div *ngIf="sessionForm.controls['topic'].errors['required']">Topic is required</div>
+                </div>
+              </div>
+  
+              <!-- Date -->
+              <div class="mb-3">
+                <label class="form-label" for="date">Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date"
+                  formControlName="date"
+                  [ngClass]="{ 'is-invalid': submitted && sessionForm.controls['date'].errors }"
+                />
+                <div *ngIf="submitted && sessionForm.controls['date'].errors" class="invalid-feedback">
+                  <div *ngIf="sessionForm.controls['date'].errors['required']">Date is required</div>
+                </div>
+              </div>
+  
+              <!-- Trainer -->
+              <div class="mb-3">
+                <label class="form-label" for="trainer">Trainer</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="trainer"
+                  placeholder="Enter trainer name"
+                  formControlName="trainer"
+                  [ngClass]="{ 'is-invalid': submitted && sessionForm.controls['trainer'].errors }"
+                />
+                <div *ngIf="submitted && sessionForm.controls['trainer'].errors" class="invalid-feedback">
+                  <div *ngIf="sessionForm.controls['trainer'].errors['required']">Trainer name is required</div>
+                </div>
+              </div>
+  
+              <!-- Employee -->
+              <div class="mb-3">
+                <label class="form-label" for="employeeId">Employee</label>
+                <select
+                  class="form-select"
+                  id="employeeId"
+                  formControlName="employeeId"
+                  [ngClass]="{ 'is-invalid': submitted && sessionForm.controls['employeeId'].errors }"
+                >
+                  <option value="">Select Employee</option>
+                  <option *ngFor="let employee of employees" [value]="employee.idEmployee">
+                    {{ employee.name }} - {{ employee.role }}
+                  </option>
+                </select>
+                <div *ngIf="submitted && sessionForm.controls['employeeId'].errors" class="invalid-feedback">
+                  <div *ngIf="sessionForm.controls['employeeId'].errors['required']">Employee is required</div>
+                </div>
+              </div>
+  
+              <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-outline-secondary me-2" routerLink="/admin/staffmanagement/training-sessions">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                  {{ isEditMode ? 'Update' : 'Create' }} Training Session
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

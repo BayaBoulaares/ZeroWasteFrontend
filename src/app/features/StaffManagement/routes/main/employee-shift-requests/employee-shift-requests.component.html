@@ -1,0 +1,98 @@
+<div class="requests-container">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading your requests...</p>
+    </div>
+    
+    <div *ngIf="error" class="alert alert-danger my-4" role="alert">
+      <p><i class="bi bi-exclamation-triangle me-2"></i>{{ error }}</p>
+      <button class="btn btn-sm btn-outline-danger mt-2" (click)="loadRequests()">Try Again</button>
+    </div>
+  
+    <div *ngIf="!loading && requests.length === 0" class="no-requests">
+      <div class="text-center py-5">
+        <i class="bi bi-envelope-check fs-1 text-muted"></i>
+        <h5 class="mt-3">No Pending Requests</h5>
+        <p class="text-muted">You don't have any pending shift change requests.</p>
+      </div>
+    </div>
+  
+    <div *ngIf="!loading && requests.length > 0" class="requests-list">
+      <h5 class="mb-4">Shift Change Requests</h5>
+      
+      <div *ngFor="let request of requests" class="request-card mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <span>
+              <i class="bi bi-calendar-plus me-2"></i>
+              Shift Request for {{ formatDate(request.shiftDate) }}
+            </span>
+            <span class="badge bg-warning">Pending</span>
+          </div>
+          
+          <div class="card-body">
+            <div class="mb-3">
+              <small class="text-muted">Requested on {{ formatDate(request.requestDate) }}</small>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Date:</label>
+                <div>{{ formatDate(request.shiftDate) }}</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Time:</label>
+                <div>{{ request.startTime | slice:0:5 }} - {{ request.endTime | slice:0:5 }}</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Reason for Request:</label>
+              <p class="reason-text p-2 bg-light rounded">{{ request.reason }}</p>
+            </div>
+            
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button class="btn btn-outline-danger" (click)="openRejectDialog(request.idRequest!)">
+                Decline
+              </button>
+              <button class="btn btn-success" (click)="acceptRequest(request.idRequest!)">
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Rejection Dialog Modal -->
+    <div class="modal" [class.show]="showRejectionReason" [style.display]="showRejectionReason ? 'block' : 'none'" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Decline Request</h5>
+            <button type="button" class="btn-close" (click)="closeRejectDialog()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="rejectionReason" class="form-label">Reason for Declining (Optional)</label>
+              <textarea class="form-control" id="rejectionReason" rows="3" [(ngModel)]="rejectionReason" 
+                        placeholder="Please explain why you're declining this shift request..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="closeRejectDialog()">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger" (click)="rejectRequest()">
+              Decline Request
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop fade" [class.show]="showRejectionReason" *ngIf="showRejectionReason"></div>
+  </div>
