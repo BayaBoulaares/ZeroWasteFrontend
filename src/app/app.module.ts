@@ -19,6 +19,18 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
+import { DashboardComponent } from './features/StaffManagement/routes/admin/dashboard/dashboard.component';
+import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
+import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
+import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
+import { ShiftListComponent } from './features/StaffManagement/routes/admin/shift/shift-list/shift-list.component';
+import { TrainingSessionFormComponent } from './features/StaffManagement/routes/admin/training-session/training-session-form/training-session-form.component';
+import { TrainingSessionListComponent } from './features/StaffManagement/routes/admin/training-session/training-session-list/training-session-list.component';
+import { EmployeeProfileComponent } from './features/StaffManagement/routes/main/employee-profile/employee-profile.component';
+import { EmployeeInfoComponent } from './features/StaffManagement/routes/main/employee-info/employee-info.component';
+import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/employee-shifts/employee-shifts.component';
+import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
+import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +49,19 @@ import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-l
     DashboardLayoutComponent,
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
-    DashboardSidebarComponent
-
-
-
+    DashboardSidebarComponent,
+    DashboardComponent,
+    EmployeeListComponent,
+    EmployeeFormComponent,
+    ShiftListComponent,
+    ShiftFormComponent,
+    TrainingSessionListComponent,
+    TrainingSessionFormComponent,
+    EmployeeProfileComponent,
+    EmployeeInfoComponent,
+    EmployeeShiftsComponent,
+    EmployeeTrainingComponent,
+    EmployeeShiftRequestsComponent
   ],
   imports: [
     BrowserModule,

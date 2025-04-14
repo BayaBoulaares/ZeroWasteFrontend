@@ -1,0 +1,66 @@
+.employee-info-container {
+    padding: 20px;
+  }
+  
+  .info-header {
+    margin-bottom: 25px;
+  }
+  
+  .info-header h3 {
+    color: #000;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .role-badge {
+    background-color: #ce1212;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+  }
+  
+  .info-details {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .info-row {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .info-row:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .info-label {
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .info-value {
+    color: #333;
+  }
+  
+  @media (max-width: 767px) {
+    .info-label, .info-value {
+      text-align: left;
+    }
+    
+    .info-label {
+      margin-bottom: 5px;
+    }
+    
+    .role-badge {
+      margin-top: 10px;
+      display: inline-block;
+    }
+  }

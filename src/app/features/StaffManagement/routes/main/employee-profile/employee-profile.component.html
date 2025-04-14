@@ -1,0 +1,45 @@
+<section class="employee-profile-section">
+    <div class="container">
+      <div class="profile-container">
+        <div class="profile-header">
+          <div class="section-title text-center">
+            <h2>Employee Portal</h2>
+          </div>
+          <div class="profile-tabs mt-4">
+            <button class="btn" [class.active]="activeTab === 'info'" (click)="setActiveTab('info')">
+              <i class="bi bi-person-circle me-2"></i>Personal Information
+            </button>
+            <button class="btn" [class.active]="activeTab === 'shifts'" (click)="setActiveTab('shifts')">
+              <i class="bi bi-calendar-week me-2"></i>My Shifts
+            </button>
+            <button class="btn" [class.active]="activeTab === 'training'" (click)="setActiveTab('training')">
+              <i class="bi bi-book me-2"></i>Training Sessions
+            </button>
+            <!-- New tab for shift change requests with notification badge -->
+            <button class="btn position-relative" [class.active]="activeTab === 'requests'" (click)="setActiveTab('requests')">
+              <i class="bi bi-envelope me-2"></i>Shift Requests
+              <span *ngIf="pendingRequestsCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ pendingRequestsCount }}
+                <span class="visually-hidden">pending requests</span>
+              </span>
+            </button>
+          </div>
+        </div>
+  
+        <div class="profile-content mt-4">
+          <div *ngIf="activeTab === 'info'">
+            <app-employee-info></app-employee-info>
+          </div>
+          <div *ngIf="activeTab === 'shifts'">
+            <app-employee-shifts></app-employee-shifts>
+          </div>
+          <div *ngIf="activeTab === 'training'">
+            <app-employee-training></app-employee-training>
+          </div>
+          <div *ngIf="activeTab === 'requests'">
+            <app-employee-shift-requests></app-employee-shift-requests>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
