@@ -10,12 +10,14 @@ import { AddMealComponent } from './features/menumangment/routes/admin/add-meal/
 import { UpdateMealComponent } from './features/menumangment/routes/admin/update-meal/update-meal.component';
 import { AddIngredientComponent } from './features/menumangment/routes/admin/add-ingredient/add-ingredient.component';
 import { UpdateIngredientComponent } from './features/menumangment/routes/admin/update-ingredient/update-ingredient.component';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
     path: 'admin',
     component: DashboardLayoutComponent,
     children: [
+      {path:'dashboard',component:DashboardComponent},
       {
         path: 'mealsmanagement',
         children: [
@@ -24,7 +26,8 @@ const routes: Routes = [
           { path: 'meals/add', component: AddMealComponent },
           { path: 'meals/update/:id', component: UpdateMealComponent },
           { path: 'ingredients/add', component: AddIngredientComponent },
-          { path: 'ingredients/update/:id', component: UpdateIngredientComponent }
+          { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
+
         ],
       },
     ],

@@ -19,7 +19,8 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
-
+import { NgChartsModule } from 'ng2-charts';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +38,8 @@ import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-l
     DashboardLayoutComponent,
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
-    DashboardSidebarComponent
+    DashboardSidebarComponent,
+    DashboardComponent,
 
 
 
@@ -48,6 +50,8 @@ import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-l
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent],
