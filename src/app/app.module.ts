@@ -19,6 +19,8 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
+import { NgChartsModule } from 'ng2-charts';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
 import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
 import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
@@ -45,6 +47,8 @@ import { LoginFComponent } from './features/userManagement/Components/main/login
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
     DashboardSidebarComponent,
+    DashboardComponent,
+    DashboardSidebarComponent,
     LoginComponent,
     RegisterComponent,
     UsersManagementComponent,
@@ -61,6 +65,8 @@ import { LoginFComponent } from './features/userManagement/Components/main/login
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent],
