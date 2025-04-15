@@ -8,7 +8,7 @@
           <p>Please sign in to continue</p>
         </div>
 
-        <form *ngIf="!isSignup" (ngSubmit)="handleSubmit()">
+        <form *ngIf="!isSignup && !showForgotPassword" (ngSubmit)="handleSubmit()">
           <div class="form-group">
             <label for="email">Email</label>
             <div class="input-container">
@@ -30,7 +30,7 @@
           <div class="form-group">
             <div class="password-label-container">
               <label for="password">Password</label>
-              <a href="#" class="forgot-password">Forgot Password?</a>
+              <a (click)="toggleForgotPassword()" class="forgot-password">Forgot Password?</a>
             </div>
             <div class="input-container">
               <input
@@ -49,11 +49,8 @@
           </div>
 
           <div class="remember-me">
-            <label class="checkbox-container">
-              <input type="checkbox" id="remember" />
-              <span class="checkmark"></span>
-              Remember me
-            </label>
+            <input type="checkbox" id="remember" [(ngModel)]="rememberMe" name="remember" />
+            Remember Me
           </div>
 
           <button type="submit" class="login-button">Sign In</button>
@@ -70,7 +67,7 @@
         </form>
 
         <!-- Signup Form -->
-<form *ngIf="isSignup" #form="ngForm" (ngSubmit)="handleRegister()">
+<form *ngIf="isSignup && !showForgotPassword" #form="ngForm" (ngSubmit)="handleRegister()">
   <div class="form-group">
     <label for="name">Full Name</label>
     <div class="input-container">
@@ -164,6 +161,38 @@
   </div>
 
 </form>
+
+<!-- Forgot Password Form -->
+<form *ngIf="showForgotPassword" (ngSubmit)="handleForgotPassword()" class="forgot-password-form">
+  <div class="form-group">
+    <label for="forgotEmail">Enter your email to reset password</label>
+    <div class="input-container">
+      <input
+        type="email"
+        id="forgotEmail"
+        [(ngModel)]="forgotPasswordEmail"
+        name="forgotEmail"
+        placeholder="Enter your email"
+        required
+      />
+    </div>
+  </div>
+
+  <button type="submit" class="login-button">Send Reset Link</button>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <div class="form-toggle">
+    <a (click)="toggleForgotPassword()">Back to Login</a>
+  </div>
+</form>
+
 
 <div class="form-toggle">
   <a (click)="toggleFormMode()">
