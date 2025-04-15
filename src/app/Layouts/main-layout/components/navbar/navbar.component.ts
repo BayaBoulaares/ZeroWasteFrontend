@@ -17,7 +17,7 @@ export class NavbarComponent {
     this.modalService.openLoginModal();
   }
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return this.userService.isAuthenticated();
   }
 
   logout(): void {

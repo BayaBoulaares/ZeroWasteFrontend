@@ -25,6 +25,7 @@ import { UsersManagementComponent } from './features/userManagement/Components/a
 import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
 import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+import { ResetPasswordComponent } from './features/userManagement/Components/main/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import { LoginFComponent } from './features/userManagement/Components/main/login
     UserUpdateComponent,
     UserCreateComponent,
     LoginFComponent,
+    ResetPasswordComponent,
 
 
 

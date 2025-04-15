@@ -14,9 +14,10 @@ import { UsersManagementComponent } from './features/userManagement/Components/a
 import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
 import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
 import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
-import { noAuthGuard , adminGuard, userGuard } from './features/userManagement/Services/guards/user.guard';
+import { noAuthGuard, adminGuard, userGuard } from './features/userManagement/Services/guards/user.guard';
 import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+import { ResetPasswordComponent } from './features/userManagement/Components/main/reset-password/reset-password.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -24,6 +25,11 @@ const routes: Routes = [
   {
     path: 'login', component: LoginFComponent, canActivate: [noAuthGuard],
   },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
+  },
+  
   {
     path: 'admin',
     component: DashboardLayoutComponent,
