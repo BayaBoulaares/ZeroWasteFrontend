@@ -1,0 +1,15 @@
+{
+  "name": "email-service",
+  "version": "1.0.0",
+  "description": "Email service for ZeroWaste application",
+  "main": "email-service.js",
+  "scripts": {
+    "start": "node email-service.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+} 

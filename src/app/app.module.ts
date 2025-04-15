@@ -3,6 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './Layouts/main-layout/components/navbar/navbar.component';
 import { FooterComponent } from './Layouts/main-layout/components/footer/footer.component';
@@ -62,6 +69,9 @@ import { MenusService } from './features/Eventmanagement/Services/menus.service'
 import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
 import { UploadComponent } from './features/Eventmanagement/routes/upload/upload.component';
 import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
+import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
+import { EmailService } from './features/Eventmanagement/Services/email.service';
+import { QRCodeService } from './features/Eventmanagement/Services/qrcode.service';
 
 @NgModule({
   declarations: [
@@ -125,7 +135,8 @@ import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/aj
     UpdatemenuComponent,
     EventbackComponent,
     UploadComponent,
-    AjoutComponent
+    AjoutComponent,
+    RegistrationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -136,10 +147,18 @@ import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/aj
     NgChartsModule,
     NgxPaginationModule,
     CommonModule,
-    
-    
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    EmailService,
+    QRCodeService
+  ],
   bootstrap: [AppComponent],
   exports: [
     FooterComponent,

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
+import { RegistrationModalComponent } from './registration-modal/registration-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 interface MenuFallback {
   name: string;
@@ -33,7 +35,8 @@ export class EventComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -121,12 +124,14 @@ export class EventComponent implements OnInit {
          : `${this.base_url}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   }
 
-  navigateToEventDetails(eventId: number): void {
-    this.router.navigate(['/events', eventId]);
+  navigateToEventDetails(eventid: number | undefined): void {
+    if (eventid) {
+      this.router.navigate(['/events', eventid]);
+    }
   }
 
-  deleteEvent(eventid: number) {
-    if (confirm('Are you sure you want to delete this event?')) {
+  deleteEvent(eventid: number | undefined) {
+    if (eventid && confirm('Are you sure you want to delete this event?')) {
       this.eventService.deleteEvent(eventid).subscribe({
         next: () => {
           this.loadEvents(); // Reload the list
@@ -137,5 +142,24 @@ export class EventComponent implements OnInit {
         }
       });
     }
+  }
+
+  registerForEvent(event: Event): void {
+    const dialogRef = this.dialog.open(RegistrationModalComponent, {
+      width: '500px',
+      data: { event: event },
+      panelClass: 'custom-dialog-container',
+      disableClose: false,
+      autoFocus: true,
+      position: { top: '50px' },
+      hasBackdrop: true,
+      backdropClass: 'custom-backdrop'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Registration completed successfully');
+      }
+    });
   }
 }
