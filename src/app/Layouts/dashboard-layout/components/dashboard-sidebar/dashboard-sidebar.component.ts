@@ -18,19 +18,11 @@ export class DashboardSidebarComponent {
     {
       name: 'menuItems', 
 =======
-      name: 'dashboard', 
-      label: 'Dashboard', 
-      link: '/admin/dashboard', 
-      icon: 'bx bx-home-circle', 
-      submenu: []
-    },
-    
-    {
-      name: 'menuManagement', 
+      name: 'menuItems',
 >>>>>>> 8c2541c (first version of  eventmanagement(crud done , no image))
-      label: 'Menu Management', 
-      link: '#', 
-      icon: 'bx bx-food-menu', 
+      label: 'Menu Management',
+      link: '#',
+      icon: 'bx bx-food-menu',
       submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
@@ -63,18 +55,16 @@ export class DashboardSidebarComponent {
     // Add other menu items as needed
 =======
     {
-      name: 'eventManagement', 
-      label: 'Event Management', 
-      link: '#', 
-      icon: 'bx bx-calendar-event', 
+      name: 'eventItems',
+      label: 'Event Management',
+      link: '#',
+      icon: 'bx bx-calendar-event', // Changed icon to be more appropriate for events
       submenu: [
         { label: 'Events', link: '/admin/eventmanagement/events' },
         { label: 'Menus', link: '/admin/eventmanagement/menus' }
       ]
     },
->>>>>>> 8c2541c (first version of  eventmanagement(crud done , no image))
   ];
-
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
