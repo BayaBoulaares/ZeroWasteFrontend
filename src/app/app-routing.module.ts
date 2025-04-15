@@ -18,6 +18,8 @@ import { LoginComponent } from './features/userManagement/Components/admin/login
 import { noAuthGuard , adminGuard, userGuard } from './features/userManagement/Services/guards/user.guard';
 import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/safety-inspection/safety-inspection.component';
+import { RestaurantComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant/restaurant.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -48,6 +50,32 @@ const routes: Routes = [
       { path: 'usersmanagement/add', component: UserCreateComponent },
     ],
   },
+
+  {
+    path: 'admin',
+    component: DashboardLayoutComponent,
+    
+    children: [
+      {
+        path: 'SafetyManagment',
+        children: [
+          { path: 'SafetyInspection', component: SafetyInspectionComponent },
+         
+        ],
+      },
+      {
+        path: 'RestaurantManagment',
+        children: [
+          { path: 'Restaurant', component: RestaurantComponent },
+         
+        ],
+      },
+    //  { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
+
+    ],
+  },
+
+
   {
     path: '',
     component: MainLayoutComponent,

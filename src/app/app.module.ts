@@ -27,6 +27,8 @@ import { UsersManagementComponent } from './features/userManagement/Components/a
 import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
 import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+import { RestaurantComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant/restaurant.component';
+import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/safety-inspection/safety-inspection.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { LoginFComponent } from './features/userManagement/Components/main/login
     UserUpdateComponent,
     UserCreateComponent,
     LoginFComponent,
+    RestaurantComponent,
+    SafetyInspectionComponent,
 
 
 

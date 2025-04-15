@@ -20,6 +20,13 @@ export class DashboardSidebarComponent {
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
     },
+    { name: 'Restaurant', label: 'Restaurant', link: '/admin/RestaurantManagment/Restaurant', icon: 'bx bx-restaurant', submenu:[] },
+    {
+      name: 'Compliance_Food_Safety', label: 'Compliance And Food Safety', link: '#', icon: 'bx bx-shield-quarter', submenu: [
+        { label: 'Safety Inspection', link: '/admin/SafetyManagment/SafetyInspection' },
+        { label: 'Compliances', link: '/admin/SafetyManagment/SafetyInspection' }
+      ]
+    },
     // Add other menu items as needed
   ];
 
