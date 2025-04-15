@@ -20,8 +20,20 @@ export class DashboardSidebarComponent {
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
     },
+    
+    {
+      name: 'inventory', label: 'Inventory Management', link: '#', icon: 'bx bx-trending-up', submenu: [
+        { label: 'Product', link: '/admin/inventory/product' },
+
+        { label: 'Stock Transaction', link: '/admin/inventory/stockTransaction' },
+        { label: 'Stock Static', link: '/admin/inventory/stockStatic' },
+        
+      ]
+    }
+    
     // Add other menu items as needed
   ];
+
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;

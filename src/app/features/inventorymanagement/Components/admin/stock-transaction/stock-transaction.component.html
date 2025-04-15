@@ -1,0 +1,49 @@
+<div class="container my-4">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> Stock Transaction</h4>
+  
+    <div><button (click)="navigateToAdd()" type="button" class="btn btn-primary mb-3">Add</button></div>
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0 text-white align-items-center">Stock Transaction</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Type </th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of stockTransactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+              <td>{{ item.productName }}</td>
+              <td>{{ item.changeQuantity }}</td>
+              <td>{{ item.type }}</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-primary me-2" (click)="onEdit(item)">
+                  <i class="bx bx-edit-alt"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="onDelete(item.stockTransactionID)">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </td>
+  
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end">
+        <pagination-controls
+          previousLabel="‹"
+          nextLabel="›"
+          (pageChange)="currentPage = $event"
+          class="pagination justify-content-end"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+  

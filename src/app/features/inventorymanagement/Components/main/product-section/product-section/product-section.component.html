@@ -1,0 +1,70 @@
+
+<section id="menu" class="menu section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Our Product</h2>
+      <p><span>Check Our</span> <span class="description-title"> Product</span></p>
+    </div><!-- End Section Title -->
+  
+    <div class="container">
+        <ul class="nav front-nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <li class="nav-item" *ngFor="let category of categories">
+          <a
+            class="nav-link"
+            [class.active]="selectedCategory === category"
+            (click)="selectCategory(category)">
+            <h4>{{ category }}</h4>
+          </a>
+        </li>
+      </ul>
+  
+      <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+  
+        <div class="tab-pane fade active show" id="menu-starters">
+  
+          <div class="tab-header text-center">
+            <p>Product</p>
+            <h3>{{ selectedCategory }}</h3>
+          </div>
+  
+          <div class="row gy-5">
+            <div class="col-lg-4 menu-item" *ngFor="let product of filteredProduct">
+              <a [href]="product.imgPath" class="glightbox">
+                <img  [src]="product.imgPath" class="menu-img img-fluid" alt="">
+              </a>
+              <h4>{{ product.productName }}</h4>
+              <p class="ingredients">{{ product.productDescription }}</p>
+              <p class="price">{{ product.productPrice | currency }}</p>
+  <!--            <button class="order-btn" (click)="orderProduct(product)">Order</button>-->
+              <div class="d-flex align-items-center gap-2 mt-2" style="justify-content: center;">
+                <div class="d-flex align-items-center gap-2 mt-2" style="justify-content: center;">
+                    <input
+                      type="number"
+                      class="form-control"
+                      style="width: 100px;"
+                      [(ngModel)]="product.orderKg"
+                      min="0.1"
+                      step="0.1"
+                      placeholder="Kg"
+                    >
+                    <button class="btn btn-primary order-btn" (click)="orderProduct(product)">Order</button>
+                  </div>
+                  
+                  <!-- Affichage du prix total -->
+                  <div *ngIf="product.orderKg && product.orderKg > 0" class="text-center mt-2">
+                    <strong>Total: {{ product.orderKg * product.productPrice | currency }}</strong>
+                  </div>
+                  
+              </div>
+            </div>
+          </div>
+  
+        </div>
+        </div>
+  
+      </div>
+  
+  
+  </section>
+  

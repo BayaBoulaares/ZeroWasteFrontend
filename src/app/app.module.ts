@@ -29,6 +29,16 @@ import { UserCreateComponent } from './features/userManagement/Components/admin/
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
 import { ResetPasswordComponent } from './features/userManagement/Components/main/reset-password/reset-password.component';
 
+import { ProductFormComponent } from './features/inventorymanagement/Components/admin/product-form/product-form.component';
+
+import { StockTransactionFormComponent } from './features/inventorymanagement/Components/admin/stock-transaction-form/stock-transaction-form.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { InventoryProductComponent } from './features/inventorymanagement/Components/admin/inventory-product/inventory-product.component';
+import { Product } from './features/inventorymanagement/Entities/product';
+import { StockTransactionComponent } from './features/inventorymanagement/Components/admin/stock-transaction/stock-transaction.component';
+import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
+import { CommonModule } from '@angular/common';
+import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +67,12 @@ import { ResetPasswordComponent } from './features/userManagement/Components/mai
     UserCreateComponent,
     LoginFComponent,
     ResetPasswordComponent,
+  InventoryProductComponent,
+    ProductFormComponent,
+    StockTransactionComponent,
+    StockTransactionFormComponent,
+    ProductSectionComponent,
+    StockStaticComponent,
 
 
 
@@ -67,7 +83,10 @@ import { ResetPasswordComponent } from './features/userManagement/Components/mai
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxPaginationModule,
+    CommonModule,
+    
     
   ],
   providers: [],

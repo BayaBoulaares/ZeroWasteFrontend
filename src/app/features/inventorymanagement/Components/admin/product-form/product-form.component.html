@@ -1,0 +1,60 @@
+<div class="container-xxl flex-grow-1 container-p-y ">
+    <h4 class="mb-4">{{ isEditMode ? 'Modifier un produit' : 'Ajouter un produit' }}</h4>
+  
+    <div class="card mb-4">
+  
+      <div class="card-body">
+  
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="productName" class="form-label">Nom du produit</label>
+              <input type="text" class="form-control" id="productName" formControlName="productName" required />
+            </div>
+  
+            <div class="col-md-6">
+              <label for="category" class="form-label">Catégorie</label>
+              <select class="form-select" id="category" formControlName="category" required>
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+              </select>
+            </div>
+  
+            <div class="col-md-6">
+              <label for="stockLevel" class="form-label">Stock</label>
+              <input type="number" class="form-control" id="stockLevel" formControlName="stockLevel" required />
+            </div>
+  
+            <div class="col-md-6">
+              <label for="expireDate" class="form-label">Date d’expiration</label>
+              <input type="date" class="form-control" id="expireDate" formControlName="expireDate" />
+            </div>
+  
+            <div class="col-md-6">
+              <label for="imgPath" class="form-label">Image</label>
+              <input type="text" class="form-control" id="imgPath" formControlName="imgPath" required />
+            </div>
+  
+            <div class="col-md-6">
+              <label for="productDescription" class="form-label">Description</label>
+              <input type="text" class="form-control" id="productDescription" formControlName="productDescription" required />
+            </div>
+  
+            <div class="col-md-6">
+              <label for="productPrice" class="form-label">Price</label>
+              <input type="text" class="form-control" id="productPrice" formControlName="productPrice" required />
+            </div>
+  
+          </div>
+  
+          <div class="mt-4 d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+              {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+            </button>
+            <button class="btn btn-secondary" type="button" (click)="onCancel()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  </div>
+  
