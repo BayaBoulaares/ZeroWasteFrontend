@@ -36,7 +36,6 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Date</th>
             <th>Start Time</th>
             <th>End Time</th>
@@ -46,7 +45,6 @@
         </thead>
         <tbody class="table-border-bottom-0">
           <tr *ngFor="let shift of shifts" class="align-middle">
-            <td>{{ shift.idShift }}</td>
             <td>{{ shift.date | date:'mediumDate' }}</td>
             <td>{{ formatTime(shift.startTime) }}</td>
             <td>{{ formatTime(shift.endTime) }}</td>

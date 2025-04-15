@@ -25,7 +25,7 @@ export class DashboardSidebarComponent {
       link: '#', 
       icon: 'bx bx-user', 
       submenu: [
-        { label: 'Dashboard', link: '/admin/staffmanagement/dashboard' },
+        { label: 'Staff Dashboard', link: '/admin/staffmanagement/dashboard' },
         { label: 'Employees', link: '/admin/staffmanagement/employees' },
         { label: 'Shifts', link: '/admin/staffmanagement/shifts' },
         { label: 'Training Sessions', link: '/admin/staffmanagement/training-sessions' }
