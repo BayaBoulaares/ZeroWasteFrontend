@@ -57,13 +57,14 @@ export class UpdateIngredientComponent implements OnInit{
       next: (data) => {
         this.formdata = data;
 
-        // Assurez-vous que expirationDate est au bon format si c'est une chaîne de caractères
-        if (typeof this.formdata.expirationDate === 'string') {
-          this.formdata.expirationDate = new Date(this.formdata.expirationDate);
+        let formattedExpirationDate = '';
+        if (this.formdata.expirationDate) {
+          const date = new Date(this.formdata.expirationDate);
+          if (!isNaN(date.getTime())) {
+            formattedExpirationDate = date.toISOString().split('T')[0];
+          }
         }
-
-        // Formater expirationDate en format correct (YYYY-MM-DD)
-        const formattedExpirationDate = this.formdata.expirationDate?.toISOString().split('T')[0];
+        
 
         // Utilisation de patchValue pour mettre à jour les valeurs du formulaire
         this.ingredientForm.patchValue({
