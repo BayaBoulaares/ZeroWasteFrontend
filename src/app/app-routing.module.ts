@@ -34,7 +34,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: DashboardLayoutComponent,
-    canActivate: [adminGuard],
+    // canActivate: [adminGuard],
     children: [
       {path:'dashboard',component:DashboardComponent},
       {
@@ -48,7 +48,7 @@ const routes: Routes = [
           { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
 
         ],
-      },
+      }, 
       { path: 'usersmanagement', component: UsersManagementComponent },
       { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
       { path: 'usersmanagement/add', component: UserCreateComponent },
