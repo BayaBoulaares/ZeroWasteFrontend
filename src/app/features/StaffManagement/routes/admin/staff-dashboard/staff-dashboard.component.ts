@@ -6,12 +6,12 @@ import { DashboardService } from '../../../Services/dashboard.service';
 declare const ApexCharts: any;
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-staff-dashboard',
   templateUrl: './staff-dashboard.component.html',
-  styleUrls: ['./staff-dashboard.component.scss']
+  styleUrls: ['./staff-dashboard.component.css']
 })
 export class StaffDashboardComponent implements OnInit, AfterViewInit {
-  // Staff data
+
   staffStats: any = {
     totalEmployees: 0,
     totalShifts: 0,
@@ -21,14 +21,14 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
     trainingSessionsThisMonth: 0,
     roleDistribution: []
   };
-  
+
   monthlyStats: any[] = [];
   roleBasedStats: any = {};
   loading = true;
   error = '';
   currentYear = new Date().getFullYear();
   username = 'Nour';
-  
+
   constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
 
   loadDashboardData(): void {
     this.loading = true;
-    
+
     // Load staff statistics
     this.dashboardService.getStaffStatistics().subscribe({
       next: (data) => {
@@ -51,7 +51,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     });
-    
+
     // Load monthly statistics
     this.dashboardService.getMonthlyStatistics().subscribe({
       next: (data) => {
@@ -63,7 +63,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
         console.error('Error loading monthly statistics:', err);
       }
     });
-    
+
     // Load role-based statistics
     this.dashboardService.getRoleBasedStatistics().subscribe({
       next: (data) => {
@@ -91,16 +91,16 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
 
   initCharts(): void {
     // Extract data for charts
-    const months = this.monthlyStats.length > 0 ? 
-      this.monthlyStats.map(stat => stat.month.substring(0, 3)) : 
+    const months = this.monthlyStats.length > 0 ?
+      this.monthlyStats.map(stat => stat.month.substring(0, 3)) :
       ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    const shiftsData = this.monthlyStats.length > 0 ? 
-      this.monthlyStats.map(stat => stat.shiftsCount) : 
+
+    const shiftsData = this.monthlyStats.length > 0 ?
+      this.monthlyStats.map(stat => stat.shiftsCount) :
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    
-    const trainingsData = this.monthlyStats.length > 0 ? 
-      this.monthlyStats.map(stat => stat.trainingsCount) : 
+
+    const trainingsData = this.monthlyStats.length > 0 ?
+      this.monthlyStats.map(stat => stat.trainingsCount) :
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     // Staff Activity Chart (replacing Total Revenue Chart)
@@ -136,18 +136,18 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
       // Get percentage of employees hired this month
       const currentMonthIndex = new Date().getMonth();
       const currentMonthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());
-      
+
       let hiredThisMonth = 0;
       if (this.monthlyStats.length > 0) {
         const monthStat = this.monthlyStats.find(stat => stat.month === currentMonthName);
         hiredThisMonth = monthStat ? monthStat.employeeCount : 0;
       }
-      
+
       // Calculate percentage based on total employees
-      const growthPercentage = this.staffStats.totalEmployees > 0 
-        ? Math.round((hiredThisMonth / this.staffStats.totalEmployees) * 100) 
+      const growthPercentage = this.staffStats.totalEmployees > 0
+        ? Math.round((hiredThisMonth / this.staffStats.totalEmployees) * 100)
         : 0;
-      
+
       const growthChart = new ApexCharts(document.getElementById('growthChart'), {
         series: [growthPercentage],
         chart: {
@@ -169,7 +169,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
                 fontSize: '13px'
               },
               value: {
-                formatter: function(val: number) {
+                formatter: function (val: number) {
                   return val + '%';
                 },
                 color: '#111',
@@ -199,7 +199,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
     if (document.getElementById('orderStatisticsChart') && this.staffStats.roleDistribution?.length > 0) {
       const roles = this.staffStats.roleDistribution.map((role: any) => role.role);
       const counts = this.staffStats.roleDistribution.map((role: any) => role.count);
-      
+
       const orderStatisticsChart = new ApexCharts(document.getElementById('orderStatisticsChart'), {
         series: counts,
         chart: {
