@@ -37,6 +37,8 @@
               "node_modules/aos/dist/aos.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
 
+            
+              
             ]
           },
           "configurations": {

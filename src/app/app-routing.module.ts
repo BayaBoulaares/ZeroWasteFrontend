@@ -10,6 +10,14 @@ import { AddMealComponent } from './features/menumangment/routes/admin/add-meal/
 import { UpdateMealComponent } from './features/menumangment/routes/admin/update-meal/update-meal.component';
 import { AddIngredientComponent } from './features/menumangment/routes/admin/add-ingredient/add-ingredient.component';
 import { UpdateIngredientComponent } from './features/menumangment/routes/admin/update-ingredient/update-ingredient.component';
+import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
+import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
+import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
+import { ShiftListComponent } from './features/StaffManagement/routes/admin/shift/shift-list/shift-list.component';
+import { TrainingSessionFormComponent } from './features/StaffManagement/routes/admin/training-session/training-session-form/training-session-form.component';
+import { TrainingSessionListComponent } from './features/StaffManagement/routes/admin/training-session/training-session-list/training-session-list.component';
+import { EmployeeProfileComponent } from './features/StaffManagement/routes/main/employee-profile/employee-profile.component';
+import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
 import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
@@ -56,7 +64,29 @@ const routes: Routes = [
           { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
 
         ],
+        
       }, 
+      {
+        path: 'staffmanagement',
+        children: [
+          { path: 'dashboard', component: StaffDashboardComponent },
+
+          // Employee routes
+          { path: 'employees', component: EmployeeListComponent },
+          { path: 'employees/new', component: EmployeeFormComponent },
+          { path: 'employees/edit/:id', component: EmployeeFormComponent },
+
+          // Shift routes
+          { path: 'shifts', component: ShiftListComponent },
+          { path: 'shifts/new', component: ShiftFormComponent },
+          { path: 'shifts/edit/:id', component: ShiftFormComponent },
+
+          // Training Session routes
+          { path: 'training-sessions', component: TrainingSessionListComponent },
+          { path: 'training-sessions/new', component: TrainingSessionFormComponent },
+          { path: 'training-sessions/edit/:id', component: TrainingSessionFormComponent },
+        ]
+      },
       { path: 'usersmanagement', component: UsersManagementComponent },
       { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
       { path: 'usersmanagement/add', component: UserCreateComponent },
@@ -81,7 +111,8 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'menu', component: MenusectionComponent },
-      { path: 'product', component: ProductSectionComponent }
+      { path: 'product', component: ProductSectionComponent },
+      { path: 'staff-profile', component: EmployeeProfileComponent }
     ],
   },
 
@@ -91,6 +122,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule {}

@@ -1,0 +1,137 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Staff Management / Employees /</span> 
+      {{ isEditMode ? 'Edit Employee' : 'Add Employee' }}
+    </h4>
+  
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4">
+          <h5 class="card-header">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h5>
+          
+          <!-- Alert for errors -->
+          <div *ngIf="error" class="alert alert-danger mx-3 mt-3" role="alert">
+            {{ error }}
+          </div>
+          
+          <div *ngIf="loading" class="text-center p-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          <div class="card-body" *ngIf="!loading">
+            <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="name">Name</label>
+                <div class="col-sm-10">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    formControlName="name"
+                    placeholder="John Doe"
+                    [ngClass]="{ 'is-invalid': submitted && employeeForm.controls['name'].errors }"
+                  />
+                  <div *ngIf="submitted && employeeForm.controls['name'].errors" class="invalid-feedback">
+                    <div *ngIf="employeeForm.controls['name'].errors['required']">Name is required</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="role">Role</label>
+                <div class="col-sm-10">
+                  <select
+                    id="role"
+                    class="form-select"
+                    formControlName="role"
+                    [ngClass]="{ 'is-invalid': submitted && employeeForm.controls['role'].errors }"
+                  >
+                    <option value="">Select Role</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Chef">Chef</option>
+                    <option value="Waiter">Waiter</option>
+                    <option value="Cashier">Cashier</option>
+                    <option value="Dishwasher">Dishwasher</option>
+                    <option value="Doorman">Doorman</option>
+                  </select>
+                  <div *ngIf="submitted && employeeForm.controls['role'].errors" class="invalid-feedback">
+                    <div *ngIf="employeeForm.controls['role'].errors['required']">Role is required</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="contactinfo">Contact Info</label>
+                <div class="col-sm-10">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="contactinfo"
+                    formControlName="contactinfo"
+                    placeholder="john.doe@example.com"
+                    [ngClass]="{ 'is-invalid': submitted && employeeForm.controls['contactinfo'].errors }"
+                  />
+                  <div *ngIf="submitted && employeeForm.controls['contactinfo'].errors" class="invalid-feedback">
+                    <div *ngIf="employeeForm.controls['contactinfo'].errors['required']">Contact info is required</div>
+                    <div *ngIf="employeeForm.controls['contactinfo'].errors['email']">Please enter a valid email address</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="salary">Salary</label>
+                <div class="col-sm-10">
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="salary"
+                      formControlName="salary"
+                      placeholder="2500"
+                      step="100"
+                      [ngClass]="{ 'is-invalid': submitted && employeeForm.controls['salary'].errors }"
+                    />
+                    <div *ngIf="submitted && employeeForm.controls['salary'].errors" class="invalid-feedback">
+                      <div *ngIf="employeeForm.controls['salary'].errors['required']">Salary is required</div>
+                      <div *ngIf="employeeForm.controls['salary'].errors['min']">Salary must be greater than 0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="hiredate">Hire Date</label>
+                <div class="col-sm-10">
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="hiredate"
+                    formControlName="hiredate"
+                    [ngClass]="{ 'is-invalid': submitted && employeeForm.controls['hiredate'].errors }"
+                  />
+                  <div *ngIf="submitted && employeeForm.controls['hiredate'].errors" class="invalid-feedback">
+                    <div *ngIf="employeeForm.controls['hiredate'].errors['required']">Hire date is required</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row justify-content-end">
+                <div class="col-sm-10">
+                  <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                    {{ isEditMode ? 'Update' : 'Save' }}
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary ms-2" routerLink="/admin/staffmanagement/employees">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

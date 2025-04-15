@@ -1,0 +1,395 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Staff Management /</span> Shifts
+  </h4>
+
+  <!-- Alert Message -->
+  <div *ngIf="showAlert" class="alert alert-{{alertType}} alert-dismissible" role="alert">
+    <div>{{ alertType === 'success' ? successMessage : error }}</div>
+    <button type="button" class="btn-close" (click)="showAlert = false" aria-label="Close"></button>
+  </div>
+
+  <!-- Shift List Card -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Shifts</h5>
+      <div>
+        <button type="button" class="btn btn-outline-primary me-2" (click)="showRequestSummaryModal()">
+          <i class="bx bx-envelope me-1"></i> View Requests
+          <span *ngIf="pendingResponses > 0" class="badge bg-danger ms-1">{{ pendingResponses }}</span>
+        </button>
+        <button type="button" class="btn btn-primary" routerLink="/admin/staffmanagement/shifts/new">
+          <i class="bx bx-plus me-1"></i> Add New Shift
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Shift Table -->
+    <div class="table-responsive text-nowrap" *ngIf="!loading">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Employee</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr *ngFor="let shift of shifts" class="align-middle">
+            <td>{{ shift.date | date:'mediumDate' }}</td>
+            <td>{{ formatTime(shift.startTime) }}</td>
+            <td>{{ formatTime(shift.endTime) }}</td>
+            <td>
+              <div *ngIf="shift.employee; else unassigned">
+                <span class="badge bg-label-primary me-1">{{ shift.employee.role }}</span>
+                {{ shift.employee.name }}
+                <button type="button" class="btn btn-sm btn-outline-primary ms-2" 
+                      (click)="openEmployeeFreeDaysModal(shift.employee)">
+                  <i class="bx bx-calendar-plus me-1"></i> Request Change
+                </button>
+              </div>
+              <ng-template #unassigned>
+                <span class="badge bg-label-secondary">Unassigned</span>
+              </ng-template>
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-sm btn-icon btn-outline-primary me-2" (click)="shift.idShift && editShift(shift.idShift)" title="Edit">
+                <i class="bx bx-edit-alt"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-icon btn-outline-danger" (click)="shift.idShift && confirmDelete(shift.idShift)" title="Delete">
+                <i class="bx bx-trash"></i>
+              </button>
+              
+              <!-- Delete Confirmation Modal -->
+              <div class="modal fade" id="confirmDeleteModal{{shift.idShift}}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Confirm Delete</h5>
+                      <button type="button" class="btn-close" (click)="cancelDelete(shift.idShift!)" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="text-center mb-4">
+                        <div class="avatar avatar-md mb-3">
+                          <span class="avatar-initial rounded-circle bg-label-danger">
+                            <i class="bx bx-trash fs-1"></i>
+                          </span>
+                        </div>
+                        <h4 class="mb-2">Delete Shift</h4>
+                        <p class="text-muted">Are you sure you want to delete this shift scheduled for <strong>{{ shift.date | date:'mediumDate' }}</strong>? This action cannot be undone.</p>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" (click)="cancelDelete(shift.idShift!)">
+                        Cancel
+                      </button>
+                      <button type="button" class="btn btn-danger" (click)="shift.idShift && deleteShift(shift.idShift)">
+                        Yes, Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="shifts.length === 0 && !loading">
+            <td colspan="6" class="text-center py-4">
+              <div class="text-center">
+                <i class="bx bx-time fs-1 text-muted mb-2"></i>
+                <p class="mb-0">No shifts found</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Employee Free Days Modal -->
+  <div class="modal fade" id="employeeFreeDaysModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Request Shift Change for {{ selectedEmployee?.name }}</h5>
+          <button type="button" class="btn-close" (click)="closeEmployeeFreeDaysModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Calendar for Free Days -->
+          <div *ngIf="loadingFreeDays" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading free days...</p>
+          </div>
+          
+          <div *ngIf="!loadingFreeDays">
+            <div class="mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="mb-3">Select a free day to request a shift change</h6>
+                  
+                  <!-- Calendar Navigation -->
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-sm btn-outline-secondary" (click)="previousMonth()">
+                      <i class="bx bx-chevron-left"></i> Previous
+                    </button>
+                    <h5 class="mb-0">{{ currentMonthYear }}</h5>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="nextMonth()">
+                      Next <i class="bx bx-chevron-right"></i>
+                    </button>
+                  </div>
+                  
+                  <!-- Calendar -->
+                  <div class="calendar">
+                    <!-- Days of Week -->
+                    <div class="calendar-header">
+                      <div class="calendar-cell day-name" *ngFor="let day of weekdays">
+                        {{ day }}
+                      </div>
+                    </div>
+                    
+                    <!-- Days -->
+                    <div class="calendar-body">
+                      <div class="calendar-cell" 
+                           *ngFor="let day of calendarDays" 
+                           [class.empty]="!day.isCurrentMonth"
+                           [class.has-shift]="day.hasShift"
+                           [class.free-day]="day.isCurrentMonth && !day.hasShift && day.isSelectable"
+                           [class.not-selectable]="!day.isSelectable"
+                           [class.selected]="day.isSelected"
+                           [class.today]="day.isToday"
+                           (click)="day.isCurrentMonth && !day.hasShift && day.isSelectable && selectDate(day.date)">
+                        
+                        <div class="cell-content" *ngIf="day.isCurrentMonth">
+                          <div class="day-number">{{ day.dayOfMonth }}</div>
+                          
+                          <div *ngIf="day.hasShift" class="shift-indicator">
+                            <i class="bx bx-calendar-check"></i>
+                            Has Shift
+                          </div>
+                          
+                          <div *ngIf="!day.hasShift && day.isCurrentMonth && day.isSelectable" class="free-indicator">
+                            <i class="bx bx-check-circle"></i> Free
+                          </div>
+
+                          <div *ngIf="!day.isSelectable && day.isCurrentMonth" class="past-indicator">
+                            <i class="bx bx-x-circle"></i> Past
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Legend -->
+                  <div class="d-flex justify-content-center gap-3 mt-3">
+                    <div class="d-flex align-items-center">
+                      <div class="legend-box free-day"></div>
+                      <span class="ms-1">Free Day</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="legend-box has-shift"></div>
+                      <span class="ms-1">Has Shift</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="legend-box not-selectable"></div>
+                      <span class="ms-1">Past Date</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="legend-box selected"></div>
+                      <span class="ms-1">Selected</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Shift Details Form -->
+            <form [formGroup]="shiftChangeForm" *ngIf="selectedDate">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="startTime" class="form-label">Start Time</label>
+                  <input type="time" id="startTime" class="form-control" formControlName="startTime">
+                  <div *ngIf="shiftChangeForm.get('startTime')?.invalid && shiftChangeForm.get('startTime')?.touched" class="text-danger small">
+                    Start time is required
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="endTime" class="form-label">End Time</label>
+                  <input type="time" id="endTime" class="form-control" formControlName="endTime">
+                  <div *ngIf="shiftChangeForm.get('endTime')?.invalid && shiftChangeForm.get('endTime')?.touched" class="text-danger small">
+                    End time is required
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="reason" class="form-label">Reason for Request</label>
+                <textarea id="reason" class="form-control" formControlName="reason" rows="3" 
+                          placeholder="Please explain why you need this employee to work on their free day..."></textarea>
+                <div *ngIf="shiftChangeForm.get('reason')?.invalid && shiftChangeForm.get('reason')?.touched" class="text-danger small">
+                  Please provide a reason for the request
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeEmployeeFreeDaysModal()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" 
+                  [disabled]="!selectedDate || shiftChangeForm.invalid" 
+                  (click)="submitShiftChangeRequest()">
+            Send Request
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Summary Modal -->
+  <div class="modal fade" id="requestSummaryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Shift Change Requests</h5>
+          <button type="button" class="btn-close" (click)="closeRequestSummaryModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="loadingRequests" class="text-center p-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading requests...</p>
+          </div>
+          
+          <div *ngIf="!loadingRequests">
+            <ul class="nav nav-tabs mb-3" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" 
+                        role="tab" aria-controls="pending" aria-selected="true" (click)="setRequestsTab('pending')">
+                  Pending
+                  <span *ngIf="pendingResponses > 0" class="badge bg-danger ms-1">{{ pendingResponses }}</span>
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" id="accepted-tab" data-bs-toggle="tab" data-bs-target="#accepted" 
+                        role="tab" aria-controls="accepted" aria-selected="false" (click)="setRequestsTab('accepted')">
+                  Accepted
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" 
+                        role="tab" aria-controls="rejected" aria-selected="false" (click)="setRequestsTab('rejected')">
+                  Rejected
+                </button>
+              </li>
+            </ul>
+            
+            <div class="tab-content">
+              <!-- Pending Requests Tab -->
+              <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                <div *ngIf="filteredRequests.length === 0" class="text-center py-4">
+                  <i class="bx bx-envelope fs-1 text-muted"></i>
+                  <p class="mt-2">No pending requests</p>
+                </div>
+                
+                <div class="list-group" *ngIf="filteredRequests.length > 0">
+                  <div *ngFor="let request of filteredRequests" class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="mb-1">
+                        Request for {{ request.employee.name }}
+                        <span class="badge bg-warning ms-1">Pending</span>
+                      </h6>
+                      <small>{{ request.requestDate | date:'medium' }}</small>
+                    </div>
+                    <p class="mb-1">Date: <strong>{{ request.shiftDate | date:'fullDate' }}</strong></p>
+                    <p class="mb-1">Time: {{ formatTime(request.startTime) }} - {{ formatTime(request.endTime) }}</p>
+                    <div class="mb-2">
+                      <small class="text-muted">Reason: {{ request.reason }}</small>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <button class="btn btn-sm btn-outline-danger me-2" (click)="cancelRequest(request.idRequest)">
+                        Cancel Request
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Accepted Requests Tab -->
+              <div class="tab-pane fade" id="accepted" role="tabpanel" aria-labelledby="accepted-tab">
+                <div *ngIf="filteredRequests.length === 0" class="text-center py-4">
+                  <i class="bx bx-check-circle fs-1 text-muted"></i>
+                  <p class="mt-2">No accepted requests</p>
+                </div>
+                
+                <div class="list-group" *ngIf="filteredRequests.length > 0">
+                  <div *ngFor="let request of filteredRequests" class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="mb-1">
+                        Request for {{ request.employee.name }}
+                        <span class="badge bg-success ms-1">Accepted</span>
+                      </h6>
+                      <small>{{ request.requestDate | date:'medium' }}</small>
+                    </div>
+                    <p class="mb-1">Date: <strong>{{ request.shiftDate | date:'fullDate' }}</strong></p>
+                    <p class="mb-1">Time: {{ formatTime(request.startTime) }} - {{ formatTime(request.endTime) }}</p>
+                    <div class="mb-0">
+                      <small class="text-muted">Reason: {{ request.reason }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Rejected Requests Tab -->
+              <div class="tab-pane fade" id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
+                <div *ngIf="filteredRequests.length === 0" class="text-center py-4">
+                  <i class="bx bx-x-circle fs-1 text-muted"></i>
+                  <p class="mt-2">No rejected requests</p>
+                </div>
+                
+                <div class="list-group" *ngIf="filteredRequests.length > 0">
+                  <div *ngFor="let request of filteredRequests" class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="mb-1">
+                        Request for {{ request.employee.name }}
+                        <span class="badge bg-danger ms-1">Rejected</span>
+                      </h6>
+                      <small>{{ request.requestDate | date:'medium' }}</small>
+                    </div>
+                    <p class="mb-1">Date: <strong>{{ request.shiftDate | date:'fullDate' }}</strong></p>
+                    <p class="mb-1">Time: {{ formatTime(request.startTime) }} - {{ formatTime(request.endTime) }}</p>
+                    <div class="mb-2">
+                      <small class="text-muted">Reason: {{ request.reason }}</small>
+                    </div>
+                    <div *ngIf="request.employeeResponse" class="alert alert-light-danger p-2 mb-0">
+                      <small><strong>Response:</strong> {{ request.employeeResponse }}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeRequestSummaryModal()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal backdrop -->
+  <div id="backdrop"></div>
+</div>

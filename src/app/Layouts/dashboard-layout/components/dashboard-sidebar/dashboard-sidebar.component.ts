@@ -15,7 +15,11 @@ export class DashboardSidebarComponent {
 
     { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
     {
-      name: 'menuItems', label: 'Menu Management', link: '#', icon: 'bx bx-food-menu', submenu: [
+      name: 'menuItems', 
+      label: 'Menu Management', 
+      link: '#', 
+      icon: 'bx bx-food-menu', 
+      submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
@@ -26,11 +30,23 @@ export class DashboardSidebarComponent {
         { label: 'Product', link: '/admin/inventory/product' },
 
         { label: 'Stock Transaction', link: '/admin/inventory/stockTransaction' },
-        { label: 'Stock Static', link: '/admin/inventory/stockStatic' },
+        //{ label: 'Stock Static', link: '/admin/inventory/stockStatic' },
         
       ]
-    }
+    },
     
+    {
+      name: 'staffItems', 
+      label: 'Staff Management', 
+      link: '#', 
+      icon: 'bx bx-user', 
+      submenu: [
+        { label: 'Staff Dashboard', link: '/admin/staffmanagement/dashboard' },
+        { label: 'Employees', link: '/admin/staffmanagement/employees' },
+        { label: 'Shifts', link: '/admin/staffmanagement/shifts' },
+        { label: 'Training Sessions', link: '/admin/staffmanagement/training-sessions' }
+      ]
+    }
     // Add other menu items as needed
   ];
 

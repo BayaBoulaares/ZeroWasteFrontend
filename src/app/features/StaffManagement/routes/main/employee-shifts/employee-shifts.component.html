@@ -1,0 +1,118 @@
+<div class="shifts-container">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner-border text-danger" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading your schedule...</p>
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      <p>{{ error }}</p>
+      <button class="btn btn-danger" (click)="loadShifts()">Try Again</button>
+    </div>
+  
+    <div *ngIf="!loading && shifts.length === 0" class="no-shifts">
+      <div class="text-center py-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <h5 class="mt-3">No Shifts Assigned</h5>
+        <p class="text-muted">You don't have any shifts assigned yet.</p>
+      </div>
+    </div>
+  
+    <div *ngIf="!loading && shifts.length > 0">
+      <!-- Calendar View Section -->
+      <div class="calendar-section mb-5">
+        <h4 class="mb-4">Schedule Overview</h4>
+        
+        <div class="calendar-nav d-flex justify-content-between align-items-center mb-3">
+          <button class="btn btn-sm btn-outline-secondary" (click)="previousMonth()">
+            <i class="bi bi-chevron-left"></i> Previous
+          </button>
+          <h5 class="month-title mb-0">{{ currentMonthYear }}</h5>
+          <button class="btn btn-sm btn-outline-secondary" (click)="nextMonth()">
+            Next <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+        
+        <div class="calendar">
+          <!-- Calendar Header - Days of Week -->
+          <div class="calendar-header">
+            <div class="calendar-cell day-name" *ngFor="let day of weekdays">
+              {{ day }}
+            </div>
+          </div>
+          
+          <!-- Calendar Body - Days -->
+          <div class="calendar-body">
+            <div class="calendar-cell" 
+                 *ngFor="let day of calendarDays" 
+                 [class.empty]="!day.isCurrentMonth"
+                 [class.has-shift]="day.hasShift"
+                 [class.free-day]="day.isCurrentMonth && !day.hasShift"
+                 [class.today]="day.isToday">
+              
+              <div class="cell-content" *ngIf="day.isCurrentMonth">
+                <div class="day-number">{{ day.dayOfMonth }}</div>
+                
+                <div *ngIf="day.hasShift" class="shift-indicator">
+                  <i class="bi bi-clock"></i>
+                  {{ day.shift?.startTime | slice:0:5 }} - {{ day.shift?.endTime | slice:0:5 }}
+                </div>
+                
+                <div *ngIf="!day.hasShift && day.isCurrentMonth" class="free-indicator">
+                  <i class="bi bi-check-circle"></i> Free
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="calendar-legend mt-3">
+          <div class="legend-item">
+            <span class="legend-color has-shift-legend"></span>
+            <span>Working Day</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color free-day-legend"></span>
+            <span>Free Day</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color today-legend"></span>
+            <span>Today</span>
+          </div>
+        </div>
+      </div>
+  
+      <!-- List View Section -->
+      <div class="list-view-section">
+        <h4 class="mb-4">Upcoming Shifts</h4>
+        <div class="shifts-list">
+          <div *ngFor="let shift of shifts" class="shift-card" 
+               [class.today]="isToday(shift.date)" 
+               [class.upcoming]="isUpcoming(shift.date)">
+            
+            <div class="shift-date">
+              <div class="date-indicator">{{ shift.date | date:'EEE' }}</div>
+              <div class="date-number">{{ shift.date | date:'d' }}</div>
+              <div class="date-month">{{ shift.date | date:'MMM' }}</div>
+            </div>
+            
+            <div class="shift-details">
+              <div class="shift-id">Shift #{{ shift.idShift }}</div>
+              <div class="shift-time">
+                <i class="bi bi-clock me-2"></i>
+                <span>{{ shift.startTime | slice:0:5 }}</span> - 
+                <span>{{ shift.endTime | slice:0:5 }}</span>
+              </div>
+            </div>
+            
+            <div class="shift-status">
+              <span *ngIf="isToday(shift.date)" class="today-badge">Today</span>
+              <span *ngIf="isUpcoming(shift.date) && !isToday(shift.date)" class="upcoming-badge">Upcoming</span>
+              <span *ngIf="!isUpcoming(shift.date) && !isToday(shift.date)" class="past-badge">Past</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

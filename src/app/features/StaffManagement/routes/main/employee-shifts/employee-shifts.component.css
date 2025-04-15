@@ -1,0 +1,279 @@
+.shifts-container {
+    padding: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+  }
+  
+  .error-message {
+    text-align: center;
+    padding: 20px;
+    color: #d9534f;
+    background-color: rgba(217, 83, 79, 0.1);
+    border-radius: 8px;
+  }
+  
+  .error-message button {
+    margin-top: 10px;
+  }
+  
+  .no-shifts {
+    color: #666;
+  }
+  
+  /* Calendar Styles */
+  .calendar-section {
+    margin-bottom: 30px;
+  }
+  
+  .calendar {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #f0f0f0;
+  }
+  
+  .day-name {
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #fff;
+  }
+  
+  .calendar-cell {
+    aspect-ratio: 1;
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+    position: relative;
+  }
+  
+  .calendar-cell.empty {
+    background-color: #f8f8f8;
+  }
+  
+  .calendar-cell.has-shift {
+    background-color: #fde2e2; /* Light red for work days */
+  }
+  
+  .calendar-cell.free-day {
+    background-color: #e1ffde; /* Light green for free days */
+  }
+  
+  .calendar-cell.today {
+    border: 2px solid #ce1212;
+  }
+  
+  .cell-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .day-number {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .shift-indicator {
+    font-size: 12px;
+    color: #ce1212;
+  }
+  
+  .free-indicator {
+    font-size: 12px;
+    color: #28a745;
+    margin-top: auto;
+  }
+  
+  .calendar-nav {
+    margin-bottom: 15px;
+  }
+  
+  .month-title {
+    font-weight: 600;
+  }
+  
+  .calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+  
+  .has-shift-legend {
+    background-color: #fde2e2;
+  }
+  
+  .free-day-legend {
+    background-color: #e1ffde;
+  }
+  
+  .today-legend {
+    background: transparent;
+    border: 2px solid #ce1212;
+  }
+  
+  /* List View Styles */
+  .shifts-list {
+    display: grid;
+    gap: 15px;
+  }
+  
+  .shift-card {
+    display: flex;
+    background: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+  
+  .shift-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .shift-card.today {
+    border-left: 4px solid #28a745;
+  }
+  
+  .shift-card.upcoming {
+    border-left: 4px solid #007bff;
+  }
+  
+  .shift-date {
+    width: 100px;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .date-indicator {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .date-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .date-month {
+    font-size: 14px;
+    color: #777;
+    text-transform: uppercase;
+  }
+  
+  .shift-details {
+    flex: 1;
+    padding: 15px;
+  }
+  
+  .shift-id {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+  }
+  
+  .shift-time {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .shift-status {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+  }
+  
+  .today-badge, .upcoming-badge, .past-badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .today-badge {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .upcoming-badge {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .past-badge {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .calendar-cell {
+      padding: 4px;
+    }
+    
+    .shift-indicator, .free-indicator {
+      font-size: 10px;
+    }
+    
+    .day-number {
+      font-size: 14px;
+    }
+    
+    .shift-card {
+      flex-direction: column;
+    }
+    
+    .shift-date, .shift-status {
+      width: 100%;
+    }
+    
+    .shift-date {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 10px 15px;
+    }
+    
+    .shift-status {
+      justify-content: flex-start;
+      padding: 10px 15px;
+    }
+  }

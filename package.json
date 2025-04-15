@@ -22,6 +22,7 @@
     "aos": "^2.3.4",
     "apexcharts": "^4.5.0",
     "bootstrap": "^5.3.3",
+    "front-office": "file:",
     "chart.js": "^4.3.0",
     "ng-apexcharts": "^1.15.0",
     "ng2-charts": "^4.0.1",

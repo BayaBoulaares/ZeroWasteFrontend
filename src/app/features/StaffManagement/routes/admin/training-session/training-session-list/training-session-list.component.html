@@ -1,0 +1,114 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Staff Management /</span> Training Sessions
+    </h4>
+  
+    <!-- Alert Message -->
+    <div *ngIf="showAlert" class="alert alert-{{alertType}} alert-dismissible" role="alert">
+      <div>{{ alertType === 'success' ? successMessage : error }}</div>
+      <button type="button" class="btn-close" (click)="showAlert = false" aria-label="Close"></button>
+    </div>
+  
+    <!-- Training Session List Card -->
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Training Sessions</h5>
+        <button type="button" class="btn btn-primary" routerLink="/admin/staffmanagement/training-sessions/new">
+          <i class="bx bx-plus me-1"></i> Add New Training Session
+        </button>
+      </div>
+  
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="text-center p-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+  
+      <!-- Training Session Table -->
+      <div class="table-responsive text-nowrap" *ngIf="!loading">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Date</th>
+              <th>Trainer</th>
+              <th>Employee</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            <tr *ngFor="let session of trainingSessions" class="align-middle">
+              <td><strong>{{ session.topic }}</strong></td>
+              <td>{{ formatDate(session.date) }}</td>
+              <td>{{ session.trainer }}</td>
+              <td>
+                <div *ngIf="session.employee; else unassigned">
+                  <span class="badge bg-label-primary me-1">{{ session.employee.role || 'Employee' }}</span>
+                  {{ session.employee.name }}
+                </div>
+                <ng-template #unassigned>
+                  <span class="badge bg-label-secondary">Unassigned</span>
+                </ng-template>
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary me-2" (click)="editTrainingSession(session.idTrainingSession!)" title="Edit">
+                  <i class="bx bx-edit-alt"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-icon btn-outline-danger" (click)="confirmDelete(session.idTrainingSession!)" title="Delete">
+                  <i class="bx bx-trash"></i>
+                </button>
+  
+                <!-- View Details Button (Optional) -->
+                <button type="button" class="btn btn-sm btn-icon btn-outline-info ms-2" title="View Details">
+                  <i class="bx bx-detail"></i>
+                </button>
+                
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="confirmDeleteModal{{session.idTrainingSession}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm Delete</h5>
+                        <button type="button" class="btn-close" (click)="cancelDelete(session.idTrainingSession!)" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="text-center mb-4">
+                          <div class="avatar avatar-md mb-3">
+                            <span class="avatar-initial rounded-circle bg-label-danger">
+                              <i class="bx bx-trash fs-1"></i>
+                            </span>
+                          </div>
+                          <h4 class="mb-2">Delete Training Session</h4>
+                          <p class="text-muted">Are you sure you want to delete the training session "<strong>{{ session.topic }}</strong>"? This action cannot be undone.</p>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" (click)="cancelDelete(session.idTrainingSession!)">
+                          Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger" (click)="deleteTrainingSession(session.idTrainingSession!)">
+                          Yes, Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="trainingSessions.length === 0 && !loading">
+              <td colspan="6" class="text-center py-4">
+                <div class="text-center">
+                  <i class="bx bx-book-content fs-1 text-muted mb-2"></i>
+                  <p class="mb-0">No training sessions found</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal backdrop -->
+  <div id="backdrop"></div>

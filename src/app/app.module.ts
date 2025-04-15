@@ -39,6 +39,18 @@ import { StockTransactionComponent } from './features/inventorymanagement/Compon
 import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
 import { CommonModule } from '@angular/common';
 import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
+import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
+import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
+import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
+import { ShiftListComponent } from './features/StaffManagement/routes/admin/shift/shift-list/shift-list.component';
+import { TrainingSessionFormComponent } from './features/StaffManagement/routes/admin/training-session/training-session-form/training-session-form.component';
+import { TrainingSessionListComponent } from './features/StaffManagement/routes/admin/training-session/training-session-list/training-session-list.component';
+import { EmployeeProfileComponent } from './features/StaffManagement/routes/main/employee-profile/employee-profile.component';
+import { EmployeeInfoComponent } from './features/StaffManagement/routes/main/employee-info/employee-info.component';
+import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/employee-shifts/employee-shifts.component';
+import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
+import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
+import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +70,18 @@ import { StockStaticComponent } from './features/inventorymanagement/Components/
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
     DashboardSidebarComponent,
+    EmployeeListComponent,
+    EmployeeFormComponent,
+    ShiftListComponent,
+    ShiftFormComponent,
+    TrainingSessionListComponent,
+    TrainingSessionFormComponent,
+    EmployeeProfileComponent,
+    EmployeeInfoComponent,
+    EmployeeShiftsComponent,
+    EmployeeTrainingComponent,
+    EmployeeShiftRequestsComponent,
+    StaffDashboardComponent,
     DashboardComponent,
     DashboardSidebarComponent,
     LoginComponent,

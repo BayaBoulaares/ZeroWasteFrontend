@@ -1,0 +1,146 @@
+// Append this to your existing CSS
+
+/* Calendar Styles */
+.calendar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  
+  .calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #f8f9fa;
+  }
+  
+  .day-name {
+    padding: 10px;
+    font-weight: 500;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  
+  .calendar-cell {
+    aspect-ratio: 1;
+    padding: 5px;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .calendar-cell:nth-child(7n) {
+    border-right: none;
+  }
+  
+  .calendar-cell.empty {
+    background-color: #f8f9fa;
+    cursor: default;
+  }
+  
+  .calendar-cell.has-shift {
+    background-color: #ffedee;
+    cursor: not-allowed;
+  }
+  
+  .calendar-cell.free-day {
+    background-color: #e7f7e7;
+    cursor: pointer;
+  }
+  
+  .calendar-cell.free-day:hover {
+    background-color: #d1edd1;
+  }
+  
+  .calendar-cell.not-selectable {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+  }
+  
+  .calendar-cell.selected {
+    background-color: #c7e6ff;
+    border: 2px solid #0d6efd;
+  }
+  
+  .calendar-cell.today {
+    font-weight: bold;
+  }
+  
+  .cell-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .day-number {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  .shift-indicator, .free-indicator, .past-indicator {
+    font-size: 10px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .shift-indicator {
+    color: #dc3545;
+  }
+  
+  .free-indicator {
+    color: #198754;
+  }
+  
+  .past-indicator {
+    color: #6c757d;
+  }
+  
+  .legend-box {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+  }
+  
+  .legend-box.free-day {
+    background-color: #e7f7e7;
+  }
+  
+  .legend-box.has-shift {
+    background-color: #ffedee;
+  }
+  
+  .legend-box.not-selectable {
+    background-color: #f8f9fa;
+  }
+  
+  .legend-box.selected {
+    background-color: #c7e6ff;
+    border: 1px solid #0d6efd;
+  }
+  
+  /* Request list styling */
+  .list-group-item {
+    transition: transform 0.2s;
+  }
+  
+  .list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .alert-light-danger {
+    background-color: #fff5f5;
+    border-color: #ffebeb;
+  }
