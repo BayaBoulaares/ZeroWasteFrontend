@@ -10,16 +10,13 @@ export class DashboardSidebarComponent {
 
   menuItems = [
     {
-<<<<<<< HEAD
+
       name: 'dashboard', label: 'Dashboard', link: '/admin/dashboard', icon: 'bx bx-home-circle', submenu: []
     },
 
     { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
     {
       name: 'menuItems', 
-=======
-      name: 'menuItems',
->>>>>>> 8c2541c (first version of  eventmanagement(crud done , no image))
       label: 'Menu Management',
       link: '#',
       icon: 'bx bx-food-menu',
@@ -28,7 +25,6 @@ export class DashboardSidebarComponent {
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
     },
-<<<<<<< HEAD
     
     {
       name: 'inventory', label: 'Inventory Management', link: '#', icon: 'bx bx-trending-up', submenu: [
@@ -51,9 +47,8 @@ export class DashboardSidebarComponent {
         { label: 'Shifts', link: '/admin/staffmanagement/shifts' },
         { label: 'Training Sessions', link: '/admin/staffmanagement/training-sessions' }
       ]
-    }
+    },
     // Add other menu items as needed
-=======
     {
       name: 'eventItems',
       label: 'Event Management',
