@@ -1,0 +1,54 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="fw-bold py-3 mb-0"><span class="text-muted fw-light"></span>Menu Management</h4>
+      <button class="btn btn-primary" (click)="addNewMenu()">
+        <i class="bx bx-plus me-1"></i> Add New Menu
+      </button>
+    </div>
+
+    <!-- Alert for errors -->
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Menu cards -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let menu of menus">
+        <div class="card h-100">
+          <img [src]="base_url + '/uploads/' + menu.imagePath" 
+               class="card-img-top" 
+               alt="{{ menu.name }}"
+               style="height: 200px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ menu.name }}</h5>
+            <p class="card-text">{{ menu.description }}</p>
+            <p class="card-text">
+              <strong>Price: </strong>{{ menu.price | currency }}
+            </p>
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-primary" (click)="editMenu(menu.menuId)">
+                <i class="bx bx-edit-alt me-1"></i> Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteMenu(menu.menuId)">
+                <i class="bx bx-trash me-1"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No menus message -->
+    <div *ngIf="!loading && menus.length === 0" class="alert alert-info" role="alert">
+      No menus found. Click the "Add New Menu" button to create one.
+    </div>
+  </div>
+</div>

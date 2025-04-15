@@ -51,6 +51,17 @@ import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/
 import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
+import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
+import { MenusComponent } from './features/Eventmanagement/routes/admin/menus/menus.component';
+import { AddeventComponent } from './features/Eventmanagement/routes/admin/addevent/addevent.component';
+import { AddmenuComponent } from './features/Eventmanagement/routes/admin/addmenu/addmenu.component';
+import { UpdateeventComponent } from './features/Eventmanagement/routes/admin/updateevent/updateevent.component';
+import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/updatemenu/updatemenu.component';
+import { EventService } from './features/Eventmanagement/Services/event.service';
+import { MenusService } from './features/Eventmanagement/Services/menus.service';
+import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
+import { UploadComponent } from './features/Eventmanagement/routes/upload/upload.component';
+import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +111,21 @@ import { StaffDashboardComponent } from './features/StaffManagement/routes/admin
 
 
 
+    EventComponent,
+    MenusComponent,
+    AddeventComponent,
+    AddmenuComponent,
+    UpdateeventComponent,
+    UpdatemenuComponent,
+    EventComponent,
+    MenusComponent,
+    AddeventComponent,
+    AddmenuComponent,
+    UpdateeventComponent,
+    UpdatemenuComponent,
+    EventbackComponent,
+    UploadComponent,
+    AjoutComponent
   ],
   imports: [
     BrowserModule,

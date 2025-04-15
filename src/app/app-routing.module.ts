@@ -35,6 +35,14 @@ import { ProductSectionComponent } from './features/inventorymanagement/Componen
 import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
 
 
+import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
+import { AddeventComponent } from './features/Eventmanagement/routes/admin/addevent/addevent.component';
+import { UpdateeventComponent } from './features/Eventmanagement/routes/admin/updateevent/updateevent.component';
+import { MenusComponent } from './features/Eventmanagement/routes/admin/menus/menus.component';
+import { AddmenuComponent } from './features/Eventmanagement/routes/admin/addmenu/addmenu.component';
+import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/updatemenu/updatemenu.component';
+import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
+import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -101,7 +109,19 @@ const routes: Routes = [
           {path: 'stockTransaction/update/:id', component: StockTransactionFormComponent},
           {path: 'stockStatic', component: StockStaticComponent},
           // {path: 'stockTransaction'},
-    ]}
+    ]},
+      {
+        path: 'eventmanagement',
+        children: [
+          { path: 'events/add', component: AddeventComponent },
+          { path: 'events/ajout', component: AjoutComponent },
+          { path: 'events/update/:id', component: UpdateeventComponent },
+          { path: 'menus/add', component: AddmenuComponent },
+          { path: 'menus/update/:id', component: UpdatemenuComponent },
+          { path: 'menus', component: MenusComponent },
+          { path: 'events', component: EventbackComponent }
+        ],
+      },
     ],
   },
   
@@ -109,10 +129,15 @@ const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
+      { path: 'events', component: EventComponent },
       { path: 'home', component: HomeComponent },
       { path: 'menu', component: MenusectionComponent },
       { path: 'product', component: ProductSectionComponent },
-      { path: 'staff-profile', component: EmployeeProfileComponent }
+      { path: 'staff-profile', component: EmployeeProfileComponent },
+      { path: 'events', component: EventComponent },
+      { path: 'menus', component: MenusComponent },
+
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
     ],
   },
 

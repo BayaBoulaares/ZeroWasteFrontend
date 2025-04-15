@@ -1,3 +1,32 @@
 :host {
-    display: flex; 
+  display: flex; 
+}
+
+/* Make sure submenus are visible when open */
+.menu-sub {
+  display: none;
+  
+  &.open {
+    display: block !important;
   }
+}
+
+/* Add some styling for the menu items */
+.menu-item {
+  position: relative;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  
+  &.menu-toggle {
+    justify-content: space-between;
+  }
+}
+
+.menu-sub-icon {
+  margin-left: auto;
+}

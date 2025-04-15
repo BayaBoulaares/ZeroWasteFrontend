@@ -1,0 +1,37 @@
+.price-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+}
+
+.price-info {
+  background-color: #f8f9fa;
+}
+
+.discount-badge {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+}
+
+.text-decoration-line-through {
+  text-decoration: line-through;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.text-success {
+  color: #198754;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.h4 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

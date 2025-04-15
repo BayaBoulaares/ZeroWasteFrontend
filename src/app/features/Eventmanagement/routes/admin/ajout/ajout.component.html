@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h2>Ajouter un événement</h2>
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="form-group mb-3">
+        <label for="title">Titre</label>
+        <input type="text" id="title" class="form-control" formControlName="title" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="description">Description</label>
+        <textarea id="description" class="form-control" formControlName="description" required></textarea>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="startDate">Date de début</label>
+        <input type="datetime-local" id="startDate" class="form-control" formControlName="startDate" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="endDate">Date de fin</label>
+        <input type="datetime-local" id="endDate" class="form-control" formControlName="endDate" required>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label for="image">Image</label>
+        <input type="file" id="image" class="form-control" (change)="onFileSelected($event)">
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+    <div *ngIf="imageUrlMessage" class="alert alert-info mt-3">
+        {{ imageUrlMessage }}
+      </div>
+  </div>
+  
+  
