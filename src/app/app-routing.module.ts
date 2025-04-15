@@ -10,7 +10,6 @@ import { AddMealComponent } from './features/menumangment/routes/admin/add-meal/
 import { UpdateMealComponent } from './features/menumangment/routes/admin/update-meal/update-meal.component';
 import { AddIngredientComponent } from './features/menumangment/routes/admin/add-ingredient/add-ingredient.component';
 import { UpdateIngredientComponent } from './features/menumangment/routes/admin/update-ingredient/update-ingredient.component';
-import { DashboardComponent } from './features/StaffManagement/routes/admin/dashboard/dashboard.component';
 import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
 import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
 import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
@@ -18,6 +17,7 @@ import { ShiftListComponent } from './features/StaffManagement/routes/admin/shif
 import { TrainingSessionFormComponent } from './features/StaffManagement/routes/admin/training-session/training-session-form/training-session-form.component';
 import { TrainingSessionListComponent } from './features/StaffManagement/routes/admin/training-session/training-session-list/training-session-list.component';
 import { EmployeeProfileComponent } from './features/StaffManagement/routes/main/employee-profile/employee-profile.component';
+import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
 
 const routes: Routes = [
   {
@@ -41,7 +41,7 @@ const routes: Routes = [
       {
         path: 'staffmanagement',
         children: [
-          { path: 'dashboard', component: DashboardComponent },
+          { path: 'dashboard', component: StaffDashboardComponent },
 
           // Employee routes
           { path: 'employees', component: EmployeeListComponent },

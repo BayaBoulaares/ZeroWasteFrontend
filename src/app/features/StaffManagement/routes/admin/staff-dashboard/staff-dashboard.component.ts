@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DashboardService } from '../../../Services/dashboard.service';
 
@@ -5,10 +7,10 @@ declare const ApexCharts: any;
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  templateUrl: './staff-dashboard.component.html',
+  styleUrls: ['./staff-dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class StaffDashboardComponent implements OnInit, AfterViewInit {
   // Staff data
   staffStats: any = {
     totalEmployees: 0,

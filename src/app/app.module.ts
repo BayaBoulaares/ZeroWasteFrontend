@@ -19,7 +19,6 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
-import { DashboardComponent } from './features/StaffManagement/routes/admin/dashboard/dashboard.component';
 import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
 import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
 import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
@@ -31,6 +30,7 @@ import { EmployeeInfoComponent } from './features/StaffManagement/routes/main/em
 import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/employee-shifts/employee-shifts.component';
 import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
+import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,6 @@ import { EmployeeShiftRequestsComponent } from './features/StaffManagement/route
     DashboardMenuItemComponent,
     DashboardNavbarComponent,
     DashboardSidebarComponent,
-    DashboardComponent,
     EmployeeListComponent,
     EmployeeFormComponent,
     ShiftListComponent,
@@ -61,7 +60,8 @@ import { EmployeeShiftRequestsComponent } from './features/StaffManagement/route
     EmployeeInfoComponent,
     EmployeeShiftsComponent,
     EmployeeTrainingComponent,
-    EmployeeShiftRequestsComponent
+    EmployeeShiftRequestsComponent,
+    StaffDashboardComponent
   ],
   imports: [
     BrowserModule,
