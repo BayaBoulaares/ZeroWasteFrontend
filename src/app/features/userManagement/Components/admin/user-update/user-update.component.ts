@@ -13,7 +13,7 @@ export class UserUpdateComponent implements OnInit {
   formdata: Users = new Users(0, '', '', '', '', false); // using your constructor
 
   roles: string[] = ['ADMIN', 'user'];
-  token = localStorage.getItem('token') || '';
+  token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
 
   constructor(
     private userService: UserService,
