@@ -19,7 +19,7 @@ export class UsersManagementComponent {
   }
 
   async getUsers(): Promise<void> {
-    const token = localStorage.getItem('token') || '';
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
     try {
       const data = await this.userService.getAllUsers(token);
       this.users = data.usersList;
@@ -34,7 +34,7 @@ export class UsersManagementComponent {
   }
 
   async deleteUser(userId: number): Promise<void> {
-    const token = localStorage.getItem('token') || '';
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
     try {
       await this.userService.deleteUser(String(userId), token);
       this.getUsers();
@@ -52,7 +52,7 @@ export class UsersManagementComponent {
   }
 
   async searchUsers(): Promise<void> {
-    const token = localStorage.getItem('token') || '';
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
     if (this.searchTerm.trim()) {
       try {
         const allUsers = await this.userService.getAllUsers(token);
