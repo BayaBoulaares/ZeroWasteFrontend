@@ -10,6 +10,11 @@ export class DashboardSidebarComponent {
 
   menuItems = [
     {
+      name: 'dashboard', label: 'Dashboard', link: '/admin/dashboard', icon: 'bx bx-home-circle', submenu: []
+    },
+
+    { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
+    {
       name: 'menuItems', 
       label: 'Menu Management', 
       link: '#', 
@@ -19,6 +24,17 @@ export class DashboardSidebarComponent {
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
     },
+    
+    {
+      name: 'inventory', label: 'Inventory Management', link: '#', icon: 'bx bx-trending-up', submenu: [
+        { label: 'Product', link: '/admin/inventory/product' },
+
+        { label: 'Stock Transaction', link: '/admin/inventory/stockTransaction' },
+        //{ label: 'Stock Static', link: '/admin/inventory/stockStatic' },
+        
+      ]
+    },
+    
     {
       name: 'staffItems', 
       label: 'Staff Management', 
@@ -33,6 +49,7 @@ export class DashboardSidebarComponent {
     }
     // Add other menu items as needed
   ];
+
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;

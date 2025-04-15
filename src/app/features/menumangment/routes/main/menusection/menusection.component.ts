@@ -55,7 +55,6 @@ export class MenusectionComponent implements OnInit {
   getMeals() {
     this.mealservice.getMeals().subscribe((data) => {
       this.meals = data;
-      // Optionally log or process the meal data
     });
   }
   get filteredMeals() {
@@ -73,6 +72,12 @@ export class MenusectionComponent implements OnInit {
     this.menuservice.getMenus().subscribe((data) => {
       this.menus = data;
      
+    });
+  }
+  rateMeal(meal: Meals, rating: number): void {
+    meal.rating = rating;
+    this.mealservice.updateMealRating(meal.mealId, rating).subscribe(() => {
+      console.log(`Rated meal ${meal.name} with ${rating} stars.`);
     });
   }
 

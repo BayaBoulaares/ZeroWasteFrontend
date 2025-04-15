@@ -1,0 +1,87 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">All Users</h4>
+  
+    <div *ngFor="let alert of alerts" class="alert" [ngClass]="alert.type" role="alert">
+      {{ alert.message }}
+    </div>
+  
+    <div class="card">
+      <div class="table-header">
+        <h5>Users</h5>
+        <div class="table-actions">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search by email..."
+            [(ngModel)]="searchTerm"
+            (input)="searchUsers()"
+          />
+          <!-- Add user button if needed -->
+          <button [routerLink]="['/admin/usersmanagement/add']" type="button" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+  
+      <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Username</th>
+              <th>City</th>
+              <th>Role</th>
+              <th>Enabled</th>
+              <th>Actions</th>
+            </tr>
+          </thead>          
+          <tbody class="table-border-bottom-0">
+            <tr *ngFor="let user of users">
+              <td>{{ user.email }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.city }}</td>
+              <td>
+                <span class="badge"
+                      [ngClass]="{
+                        'bg-label-success': user.role === 'ADMIN',
+                        'bg-label-primary': user.role === 'USER',
+                        'bg-label-secondary': !user.role
+                      }">
+                  {{ user.role || 'Unknown' }}
+                </span>
+              </td>
+              <td>
+                <span class="badge"
+                      [ngClass]="{
+                        'bg-label-success': user.enabled,
+                        'bg-label-danger': !user.enabled
+                      }">
+                  {{ user.enabled ? 'Enabled' : 'Disabled' }}
+                </span>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button
+                    type="button"
+                    class="btn p-0 dropdown-toggle hide-arrow"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" [routerLink]="['/admin/usersmanagement/update', user.id]">
+                      <i class="bx bx-edit-alt me-1"></i> Edit
+                    </a>
+                    <a class="dropdown-item" href="javascript:void(0);" (click)="deleteUser(user.id)">
+                      <i class="bx bx-trash me-1"></i> Delete
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+
+<router-outlet></router-outlet>

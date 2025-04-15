@@ -19,6 +19,26 @@ import { DashboardSidebarComponent } from './Layouts/dashboard-layout/components
 import { DashboardNavbarComponent } from './Layouts/dashboard-layout/components/dashboard-navbar/dashboard-navbar.component';
 import { DashboardMenuItemComponent } from './Layouts/dashboard-layout/components/dashboard-menu-item/dashboard-menu-item.component';
 import { DashboardLayoutComponent } from './Layouts/dashboard-layout/dashboard-layout.component';
+import { NgChartsModule } from 'ng2-charts';
+import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
+import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
+import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
+import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
+import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
+import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
+import { ResetPasswordComponent } from './features/userManagement/Components/main/reset-password/reset-password.component';
+
+import { ProductFormComponent } from './features/inventorymanagement/Components/admin/product-form/product-form.component';
+
+import { StockTransactionFormComponent } from './features/inventorymanagement/Components/admin/stock-transaction-form/stock-transaction-form.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { InventoryProductComponent } from './features/inventorymanagement/Components/admin/inventory-product/inventory-product.component';
+import { Product } from './features/inventorymanagement/Entities/product';
+import { StockTransactionComponent } from './features/inventorymanagement/Components/admin/stock-transaction/stock-transaction.component';
+import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
+import { CommonModule } from '@angular/common';
+import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
 import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
 import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
 import { ShiftFormComponent } from './features/StaffManagement/routes/admin/shift/shift-form/shift-form.component';
@@ -61,7 +81,25 @@ import { StaffDashboardComponent } from './features/StaffManagement/routes/admin
     EmployeeShiftsComponent,
     EmployeeTrainingComponent,
     EmployeeShiftRequestsComponent,
-    StaffDashboardComponent
+    StaffDashboardComponent,
+    DashboardComponent,
+    DashboardSidebarComponent,
+    LoginComponent,
+    RegisterComponent,
+    UsersManagementComponent,
+    UserUpdateComponent,
+    UserCreateComponent,
+    LoginFComponent,
+    ResetPasswordComponent,
+  InventoryProductComponent,
+    ProductFormComponent,
+    StockTransactionComponent,
+    StockTransactionFormComponent,
+    ProductSectionComponent,
+    StockStaticComponent,
+
+
+
   ],
   imports: [
     BrowserModule,
@@ -69,6 +107,11 @@ import { StaffDashboardComponent } from './features/StaffManagement/routes/admin
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgChartsModule,
+    NgxPaginationModule,
+    CommonModule,
+    
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { Meals } from '../Entities/meals';
 import { Ingredients } from '../Entities/ingredients';
 import { BASE_URL } from 'src/consts';
@@ -70,5 +70,15 @@ export class MealsService {
   }
   getMealsWithDiscounts(): Observable<Meals[]> {
     return this.httpClient.get<Meals[]>(`${this.base_url}/with-discounts`);
+  }
+  getTopMeals(): Observable<Meals[]> {
+    return this.httpClient.get<Meals[]>(`${this.base_url}/top`);
+  }
+    /*getTopMeals() {
+      return of([{ name: 'Pizza', orderCount: 10 }, { name: 'Burger', orderCount: 15 }]); // Juste un exemple
+    }*/
+
+  updateMealRating(id: number, rating: number) {
+        return this.httpClient.put(`${this.base_url}/${id}/rating`, { rating });
   }
 }

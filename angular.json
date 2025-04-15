@@ -37,6 +37,8 @@
               "node_modules/aos/dist/aos.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
 
+            
+              
             ]
           },
           "configurations": {
@@ -110,6 +112,6 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": "dd77792e-2e15-41ba-84de-fd14c1f30860"
   }
 }

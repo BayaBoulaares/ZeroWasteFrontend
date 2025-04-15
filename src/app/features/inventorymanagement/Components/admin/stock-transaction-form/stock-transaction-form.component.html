@@ -1,0 +1,48 @@
+<div class="container-xxl flex-grow-1 container-p-y ">
+    <h4 class="mb-4">{{ isEditMode ? 'Change Stock Transaction' : 'Add Stock Transaction' }}</h4>
+  
+    <div class="card mb-4">
+  
+      <div class="card-body">
+  
+        <form [formGroup]="stockTransactionForm" (ngSubmit)="onSubmit()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="productName" class="form-label">Nom du produit</label>
+              <select class="form-select" id="productName" formControlName="productName" required>
+                <option *ngFor="let product of products" [value]="product.productName">{{ product.productName }}</option>
+              </select>
+              
+            </div>
+        
+            <div class="col-md-6">
+              <label for="Type" class="form-label">Type</label>
+              <select class="form-select" id="Type" formControlName="Type" required>
+                <option *ngFor="let stock of StockTransactionType" [value]="stock">{{ stock }}</option>
+              </select>
+            </div>
+        
+            <div class="col-md-6">
+              <label for="ChangeQuantity" class="form-label">Quantité</label>
+              <input type="number" class="form-control" id="ChangeQuantity" formControlName="ChangeQuantity" required />
+            </div>
+        
+            <div class="col-md-6">
+              <label for="DateTransaction" class="form-label">Date Transaction</label>
+              <input type="date" class="form-control" id="DateTransaction" formControlName="DateTransaction" />
+            </div>
+          </div>
+        
+          <div class="mt-4 d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="stockTransactionForm.invalid">
+              {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+            </button>
+            <button class="btn btn-secondary" type="button" (click)="onCancel()">Annuler</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  
+  </div>
+  
