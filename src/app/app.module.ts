@@ -72,6 +72,9 @@ import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/aj
 import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
 import { EmailService } from './features/Eventmanagement/Services/email.service';
 import { QRCodeService } from './features/Eventmanagement/Services/qrcode.service';
+import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
+import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
+import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +121,9 @@ import { QRCodeService } from './features/Eventmanagement/Services/qrcode.servic
     StockTransactionFormComponent,
     ProductSectionComponent,
     StockStaticComponent,
-
+    InvoiceComponent,
+    InvoiceCreateComponent,
+    InvoiceUpdateComponent,
 
 
     EventComponent,

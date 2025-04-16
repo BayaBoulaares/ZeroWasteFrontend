@@ -25,7 +25,7 @@ export class DashboardSidebarComponent {
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
       ]
     },
-    
+    { name: 'Invoices', label: 'Invoices', link: '/admin/invoice', icon: 'bx bx-food-menu', submenu:[] },
     {
       name: 'inventory', label: 'Inventory Management', link: '#', icon: 'bx bx-trending-up', submenu: [
         { label: 'Product', link: '/admin/inventory/product' },

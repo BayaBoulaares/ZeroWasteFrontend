@@ -43,6 +43,9 @@ import { AddmenuComponent } from './features/Eventmanagement/routes/admin/addmen
 import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/updatemenu/updatemenu.component';
 import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
 import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
+import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
+import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
+import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -54,13 +57,13 @@ const routes: Routes = [
     path: 'reset-password',
     component: ResetPasswordComponent
   },
-  
+
   {
     path: 'admin',
     component: DashboardLayoutComponent,
     // canActivate: [adminGuard],
     children: [
-      {path:'dashboard',component:DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent },
       {
         path: 'mealsmanagement',
         children: [
@@ -72,8 +75,8 @@ const routes: Routes = [
           { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
 
         ],
-        
-      }, 
+
+      },
       {
         path: 'staffmanagement',
         children: [
@@ -99,17 +102,25 @@ const routes: Routes = [
       { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
       { path: 'usersmanagement/add', component: UserCreateComponent },
 
-      { path: 'inventory',
+      {
+        path: 'inventory',
         children: [
-          {path: 'product', component: InventoryProductComponent},
-          {path: 'product/add', component: ProductFormComponent},
-          {path: 'product/update/:id', component: ProductFormComponent},
-          {path: 'stockTransaction', component: StockTransactionComponent},
-          {path: 'stockTransaction/add', component: StockTransactionFormComponent},
-          {path: 'stockTransaction/update/:id', component: StockTransactionFormComponent},
-          {path: 'stockStatic', component: StockStaticComponent},
+          { path: 'product', component: InventoryProductComponent },
+          { path: 'product/add', component: ProductFormComponent },
+          { path: 'product/update/:id', component: ProductFormComponent },
+          { path: 'stockTransaction', component: StockTransactionComponent },
+          { path: 'stockTransaction/add', component: StockTransactionFormComponent },
+          { path: 'stockTransaction/update/:id', component: StockTransactionFormComponent },
+          { path: 'stockStatic', component: StockStaticComponent },
           // {path: 'stockTransaction'},
-    ]},
+        ]
+      },
+      {
+        path: 'invoice',
+        component: InvoiceComponent
+      },
+      { path: 'invoices/add', component: InvoiceCreateComponent },
+      { path: 'invoices/update/:id', component: InvoiceUpdateComponent },
       {
         path: 'eventmanagement',
         children: [
@@ -124,7 +135,7 @@ const routes: Routes = [
       },
     ],
   },
-  
+
   {
     path: '',
     component: MainLayoutComponent,
@@ -147,4 +158,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

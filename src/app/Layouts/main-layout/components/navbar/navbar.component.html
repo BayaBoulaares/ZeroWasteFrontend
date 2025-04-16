@@ -58,7 +58,9 @@
           <strong>My Cart</strong>
           <button class="btn btn-sm btn-outline-danger" (click)="toggleCartPopup()">×</button>
         </div>
-
+        <div *ngIf="orderSuccess" class="alert alert-success text-center mb-2 p-2">
+          ✅ Order placed successfully!
+        </div>
         <div *ngIf="orderedProducts.length === 0" class="text-muted">Your cart is empty</div>
 
         <ul class="list-group" *ngIf="orderedProducts.length > 0">
@@ -79,7 +81,7 @@
             <strong>Total:</strong>
             <strong>{{ totalPrice | currency }}</strong>
           </div>
-          <button class="btn btn-success w-100 mt-2">Payer</button>
+          <button class="btn btn-success w-100 mt-2" (click)="onPay()">Payer</button>
         </div>
       </div>
 

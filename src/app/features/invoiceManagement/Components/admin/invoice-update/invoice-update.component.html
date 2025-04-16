@@ -1,0 +1,114 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">Edit Invoice</h4>
+  
+    <div class="row">
+      <div class="col-xl">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Invoice</h5>
+          </div>
+          <div class="card-body">
+            <form #form="ngForm" (ngSubmit)="updateInvoice()">
+  
+              <!-- User -->
+              <div class="mb-3">
+                <label for="user" class="form-label">User</label>
+                <select
+                  id="user"
+                  class="form-select"
+                  [(ngModel)]="formdata.userId"
+                  name="user"
+                  required
+                  #user="ngModel">
+                  <option value="">-- Select a user --</option>
+                  <option *ngFor="let user of users" [value]="user.id">
+                    {{ user.name }} ({{ user.email }})
+                  </option>
+                </select>
+                <div *ngIf="user.invalid && user.touched" class="text-danger">
+                  <small>User is required.</small>
+                </div>
+              </div>
+  
+              <!-- Invoice Date -->
+              <div class="mb-3">
+                <label for="date" class="form-label">Invoice Date</label>
+                <input
+                  type="date"
+                  id="date"
+                  class="form-control"
+                  [(ngModel)]="formdata.date"
+                  name="date"
+                  required
+                  #date="ngModel"
+                />
+                <div *ngIf="date.invalid && date.touched" class="text-danger">
+                  <small>Invoice date is required.</small>
+                </div>
+              </div>
+  
+              <!-- Due Date -->
+              <div class="mb-3">
+                <label for="dueDate" class="form-label">Due Date</label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  class="form-control"
+                  [(ngModel)]="formdata.dueDate"
+                  name="dueDate"
+                  required
+                  #dueDate="ngModel"
+                />
+                <div *ngIf="dueDate.invalid && dueDate.touched" class="text-danger">
+                  <small>Due date is required.</small>
+                </div>
+              </div>
+  
+              <!-- Status -->
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select
+                  id="status"
+                  class="form-select"
+                  [(ngModel)]="formdata.status"
+                  name="status"
+                  required
+                  #status="ngModel">
+                  <option value="">-- Select status --</option>
+                  <option value="PENDING">PENDING</option>
+                  <option value="PAID">PAID</option>
+                  <option value="OVERDUE">OVERDUE</option>
+                </select>
+                <div *ngIf="status.invalid && status.touched" class="text-danger">
+                  <small>Status is required.</small>
+                </div>
+              </div>
+  
+              <!-- Total -->
+              <div class="mb-3">
+                <label for="total" class="form-label">Total</label>
+                <input
+                  type="number"
+                  id="total"
+                  class="form-control"
+                  [(ngModel)]="formdata.total"
+                  name="total"
+                  required
+                  min="0"
+                  step="0.01"
+                  #total="ngModel"
+                />
+                <div *ngIf="total.invalid && total.touched" class="text-danger">
+                  <small *ngIf="total.errors?.['required']">Total is required.</small>
+                  <small *ngIf="total.errors?.['min']">Total must be positive.</small>
+                </div>
+              </div>
+  
+              <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Edit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
