@@ -1,12 +1,27 @@
 <div class="container mt-4">
-  <!-- Search Bar -->
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search events..." [(ngModel)]="searchTerm" (keyup.enter)="searchEvents()">
-        <button class="btn btn-primary" (click)="searchEvents()">
-          <i class="fas fa-search"></i> Search
-        </button>
+  <!-- Enhanced Search Bar -->
+  <div class="search-container mb-4">
+    <div class="row">
+      <div class="col-md-8 col-lg-6 mx-auto">
+        <div class="search-wrapper">
+          <div class="input-group search-input-group">
+            <span class="input-group-text search-icon-wrapper">
+              <i class="fas fa-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control search-input" 
+              placeholder="Search by event name, description or menu..." 
+              [(ngModel)]="searchTerm" 
+              (keyup.enter)="searchEvents()"
+              aria-label="Search events"
+            >
+            <button class="btn btn-search" (click)="searchEvents()">
+              <i class="fas fa-search d-md-none"></i>
+              <span class="d-none d-md-inline">Search</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -60,13 +75,23 @@
                   {{ event.startDate | date:'mediumDate' }} - {{ event.endDate | date:'mediumDate' }}
                 </small>
               </div>
+              <div class="available-places mt-2">
+                <i class="fas fa-users"></i> 
+                <span [ngClass]="{'text-danger': getPlaces(event) <= 5, 'text-warning': getPlaces(event) > 5 && getPlaces(event) <= 10, 'text-success': getPlaces(event) > 10}">
+                  <strong>{{ getPlaces(event) > 0 ? getPlaces(event) + ' places available' : 'No places available' }}</strong>
+                </span>
+              </div>
             </div>
           </div>
           <div class="card-footer">
-            <button class="btn btn-primary me-2" (click)="registerForEvent(event)">
-              Register
+            <button class="btn" 
+                    (click)="registerForEvent(event)" 
+                    [disabled]="getPlaces(event) <= 0"
+                    [ngClass]="{'btn-primary': getPlaces(event) > 0, 'btn-danger': getPlaces(event) <= 0}">
+              <i class="fas fa-ticket-alt me-1" *ngIf="getPlaces(event) > 0"></i>
+              <i class="fas fa-ban me-1" *ngIf="getPlaces(event) <= 0"></i>
+              {{ getPlaces(event) > 0 ? 'Register (' + getPlaces(event) + ' places left)' : 'Sold Out' }}
             </button>
-            
           </div>
         </div>
       </div>
@@ -117,10 +142,14 @@
             </div>
           </div>
           <div class="card-footer">
-            <button class="btn btn-primary me-2" (click)="registerForEvent(event)">
-              Register
+            <button class="btn" 
+                    (click)="registerForEvent(event)" 
+                    [disabled]="getPlaces(event) <= 0"
+                    [ngClass]="{'btn-primary': getPlaces(event) > 0, 'btn-danger': getPlaces(event) <= 0}">
+              <i class="fas fa-ticket-alt me-1" *ngIf="getPlaces(event) > 0"></i>
+              <i class="fas fa-ban me-1" *ngIf="getPlaces(event) <= 0"></i>
+              {{ getPlaces(event) > 0 ? 'Register (' + getPlaces(event) + ' places left)' : 'Sold Out' }}
             </button>
-            
           </div>
         </div>
       </div>

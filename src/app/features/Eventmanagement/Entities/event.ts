@@ -8,7 +8,7 @@ export interface Event {
     endDate: string;
     imagePath?: string;
     valeurRemise: number;
-    Nbr:number;
+    Nbr: number;
     menus?: Menus;
 }
 

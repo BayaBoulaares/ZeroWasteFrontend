@@ -1,0 +1,194 @@
+<div class="menu-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="container">
+      <h1 class="main-title">Our Sustainable Menus</h1>
+      <p class="subtitle">Discover our eco-friendly and delicious menu options for your events</p>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-wrapper">
+          <div class="input-group">
+            <span class="input-group-text search-icon">
+              <i class="fas fa-search"></i>
+            </span>
+            <input 
+              type="text" 
+              class="form-control search-input" 
+              placeholder="Search menus by name or description..." 
+              (input)="searchMenus($event)"
+              aria-label="Search menus"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="container mt-4">
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="loading-text">Loading menus...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      {{ error }}
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!loading && !error" class="menu-content">
+      <!-- Menu List View (when no menu is selected) -->
+      <div *ngIf="!selectedMenu">
+        <!-- Section Title -->
+        <div class="section-header" data-aos="fade-up">
+          <h2 class="section-title">Our Event Menus</h2>
+          <p class="section-subtitle">Discover our specially curated menus for your next event</p>
+        </div>
+
+        <!-- Search Results Info -->
+        <div class="results-info mb-4" *ngIf="searchTerm" data-aos="fade-up">
+          <i class="fas fa-filter me-2"></i>
+          Showing results for: <strong>"{{ searchTerm }}"</strong>
+          <button class="btn btn-sm btn-outline-secondary ms-2" (click)="searchTerm = ''; filteredMenus = menus">
+            <i class="fas fa-times"></i> Clear
+          </button>
+        </div>
+
+        <!-- No Results Message -->
+        <div *ngIf="filteredMenus.length === 0" class="no-results" data-aos="fade-up">
+          <i class="fas fa-search fa-3x mb-3"></i>
+          <h3>No menus found</h3>
+          <p>We couldn't find any menus matching your search criteria.</p>
+          <button class="btn btn-outline-success" (click)="searchTerm = ''; filteredMenus = menus">
+            <i class="fas fa-redo me-2"></i> View All Menus
+          </button>
+        </div>
+
+        <!-- Featured Menus Swiper -->
+        <div *ngIf="filteredMenus.length > 0 && !searchTerm" class="featured-menus mb-5" data-aos="fade-up">
+          <h3 class="featured-title">Featured Menus</h3>
+          <swiper-container init="false" class="mySwiper">
+            <swiper-slide *ngFor="let menu of filteredMenus.slice(0, 5)">
+              <div class="featured-menu-card" (click)="selectMenu(menu)">
+                <div class="featured-menu-image">
+                  <img [src]="getMenuImageUrl(menu.imagePath)" alt="{{ menu.name }}" class="img-fluid">
+                  <div class="featured-menu-overlay">
+                    <button class="btn-view">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="featured-menu-content">
+                  <h4>{{ menu.name }}</h4>
+                  <p class="menu-price">{{ menu.price | currency:'USD':'symbol':'1.2-2' }}</p>
+                  <div class="menu-meta">
+                  </div>
+                </div>
+              </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+
+        <!-- All Menus Grid -->
+        <div class="all-menus" data-aos="fade-up">
+          <h3 class="all-menus-title" *ngIf="!searchTerm">All Available Menus</h3>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <div class="col" *ngFor="let menu of filteredMenus; let i = index" data-aos="fade-up" [attr.data-aos-delay]="i * 100">
+              <div class="menu-card" (click)="selectMenu(menu)">
+                <div class="menu-card-image">
+                  <img [src]="getMenuImageUrl(menu.imagePath)" alt="{{ menu.name }}" class="img-fluid">
+                  <div class="menu-card-badge">
+                    <span>{{ generateSampleMeals(menu.name).length }} Meals</span>
+                  </div>
+                </div>
+                <div class="menu-card-body">
+                  <h3 class="menu-card-title">{{ menu.name }}</h3>
+                  <p class="menu-card-description">{{ menu.description }}</p>
+                  <div class="menu-card-footer">
+                    <button class="btn btn-view-details">
+                      <i class="fas fa-utensils me-2"></i> View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu Detail View (when a menu is selected) -->
+      <div *ngIf="selectedMenu" class="menu-detail-view">
+        <div class="menu-detail-header">
+          <button class="btn btn-back" (click)="clearSelection()">
+            <i class="fas fa-arrow-left me-2"></i> Back to Menus
+          </button>
+          <h2 class="menu-detail-title">{{ selectedMenu.name }}</h2>
+          <p class="menu-detail-description">{{ selectedMenu.description }}</p>
+        </div>
+
+        <div class="menu-detail-content">
+          <div class="row">
+            <div class="col-md-5 mb-4">
+              <div class="menu-detail-image-container">
+                <img [src]="getMenuImageUrl(selectedMenu.imagePath)" alt="{{ selectedMenu.name }}" class="img-fluid menu-detail-image">                <div class="menu-detail-info">
+                  <div class="info-item">
+                    <i class="fas fa-utensils"></i>
+                    <span>{{ menuMeals.length }} Meals</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-fire"></i>
+                    <span>{{ calculateTotalCalories(menuMeals) }} Calories</span>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-leaf"></i>
+                    <span>Eco-friendly</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-7">
+              <div class="meals-container">
+                <h3 class="meals-title">
+                  <i class="fas fa-utensils me-2"></i>
+                  Meals in this Menu
+                </h3>
+
+                <div *ngIf="menuMeals.length === 0" class="no-meals">
+                  <i class="fas fa-info-circle me-2"></i>
+                  No meals available for this menu.
+                </div>
+
+                <div *ngFor="let meal of menuMeals" class="meal-card">
+                  <div class="meal-image">
+                    <img [src]="getMealImageUrl(meal)" alt="{{ meal.name }}" class="img-fluid">
+                  </div>
+                  <div class="meal-details">
+                    <h4 class="meal-name">{{ meal.name }}</h4>
+                    <p class="meal-description">{{ meal.description }}</p>
+                    <div class="meal-nutrition">
+                      <span class="nutrition-item">
+                        <i class="fas fa-utensils"></i> {{ meal.category }}
+                      </span>
+                      <span class="nutrition-item">
+                        <i class="fas fa-tag"></i> {{ meal.price | currency:'USD':'symbol':'1.2-2' }}
+                      </span>
+                      <span class="nutrition-item" *ngIf="meal.rating">
+                        <i class="fas fa-star"></i> {{ meal.rating }}/5
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

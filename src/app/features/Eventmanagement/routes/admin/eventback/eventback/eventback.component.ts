@@ -24,7 +24,7 @@ export class EventbackComponent implements OnInit {
     this.loadEvents();
   }
 
-  getImageUrl(imagePath: string): string {
+  getImageUrl(imagePath: string | undefined): string {
     if (!imagePath) {
       return 'https://via.placeholder.com/300x200';
     }

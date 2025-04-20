@@ -133,11 +133,22 @@ export class EventComponent implements OnInit {
     return price - (price * discount / 100);
   }
 
-  getImageUrl(imagePath: string): string {
+  getImageUrl(imagePath: string | undefined): string {
     if (!imagePath) {
       return 'https://via.placeholder.com/300x200';
     }
-    return `${BASE_URL}${imagePath}`;
+    // Check if the path already includes http or https
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    // Check if the path starts with a slash
+    const path = imagePath.startsWith('/') ? imagePath : '/' + imagePath;
+    
+    // For debugging
+    console.log('Image path:', path);
+    console.log('Full URL:', `${this.base_url}${path}`);
+    
+    return `${this.base_url}${path}`;
   }
 
   navigateToEventDetails(eventid: number | undefined): void {
@@ -160,10 +171,49 @@ export class EventComponent implements OnInit {
     }
   }
 
+  // Helper method to get the number of places from an event, handling different property names
+  getPlaces(event: any): number {
+    // Try all possible property names and formats
+    if (event.Nbr !== undefined) {
+      return event.Nbr;
+    } else if (event.nbr !== undefined) {
+      return event.nbr;
+    } else {
+      // Log if we can't find the property
+      console.warn('Could not find places property in event:', event);
+      return 0;
+    }
+  }
+
   registerForEvent(event: Event): void {
+    // Don't open modal if no places available
+    if (event.Nbr <= 0) {
+      return;
+    }
+    
+    // Create a deep copy of the event to pass to the modal
+    // This ensures we don't modify the original event until registration is confirmed
+    const eventCopy = new Event(
+      event.eventid,
+      event.title,
+      event.description,
+      event.startDate,
+      event.endDate,
+      event.imagePath,
+      event.valeurRemise,
+      event.Nbr, // Pass the current number of places
+      event.menus
+    );
+    
+    console.log('Opening registration modal with event:', {
+      eventId: eventCopy.eventid,
+      title: eventCopy.title,
+      availablePlaces: eventCopy.Nbr
+    });
+    
     const dialogRef = this.dialog.open(RegistrationModalComponent, {
       width: '500px',
-      data: { event: event },
+      data: { event: eventCopy },
       panelClass: 'custom-dialog-container',
       disableClose: false,
       autoFocus: true,
@@ -173,9 +223,73 @@ export class EventComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (result && result.success) {
         console.log('Registration completed successfully');
+        console.log('Registration result:', result);
+        
+        // Get the number of tickets booked from the result
+        const ticketsBooked = result.ticketsBooked || 0;
+        
+        // Find the original event in our lists and update it
+        const eventId = event.eventid;
+        
+        // Update the event in all lists with the correct places count
+        this.updateEventPlacesInLists(eventId, ticketsBooked);
+        
+        // Show success message to user
+        this.error = null; // Clear any previous errors
       }
     });
+  }
+  
+  // Helper method to update the places count for an event in all lists
+  private updateEventPlacesInLists(eventId: number | undefined, ticketsBooked: number): void {
+    if (!eventId) return;
+    
+    // Function to update places in a list
+    const updatePlacesInList = (list: Event[]) => {
+      const index = list.findIndex(e => e.eventid === eventId);
+      if (index !== -1) {
+        const currentPlaces = this.getPlaces(list[index]);
+        const newPlaces = Math.max(0, currentPlaces - ticketsBooked);
+        
+        console.log(`Updating event ${eventId} in list: Places ${currentPlaces} -> ${newPlaces}`);
+        
+        // Create a new Event object with updated places
+        list[index] = new Event(
+          list[index].eventid,
+          list[index].title,
+          list[index].description,
+          list[index].startDate,
+          list[index].endDate,
+          list[index].imagePath,
+          list[index].valeurRemise,
+          newPlaces,
+          list[index].menus
+        );
+      }
+    };
+    
+    // Update in all lists
+    updatePlacesInList(this.events);
+    updatePlacesInList(this.upcomingEvents);
+    updatePlacesInList(this.currentEvents);
+  }
+  
+  // Helper method to update an event in all local lists
+  private updateEventInLists(updatedEvent: Event): void {
+    // Function to replace an event in a list
+    const updateEventInList = (list: Event[]) => {
+      const index = list.findIndex(e => e.eventid === updatedEvent.eventid);
+      if (index !== -1) {
+        console.log(`Updating event in list at index ${index}. Old Nbr: ${list[index].Nbr}, New Nbr: ${updatedEvent.Nbr}`);
+        list[index] = updatedEvent;
+      }
+    };
+    
+    // Update in all lists
+    updateEventInList(this.events);
+    updateEventInList(this.upcomingEvents);
+    updateEventInList(this.currentEvents);
   }
 }

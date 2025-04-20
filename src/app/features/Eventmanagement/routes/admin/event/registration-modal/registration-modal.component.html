@@ -38,34 +38,51 @@
         </div>
       </div>
 
-      <!-- Name Field -->
-      <div class="form-group">
-        <mat-form-field appearance="outline">
-          <mat-label>Full Name</mat-label>
-          <input matInput 
-                 formControlName="name"
-                 placeholder="Enter your full name">
-          <mat-error *ngIf="registrationForm.get('name')?.hasError('required')">
-            Name is required
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <!-- Attendee Information -->
+      <div class="attendees-section">
+        <h3>Attendee Information</h3>
+        <p class="attendee-info">Please provide details for each attendee ({{ attendeesArray.length }} ticket{{ attendeesArray.length > 1 ? 's' : '' }})</p>
+        
+        <div formArrayName="attendees" class="attendees-list">
+          <div *ngFor="let attendee of attendeesArray.controls; let i = index" 
+               [formGroupName]="i" 
+               class="attendee-form">
+            
+            <h4 class="attendee-header">Attendee #{{ i + 1 }}</h4>
+            
+            <!-- Name Field -->
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput 
+                      formControlName="name"
+                      placeholder="Enter attendee's full name">
+                <mat-error *ngIf="attendee.get('name')?.hasError('required')">
+                  Name is required
+                </mat-error>
+              </mat-form-field>
+            </div>
 
-      <!-- Email Field -->
-      <div class="form-group">
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput 
-                 type="email" 
-                 formControlName="email"
-                 placeholder="Enter your email">
-          <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">
-            Email is required
-          </mat-error>
-          <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">
-            Please enter a valid email address
-          </mat-error>
-        </mat-form-field>
+            <!-- Email Field -->
+            <div class="form-group">
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput 
+                      type="email" 
+                      formControlName="email"
+                      placeholder="Enter attendee's email">
+                <mat-error *ngIf="attendee.get('email')?.hasError('required')">
+                  Email is required
+                </mat-error>
+                <mat-error *ngIf="attendee.get('email')?.hasError('email')">
+                  Please enter a valid email address
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <hr *ngIf="i < attendeesArray.length - 1" class="attendee-divider">
+          </div>
+        </div>
       </div>
 
       <!-- Price Summary -->

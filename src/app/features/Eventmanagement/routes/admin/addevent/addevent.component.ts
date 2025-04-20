@@ -34,6 +34,7 @@ export class AddeventComponent implements OnInit {
       endDate: ['', Validators.required],
       valeurRemise: [0, [Validators.min(0), Validators.max(100)]],
       menuId: ['', Validators.required],
+      nbr: [1, [Validators.required, Validators.min(1)]],
       image: [null]
     });
 
@@ -105,7 +106,7 @@ export class AddeventComponent implements OnInit {
         endDate.toISOString(),
         '', // imagePath
         formValue.valeurRemise,
-        formValue.Nbr,
+        formValue.nbr,
         formValue.menuId ? { menuId: formValue.menuId } as Menus : undefined,
         
       );

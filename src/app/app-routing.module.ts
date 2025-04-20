@@ -44,6 +44,7 @@ import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/upd
 import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
 import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
 import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
+import { MenufrontComponent } from './features/Eventmanagement/routes/main/menufront/menufront.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -137,6 +138,7 @@ const routes: Routes = [
       { path: 'product', component: ProductSectionComponent },
       { path: 'staff-profile', component: EmployeeProfileComponent },
       { path: 'events', component: EventComponent },
+      { path: 'event-menus', component: MenufrontComponent },
       { path: 'menus', component: MenusComponent },
 
       { path: '', redirectTo: 'home', pathMatch: 'full' }

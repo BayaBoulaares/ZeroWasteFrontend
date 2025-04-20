@@ -23,11 +23,10 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <div class="col" *ngFor="let event of events">
         <div class="card h-100">
-          <img [src]="base_url + '/uploads/' + event.imagePath" 
-     (error)="event.imagePath = 'default.jpg'" 
-     class="card-img-top" 
-     alt="{{ event.title }}"
-     style="height: 200px; object-fit: cover;">
+          <img [src]="getImageUrl(event.imagePath)" 
+               class="card-img-top" 
+               alt="{{ event.title }}"
+               style="height: 200px; object-fit: cover;">
 
           <div class="card-body">
             <h5 class="card-title">{{ event.title }}</h5>
