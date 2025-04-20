@@ -62,12 +62,12 @@ export class EmailService {
                   <h4 style="color: #2c3e50; margin-bottom: 10px;">Event Details</h4>
                   <p><strong>Start Date:</strong> ${formattedStartDate}</p>
                   <p><strong>End Date:</strong> ${formattedEndDate}</p>
-                  ${event.menu ? `
-                    <p><strong>Menu:</strong> ${event.menu.name}</p>
-                    <p><strong>Price:</strong> $${event.menu.price}</p>
+                  ${event.menus ? `
+                    <p><strong>Menu:</strong> ${event.menus.name}</p>
+                    <p><strong>Price:</strong> $${event.menus.price}</p>
                     ${event.valeurRemise > 0 ? `
                       <p><strong>Discount:</strong> ${event.valeurRemise}%</p>
-                      <p><strong>Final Price:</strong> $${event.menu.price - (event.menu.price * event.valeurRemise / 100)}</p>
+                      <p><strong>Final Price:</strong> $${event.menus.price - (event.menus.price * event.valeurRemise / 100)}</p>
                     ` : ''}
                   ` : ''}
                 </div>

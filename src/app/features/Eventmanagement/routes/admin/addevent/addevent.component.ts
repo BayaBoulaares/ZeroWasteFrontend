@@ -5,6 +5,7 @@ import { EventService } from '../../../Services/event.service';
 import { MenusService } from '../../../Services/menus.service';
 import { Menus } from '../../../Entities/menus';
 import { Event } from '../../../Entities/event';
+
 @Component({
   selector: 'app-addevent',
   templateUrl: './addevent.component.html',
@@ -32,7 +33,7 @@ export class AddeventComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       valeurRemise: [0, [Validators.min(0), Validators.max(100)]],
-      menuId: [''],
+      menuId: ['', Validators.required],
       image: [null]
     });
 
@@ -76,29 +77,49 @@ export class AddeventComponent implements OnInit {
 
   onSubmit() {
     if (this.eventForm.valid) {
-      const formData = new FormData();
       const formValue = this.eventForm.value;
+      
+      // Convert dates to ISO format with time
+      const startDate = new Date(formValue.startDate);
+      const endDate = new Date(formValue.endDate);
 
+      // Create FormData object
+      const formData = new FormData();
       formData.append('title', formValue.title);
       formData.append('description', formValue.description);
-      formData.append('startDate', new Date(formValue.startDate).toISOString());
-      formData.append('endDate', new Date(formValue.endDate).toISOString());
+      formData.append('startDate', startDate.toISOString());
+      formData.append('endDate', endDate.toISOString());
       formData.append('valeurRemise', formValue.valeurRemise.toString());
-      
-      if (formValue.menuId) {
-        formData.append('menuId', formValue.menuId.toString());
-      }
-      
+      formData.append('menuId', formValue.menuId.toString());
+
       if (this.selectedFile) {
-        formData.append('image', this.selectedFile);
+        formData.append('imageFile', this.selectedFile, this.selectedFile.name);
       }
 
-      this.eventService.addEvent(formValue).subscribe({
+      // Create Event object using the class
+      const eventData = new Event(
+        undefined, // eventid
+        formValue.title,
+        formValue.description,
+        startDate.toISOString(),
+        endDate.toISOString(),
+        '', // imagePath
+        formValue.valeurRemise,
+        formValue.Nbr,
+        formValue.menuId ? { menuId: formValue.menuId } as Menus : undefined,
+        
+      );
+
+      this.eventService.addEventWithImage(eventData, this.selectedFile || new File([], '')).subscribe({
         next: () => {
+          console.log('Event added successfully');
           this.router.navigate(['/admin/eventmanagement/events']);
         },
         error: (error) => {
           console.error('Error adding event:', error);
+          if (error.error) {
+            console.error('Server error details:', error.error);
+          }
         }
       });
     }

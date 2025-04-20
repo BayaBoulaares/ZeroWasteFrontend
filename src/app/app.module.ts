@@ -73,6 +73,21 @@ import { RegistrationModalComponent } from './features/Eventmanagement/routes/ad
 import { EmailService } from './features/Eventmanagement/Services/email.service';
 import { QRCodeService } from './features/Eventmanagement/Services/qrcode.service';
 
+
+@NgModule({
+  imports: [
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    // Add other required modules here
+  ]
+})
+export class YourModuleName {}
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -128,11 +143,6 @@ import { QRCodeService } from './features/Eventmanagement/Services/qrcode.servic
     UpdateeventComponent,
     UpdatemenuComponent,
     EventComponent,
-    MenusComponent,
-    AddeventComponent,
-    AddmenuComponent,
-    UpdateeventComponent,
-    UpdatemenuComponent,
     EventbackComponent,
     UploadComponent,
     AjoutComponent,
@@ -144,8 +154,8 @@ import { QRCodeService } from './features/Eventmanagement/Services/qrcode.servic
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule,
-    NgxPaginationModule,
+   NgChartsModule,
+     NgxPaginationModule,
     CommonModule,
     BrowserAnimationsModule,
     MatDialogModule,
@@ -153,7 +163,8 @@ import { QRCodeService } from './features/Eventmanagement/Services/qrcode.servic
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
   ],
   providers: [
     EmailService,

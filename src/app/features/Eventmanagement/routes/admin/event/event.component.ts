@@ -27,9 +27,9 @@ interface MenuFallback {
 export class EventComponent implements OnInit {
   readonly base_url = BASE_URL;
   events: Event[] = [];
-  searchTerm: string = '';
   upcomingEvents: Event[] = [];
-  baseImageUrl: string = '';
+  currentEvents: Event[] = [];
+  searchTerm: string = '';
   isLoading: boolean = true;
   error: string | null = null;
 
@@ -48,6 +48,7 @@ export class EventComponent implements OnInit {
     this.eventService.getEvents().subscribe({
       next: (data) => {
         this.events = data;
+        this.categorizeEvents();
         this.isLoading = false;
       },
       error: (error) => {
@@ -58,16 +59,21 @@ export class EventComponent implements OnInit {
     });
   }
 
-  loadUpcomingEvents(): void {
-    this.eventService.getUpcomingEvents().subscribe({
-      next: (data) => {
-        this.upcomingEvents = data;
-        console.log('Upcoming events loaded:', this.upcomingEvents);
-      },
-      error: (error) => {
-        console.error('Error loading upcoming events:', error);
-      }
-    });
+  categorizeEvents(): void {
+    const now = new Date();
+    this.upcomingEvents = this.events.filter(event => 
+      new Date(event.startDate) > now
+    ).sort((a, b) => 
+      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+
+    this.currentEvents = this.events.filter(event => {
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+      return startDate <= now && endDate >= now;
+    }).sort((a, b) => 
+      new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+    );
   }
 
   searchEvents(): void {
@@ -79,6 +85,7 @@ export class EventComponent implements OnInit {
     this.eventService.searchEvents(this.searchTerm).subscribe({
       next: (events: Event[]) => {
         this.events = events;
+        this.categorizeEvents();
       },
       error: (error: any) => {
         console.error('Error searching events:', error);
@@ -99,9 +106,14 @@ export class EventComponent implements OnInit {
     discounted: string;
     savings: string;
     hasDiscount: boolean;
+    discountPercentage: string;
+    menuName: string;
   } {
-    const original = event.menu?.price || 0;
+    const menu = event.menus;
+    const original = menu?.price || 0;
+    const menuName = menu?.name || 'No menu selected';
     const discount = event.valeurRemise || 0;
+    
     const discounted = this.calculateDiscountedPrice(original, discount);
     const savings = original - discounted;
 
@@ -109,7 +121,9 @@ export class EventComponent implements OnInit {
       original: original.toFixed(2),
       discounted: discounted.toFixed(2),
       savings: savings.toFixed(2),
-      hasDiscount: discount > 0
+      hasDiscount: discount > 0,
+      discountPercentage: discount.toFixed(0),
+      menuName: menuName
     };
   }
 
@@ -118,10 +132,12 @@ export class EventComponent implements OnInit {
     if (!discount || discount <= 0) return price;
     return price - (price * discount / 100);
   }
-  getImageUrl(imagePath: string | null | undefined): string {
-    if (!imagePath) return 'assets/images/no-image.png';
-    return imagePath.startsWith('http') ? imagePath 
-         : `${this.base_url}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+
+  getImageUrl(imagePath: string): string {
+    if (!imagePath) {
+      return 'https://via.placeholder.com/300x200';
+    }
+    return `${BASE_URL}${imagePath}`;
   }
 
   navigateToEventDetails(eventid: number | undefined): void {

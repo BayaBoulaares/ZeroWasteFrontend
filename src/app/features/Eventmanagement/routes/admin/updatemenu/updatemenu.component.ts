@@ -94,15 +94,30 @@ export class UpdatemenuComponent implements OnInit {
       endDate: new Date()
     };
 
-    this.menuService.updateMenu(updatedMenu as Menus  ).subscribe({
-      next: () => {
-        console.log('Menu updated successfully');
-        this.router.navigate(['/admin/eventmanagement/menus']);
-      },
-      error: (error) => {
-        console.error('Error updating menu:', error);
-        alert('Error updating menu. Please try again.');
-      }
-    });
+    if (this.selectedFile) {
+      // If a new file is selected, use updateMenuWithImage
+      this.menuService.updateMenuWithImage(updatedMenu as Menus, this.selectedFile).subscribe({
+        next: () => {
+          console.log('Menu updated successfully with new image');
+          this.router.navigate(['/admin/eventmanagement/menus']);
+        },
+        error: (error) => {
+          console.error('Error updating menu with image:', error);
+          alert('Error updating menu. Please try again.');
+        }
+      });
+    } else {
+      // If no new file, use regular update
+      this.menuService.updateMenu(updatedMenu as Menus).subscribe({
+        next: () => {
+          console.log('Menu updated successfully');
+          this.router.navigate(['/admin/eventmanagement/menus']);
+        },
+        error: (error) => {
+          console.error('Error updating menu:', error);
+          alert('Error updating menu. Please try again.');
+        }
+      });
+    }
   }
 }

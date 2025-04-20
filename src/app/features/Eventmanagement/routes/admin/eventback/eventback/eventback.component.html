@@ -24,9 +24,11 @@
       <div class="col" *ngFor="let event of events">
         <div class="card h-100">
           <img [src]="base_url + '/uploads/' + event.imagePath" 
-               class="card-img-top" 
-               alt="{{ event.title }}"
-               style="height: 200px; object-fit: cover;">
+     (error)="event.imagePath = 'default.jpg'" 
+     class="card-img-top" 
+     alt="{{ event.title }}"
+     style="height: 200px; object-fit: cover;">
+
           <div class="card-body">
             <h5 class="card-title">{{ event.title }}</h5>
             <p class="card-text">{{ event.description }}</p>
@@ -45,8 +47,8 @@
                   <i class="bx bx-trash me-1"></i> Delete
                 </button>
               </div>
-              <span class="badge bg-primary" *ngIf="event.menu">
-                Menu: {{ event.menu.name }}
+              <span class="badge bg-primary" *ngIf="event.menus">
+                Menu: {{ event.menus.name }}
               </span>
             </div>
           </div>

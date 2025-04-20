@@ -29,18 +29,18 @@ export class EventService {
   } 
 
   // Add new event
-  addEvent(event: Event): Observable<Event> {
-    return this.http.post<Event>(`${this.apiUrl}/addevent`, event).pipe(
-      catchError(this.handleError)
-    );
-  }
+//  addEvent(event: Event): Observable<Event> {
+  //  return this.http.post<Event>(`${this.apiUrl}/addevent`, event).pipe(
+    //  catchError(this.handleError)
+    //  );
+  //  }
 
   // Update existing event
-  updateEvent(event: Event): Observable<Event> {
-    return this.http.put<Event>(`${this.apiUrl}/updateevent`, event).pipe(
-      catchError(this.handleError)
-    );
-  }
+   updateEvent(event: Event): Observable<Event> {
+     return this.http.put<Event>(`${this.apiUrl}/updateevent`, event).pipe(
+       catchError(this.handleError)
+     );
+   }
 
   // Delete event
   deleteEvent(eventid: number): Observable<void> {
@@ -68,6 +68,72 @@ export class EventService {
     return this.http.get<Event[]>(`${this.apiUrl}/search`, {
       params: { term }
     }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Add new event with image
+  addEventWithImage(event: Event, imageFile: File): Observable<Event> {
+    const formData = new FormData();
+    // Add event data as separate fields
+    formData.append('title', event.title);
+    formData.append('description', event.description);
+    formData.append('startDate', event.startDate);
+    formData.append('endDate', event.endDate);
+    formData.append('valeurRemise', event.valeurRemise.toString());
+    if (event.menus) {
+      if (event.menus?.menuId !== undefined) {
+        formData.append('menuId', event.menus.menuId.toString());
+      }
+          }
+    
+    // Add the image file
+    if (imageFile) {
+      formData.append('imageFile', imageFile, imageFile.name);
+    }
+
+    return this.http.post<Event>(`${this.apiUrl}/addevent`, formData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Update event with image
+  updateEventWithImage(event: Event, imageFile: File | null): Observable<Event> {
+    const formData = new FormData();
+    // Add event data as separate fields
+    if (event.eventid) {
+      formData.append('eventid', event.eventid.toString());
+    }
+    formData.append('title', event.title);
+    formData.append('description', event.description);
+    formData.append('startDate', event.startDate);
+    formData.append('endDate', event.endDate);
+    formData.append('valeurRemise', event.valeurRemise.toString());
+    if (event.menus) {
+      if (event.menus?.menuId !== undefined) {
+        formData.append('menuId', event.menus.menuId.toString());
+      }
+          }
+    
+    // Add the image file if provided
+    if (imageFile) {
+      formData.append('imageFile', imageFile, imageFile.name);
+    }
+
+    return this.http.put<Event>(`${this.apiUrl}/updateevent`, formData).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  // Register for an event
+  registerForEvent(registrationData: {
+    eventId: number | undefined;
+    numberOfTickets: number;
+    email: string;
+    name: string;
+    totalPrice: number;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, registrationData).pipe(
       catchError(this.handleError)
     );
   }
