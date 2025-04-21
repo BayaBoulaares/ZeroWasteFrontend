@@ -13,10 +13,16 @@ import { MealsService } from '../../../Services/meals.service';
 export class UpdateMealComponent implements OnInit {
   selectedIngredientIds: number[] = [];
   mealForm!: FormGroup;
-  ingredientsList: Ingredients[] = [];
-  mealIngredients: Ingredients[] = [];
+  allIngredients: Ingredients[] = [];
+  //ingredientsList: Ingredients[] = [];
+  //mealIngredients: Ingredients[] = [];
+
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
+  mealId!: number;
+  //mealIngredientss: any[] = [];  // Tableau d'ingrédients associés au repas
+  //selectedIngredientIds: number[] = [];
+  isEditable: boolean = true; // Indicateur pour savoir si l'édition est autorisée
   constructor(private fb: FormBuilder, private mealservice: MealsService, private router: Router, private route: ActivatedRoute) {
 
   }
@@ -30,17 +36,16 @@ export class UpdateMealComponent implements OnInit {
       price: [0, [Validators.required, Validators.min(0)]],
       ingredients: this.fb.array([])
     });
-
-    /*const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.getMealById(+id);
-    }*/
+  
     const mealId = Number(this.route.snapshot.paramMap.get('id'));
     if (mealId) {
+      this.mealId = mealId;
       this.getMealById(mealId);
+    } else {
+      console.error('ID du repas est manquant');
     }
-
   }
+  
   /**
   * Récupérer la liste des ingrédients disponibles dans la base de données
   */
@@ -68,32 +73,38 @@ export class UpdateMealComponent implements OnInit {
      }
    });
  }*/
-  getMealById(id: number) {
+   getMealById(id: number) {
     this.mealservice.getMeal(id).subscribe({
       next: (mealData) => {
         if (mealData) {
-          console.log("Meal récupéré :", mealData);
-
-          // Mettre à jour les champs du formulaire
           this.mealForm.patchValue({
             name: mealData.name,
             description: mealData.description,
             category: mealData.category,
             price: mealData.price
           });
-
-          // Charger l'image si elle existe
+  
           if (mealData.imagePath) {
             this.imagePreviewUrl = `http://localhost:8089/gaspillagezero${mealData.imagePath}`;
           }
-
-          // Récupérer les ingrédients associés au meal
-          this.mealservice.getMealWithIngredients(id).subscribe({
+  
+          // Récupérer les ingrédients associés avec les bonnes quantités
+          this.mealservice.getMealIngredientsWithQuantities(id).subscribe({
             next: (ingredientsData) => {
               this.mealIngredients = ingredientsData;
-              this.selectedIngredientIds = ingredientsData.map((ing: Ingredients) => ing.ingId);
-
-              // Une fois les ingrédients associés chargés, récupérer tous les ingrédients
+  
+              // On remplit le FormArray
+              const ingredientsFormArray = this.mealForm.get('ingredients') as FormArray;
+              ingredientsFormArray.clear(); // important
+  
+              this.mealIngredients.forEach(ingredient => {
+                ingredientsFormArray.push(this.fb.group({
+                  ingredientId: [ingredient.ingredientId],
+                  quantity: [ingredient.quantity] // quantité spécifique au repas
+                }));
+              });
+  
+              // Chargement de tous les ingrédients possibles si besoin
               this.getAllIngredients();
             },
             error: (err) => {
@@ -107,7 +118,7 @@ export class UpdateMealComponent implements OnInit {
       }
     });
   }
-
+  
 
   /*update(){
     this.mealservice.update(this.formdata2).subscribe({
@@ -200,36 +211,37 @@ export class UpdateMealComponent implements OnInit {
     }
   }
   updateMealIngredients() {
-    const mealId = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (!mealId || isNaN(mealId)) {
-      console.error('ID invalide');
+    if (!this.mealId) {
+      console.error('ID du repas est manquant');
       return;
     }
-
-    this.mealservice.updateIngredients(mealId, this.selectedIngredientIds).subscribe({
-      next: () => {
-        console.log('Ingrédients du meal mis à jour avec succès !');
-
-        this.getMealById(mealId);
-        this.router.navigate(['/admin/mealsmanagement/meals']);
+  
+    const updatedIngredients = this.mealIngredients.map((ingredient: any) => ({
+      ingredientId: ingredient.ingredientId,
+      quantity: ingredient.quantity
+    }));
+  
+    this.mealservice.updateMealIngredients(this.mealId, updatedIngredients).subscribe({
+      next: (response) => {
+        console.log('Ingrédients mis à jour avec succès', response);
+        this.router.navigate(['/admin/mealsmanagement/meals']); // remplace '/meals' par la route que tu veux
       },
-      error: (err) => {
-        console.error('Erreur lors de la mise à jour des ingrédients du meal', err);
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour des ingrédients', error);
       }
     });
   }
-
+  
   /**
    * Gérer la sélection des ingrédients par l'utilisateur
    */
-  toggleIngredientSelection(ingredientId: number) {
+  /*toggleIngredientSelection(ingredientId: number) {
     if (this.selectedIngredientIds.includes(ingredientId)) {
       this.selectedIngredientIds = this.selectedIngredientIds.filter(id => id !== ingredientId);
     } else {
       this.selectedIngredientIds.push(ingredientId);
     }
-  }
+  }*/
   onIngredientChange(ingredient: Ingredients, event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
 
@@ -242,5 +254,33 @@ export class UpdateMealComponent implements OnInit {
     console.log("Ingrédients sélectionnés :", this.selectedIngredientIds);
   }
 
+  // Exemple de structure des données
+  mealIngredients: Array<{ ingredientId: number, quantity: number }> = [];
+  ingredientsList: Array<{ ingId: number, name: string, quantity: number }> = [];
+  
+  // Vérifie si l'ingrédient est sélectionné
+  isIngredientSelected(ingId: number): boolean {
+    return this.mealIngredients.some(ing => ing.ingredientId === ingId);
+  }
+  
+  // Obtenir la quantité d'un ingrédient, ou 0 si non trouvé
+  getIngredientQuantity(ingredientId: number): number {
+    const mealIng = this.mealIngredients.find(mealIng => mealIng.ingredientId === ingredientId);
+    return mealIng ? mealIng.quantity : 0;
+  }
 
+  // Méthode pour basculer l'état de sélection
+  toggleIngredientSelection(ingredientId: number): void {
+    // Logique pour gérer la sélection/désélection
+    const index = this.mealIngredients.findIndex(mealIng => mealIng.ingredientId === ingredientId);
+    if (index !== -1) {
+      this.mealIngredients.splice(index, 1); // Désélectionner
+    } else {
+      this.mealIngredients.push({ ingredientId, quantity: 0 }); // Sélectionner avec une quantité initiale de 0
+    }
+  }
+  getMealIngredientById(ingredientId: number) {
+    return this.mealIngredients.find(ing => ing.ingredientId === ingredientId) || { ingredientId, quantity: 0 };
+  }
+  
 }

@@ -58,6 +58,7 @@ import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/
 import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
+import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
 import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
 import { MenusComponent } from './features/Eventmanagement/routes/admin/menus/menus.component';
 import { AddeventComponent } from './features/Eventmanagement/routes/admin/addevent/addevent.component';
@@ -121,6 +122,10 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     StockTransactionFormComponent,
     ProductSectionComponent,
     StockStaticComponent,
+    AirecomendationComponent,
+
+
+
     InvoiceComponent,
     InvoiceCreateComponent,
     InvoiceUpdateComponent,

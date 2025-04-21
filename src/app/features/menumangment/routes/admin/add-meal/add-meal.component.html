@@ -90,34 +90,36 @@
                   <label>Selected Image:</label>
                   <img [src]="imagePreviewUrl" alt="Selected Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"/>
                 </div>   
-                <div class="col-lg-6">
-                  <label class="form-label" for="file">Ingrédients</label>
-                  <div class="demo-inline-spacing mt-3">
-                    <div class="list-group" *ngIf="allIngredients.length > 0">
-                      <div class="list-group-item" *ngFor="let ingredient of allIngredients">
-                        <input
-                          class="form-check-input me-1"
-                          type="checkbox"
-                          [checked]="selectedIngredients.has(ingredient.ingId)"
-                          (change)="onIngredientChange($event, ingredient)"
-                        />
-                        {{ ingredient.name }} (Dispo : {{ ingredient.quantity }})
-                
-                        <input 
-                        type="number" 
-                        [formControlName]="ingredient.ingId" 
-                        class="form-control" 
-                        placeholder="Quantité" 
-                        [min]="1" 
-                        [max]="ingredient.quantity" 
-                        required 
-                        (change)="onQuantityChange(ingredient?.ingId, $event)"
-                      />
-                      
-                      
-                      </div>
-                    </div>
+                <div class="list-group-item d-flex flex-column gap-2" *ngFor="let ingredient of allIngredients">
+                  <div class="d-flex align-items-center gap-2">
+                    <input
+                      class="form-check-input me-2"
+                      type="checkbox"
+                      [checked]="selectedIngredients.has(ingredient.ingId)"
+                      [disabled]="ingredient.quantity === 0"
+                      (change)="onIngredientChange($event, ingredient)"
+                    />
+                    <label class="form-check-label fw-bold" [class.text-muted]="ingredient.quantity === 0">
+                      {{ ingredient.name }}
+                      <small class="text-muted">(Dispo : {{ getRemainingQuantity(ingredient) }})</small>
+                      <span *ngIf="ingredient.quantity === 0" class="text-danger ms-1">(Indisponible)</span>
+                    </label>
                   </div>
+                
+                  <input 
+                    type="number" 
+                    class="form-control w-50"
+                    [min]="1" 
+                    [max]="ingredient.quantity" 
+                    [value]="selectedIngredients.get(ingredient.ingId) || ''"
+                    placeholder="Quantité" 
+                    [disabled]="ingredient.quantity === 0"
+                    (input)="onQuantityChange(ingredient?.ingId, $event)"
+                  />
+                    <!-- Message d'erreur affiché s’il y en a un -->
+  <div class="error-message" *ngIf="ingredientErrors.has(ingredient.ingId)">
+    {{ ingredientErrors.get(ingredient.ingId) }}
+  </div>
                 </div>
                 
                 <br>

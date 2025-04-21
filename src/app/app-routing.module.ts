@@ -33,6 +33,7 @@ import { StockTransactionComponent } from './features/inventorymanagement/Compon
 import { StockTransactionFormComponent } from './features/inventorymanagement/Components/admin/stock-transaction-form/stock-transaction-form.component';
 import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
 import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
+import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
 
 
 import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
@@ -73,6 +74,7 @@ const routes: Routes = [
           { path: 'meals/update/:id', component: UpdateMealComponent },
           { path: 'ingredients/add', component: AddIngredientComponent },
           { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
+          { path: 'meals/recemendation', component: AirecomendationComponent }
 
         ],
 
