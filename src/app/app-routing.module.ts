@@ -46,6 +46,7 @@ import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/aj
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
+import { PaymentComponent } from './features/invoiceManagement/Components/main/payment/payment.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -57,6 +58,7 @@ const routes: Routes = [
     path: 'reset-password',
     component: ResetPasswordComponent
   },
+  { path: 'payment', component: PaymentComponent },
 
   {
     path: 'admin',

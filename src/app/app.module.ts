@@ -75,6 +75,7 @@ import { QRCodeService } from './features/Eventmanagement/Services/qrcode.servic
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
+import { PaymentComponent } from './features/invoiceManagement/Components/main/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,7 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     InvoiceComponent,
     InvoiceCreateComponent,
     InvoiceUpdateComponent,
-
+    PaymentComponent,
 
     EventComponent,
     MenusComponent,
@@ -141,7 +142,8 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     EventbackComponent,
     UploadComponent,
     AjoutComponent,
-    RegistrationModalComponent
+    RegistrationModalComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
