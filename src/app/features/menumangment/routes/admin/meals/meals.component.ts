@@ -4,6 +4,8 @@ import { BASE_URL } from 'src/consts';
 import { MealsService } from '../../../Services/meals.service';
 import { IngredientsService } from '../../../Services/ingredients.service';
 import { Meals } from '../../../Entities/meals';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MealRecommendation } from '../../../models/meal-recommendation';
 
 @Component({
   selector: 'app-meals',
@@ -15,17 +17,28 @@ export class MealsComponent implements OnInit {
   meals: Meals[] = [];
   searchTerm: string = '';
   discountedMeals: Meals[] = [];
-  constructor(private mealservice: MealsService, private ingredientService: IngredientsService) {
-
+  requestData = {
+    season: '',
+    event:'',
+    local_habit:'',
+    trend_score: '',
+  };
+  mealRecommendations: any[] = [];
+  errorMessage: string = '';
+  constructor(private mealservice: MealsService, private ingredientService: IngredientsService,  private fb: FormBuilder) {
+  
   }
+  
   ngOnInit(): void {
     this.getMeals();
     this.loadRecommendedMeals();
     this.mealservice.getMealsWithDiscounts().subscribe(data => {
       this.meals = data;
+    
     });
+ 
+    
   }
-
 
   /*public getMeals(){
       this.mealservice.getMeals().subscribe(data => {
@@ -83,8 +96,36 @@ export class MealsComponent implements OnInit {
     }
   }
   recommendedDishes: any[] = [];
+  season: number = 0;  // Valeur par défaut (Hiver)
+  event: number = 0;   // Valeur par défaut (Noël)
+  localHabits: number = 0; // Valeur par défaut (Famille)
   getRecommendations() {
     this.mealservice.getRecommendedMeals()
       .subscribe(dishes => this.recommendedDishes = dishes);
   }
+
+      onSubmit() {
+        this.mealservice.getMealRecommendations(this.requestData).subscribe(
+          (data) => {
+            // Réception des repas recommandés
+            this.mealRecommendations = data;
+            this.errorMessage = ''; // Réinitialiser l'erreur si la requête réussit
+          },
+          (error) => {
+            console.error('Erreur lors de la récupération des recommandations:', error);
+            this.errorMessage = 'Une erreur s\'est produite lors de la récupération des recommandations.';
+          }
+        );
+      }
+      removeDiscount(mealId: number) {
+        this.mealservice.removeDiscount(mealId).subscribe({
+          next: () => {
+            console.log('Discount removed from meal');
+            // On met à jour la liste locale sans recharger
+            this.discountedMeals = this.discountedMeals.filter(meal => meal.mealId !== mealId);
+          },
+          error: (err) => console.error('Error removing discount:', err)
+        });
+      }
+      
 }

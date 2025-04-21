@@ -16,7 +16,7 @@ export class Meals {
   discountedPrice: number;
   ingredients?: Ingredients[];
   orderCount: number;
-  rating?:number
+  averageRating?: number;
 
   constructor(mealId: number, name: string, description: string, category: MealCategory, price: number, imagePath: string, discountedPrice: number, orderCount: number) {
     this.mealId = mealId;

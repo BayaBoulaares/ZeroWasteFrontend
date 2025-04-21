@@ -1,22 +1,5 @@
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-      <h2 class="mb-0 fw-bold">Recomanded meals</h2>
-      <div class="col-lg-6 mb-4 mb-xl-0">
-        <div class="demo-inline-spacing mt-3">
-          <div class="list-group list-group-flush">
-            <ng-container *ngFor="let meal of recommendedMeals">
-              <a href="javascript:void(0);" class="list-group-item list-group-item-action">
-                <small>{{ meal.name }}</small>
-                <ul class="mt-1 mb-0 ps-3">
-                  <li *ngFor="let ingredient of meal.ingredients">
-                    {{ ingredient.name }} (Stock: {{ ingredient.stock }})
-                  </li>
-                </ul>
-              </a>
-            </ng-container>
-          </div>
-        </div>
-      </div>
       <div class="table-header px-0">
         <h2 class="mb-0 fw-bold">Meals</h2>
         <div class="table-actions">
@@ -31,7 +14,8 @@
         <div class="col" *ngFor="let meal of meals">
           <div class="card h-100">
             <img *ngIf="meal.imagePath" [src]="base_url + meal.imagePath"
-              alt="Meal Image">
+              alt="Meal Image"
+              style="height: 260px; width: auto; object-fit: cover; border-radius: 8px;">
             <div class="card-body">
               <h5 class="card-title">{{ meal.name }}</h5>
               <p class="card-text">{{ meal.description }}</p>
@@ -53,26 +37,14 @@
           </div>
         </div>
       </div>
-      <!--<div>
-                  <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>Recommended Dishes</h4>
-                  <button type="button" (click)="getRecommendations()" class="btn btn-primary">Get Recommendations</button>
-                  <div *ngIf="recommendedDishes.length > 0">
-                    <ul>
-                      <li *ngFor="let dish of recommendedDishes">{{ dish.name }}</li>
-                    </ul>
-                  </div>
-                  <div *ngIf="recommendedDishes.length === 0">
-                    No dishes can be prepared with the available ingredients.
-                  </div>
-                </div>-->
       <div *ngIf="discountedMeals.length > 0" class="meal-list">
-        <h2 class="mb-4">Meals avec réduction</h2>
+        <h2 class="mb-4">Discounted Meals</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
           <div class="col" *ngFor="let meal of discountedMeals">
-            <div class="card h-100 position-relative">
+            <div class="card h-200 position-relative">
               <img *ngIf="meal.imagePath" [src]="'http://localhost:8089/gaspillagezero' + meal.imagePath"
-                class="card-img-top" alt="Meal Image">
-  
+                alt="Meal Image"
+                style="height: 260px; width: auto; object-fit: cover; border-radius: 8px;">
               <div class="card-body">
                 <h5 class="card-title">{{ meal.name }}</h5>
                 <p class="card-text">{{ meal.description }}</p>
@@ -93,12 +65,8 @@
                   <i class="bx bx-dots-vertical-rounded"></i>
                 </button>
                 <div class="dropdown-menu">
-                  <a *ngIf="meal.mealId" class="dropdown-item" href="javascript:void(0);" (click)="update(meal.mealId)"
-                    [routerLink]="['/admin/mealsmanagement/meals/update', meal.mealId]">
-                    <i class="bx bx-edit-alt me-1"></i> Edit
-                  </a>
                   <a *ngIf="meal.mealId" class="dropdown-item" href="javascript:void(0);"
-                    (click)="deleteMeal(meal.mealId!)">
+                  (click)="removeDiscount(meal.mealId)">
                     <i class="bx bx-trash me-1"></i> Delete
                   </a>
                 </div>
@@ -110,6 +78,5 @@
   
       <!--/ Card layout -->
     </div>
+
   
-    <div class="content-backdrop fade"></div>
-  </div>

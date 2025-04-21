@@ -9,7 +9,7 @@ export class Ingredients {
      meals?: Meals[]; 
      expirationDate ?: Date; 
      status?: string;
-     stock? : number
+     stock? : number;
      constructor(
         ingId: number = 0, 
         name: string = '', 

@@ -51,6 +51,7 @@ import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/
 import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
+import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { StaffDashboardComponent } from './features/StaffManagement/routes/admin
     StockTransactionFormComponent,
     ProductSectionComponent,
     StockStaticComponent,
+    AirecomendationComponent,
 
 
 

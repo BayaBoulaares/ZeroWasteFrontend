@@ -74,11 +74,21 @@ export class MenusectionComponent implements OnInit {
      
     });
   }
-  rateMeal(meal: Meals, rating: number): void {
+  /*rateMeal(meal: Meals, rating: number): void {
     meal.rating = rating;
     this.mealservice.updateMealRating(meal.mealId, rating).subscribe(() => {
       console.log(`Rated meal ${meal.name} with ${rating} stars.`);
     });
   }
+*/
+currentUserId = 1; // Temporaire : à changer selon l'authentification réelle
 
+rateMeal(meal: Meals, stars: number): void {
+  this.mealservice.rateMeal(this.currentUserId, meal.mealId, stars).subscribe(() => {
+    this.mealservice.getAverageRating(meal.mealId).subscribe(avg => {
+      meal.averageRating = avg;
+    });
+  });
+
+}
 }

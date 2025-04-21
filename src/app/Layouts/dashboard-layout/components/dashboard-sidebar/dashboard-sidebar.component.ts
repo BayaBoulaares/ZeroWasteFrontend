@@ -21,7 +21,8 @@ export class DashboardSidebarComponent {
       icon: 'bx bx-food-menu', 
       submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },
-        { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' }
+        { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' },
+        { label: 'Recommendation', link: '/admin/mealsmanagement/meals/recemendation' }
       ]
     },
     
