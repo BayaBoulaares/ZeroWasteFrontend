@@ -1,0 +1,116 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">All Invoices</h4>
+  
+    <div *ngFor="let alert of alerts" class="alert" [ngClass]="alert.type" role="alert">
+      {{ alert.message }}
+    </div>
+  
+    <div class="card">
+      <div class="table-header">
+        <h5>Invoices</h5>
+        <div class="table-actions">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search by user name..."
+            [(ngModel)]="searchTerm"
+            (input)="searchInvoices()"
+          />
+          <button [routerLink]="['/admin/invoices/add']" type="button" class="btn btn-primary">Add</button>
+
+        </div>
+      </div>
+  
+      <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0">
+            <ng-container *ngFor="let invoice of filteredInvoices; let index = index">
+              <!-- Main invoice row -->
+              <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.user.name }}</td>
+                <td>{{ invoice.date | date }}</td>
+                <td>{{ invoice.dueDate | date }}</td>
+                <td>
+                  <span class="badge"
+                    [ngClass]="{
+                      'bg-label-success': invoice.status === 'PAID',
+                      'bg-label-warning': invoice.status === 'PENDING',
+                      'bg-label-danger': invoice.status === 'OVERDUE'
+                    }">
+                    {{ invoice.status }}
+                  </span>
+                </td>
+                <td>{{ invoice.total | currency }}</td>
+                <td>
+                  <div class="dropdown">
+                    <button
+                      type="button"
+                      class="btn p-0 dropdown-toggle hide-arrow"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" [routerLink]="['/admin/invoices/update', invoice.id]">
+                        <i class="bx bx-edit-alt me-1"></i> Edit
+                      </a>
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="deleteInvoice(invoice.id)">
+                        <i class="bx bx-trash me-1"></i> Delete
+                      </a>
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="downloadPdf(invoice.id)">
+                        <i class="bx bx-download me-1"></i> Download PDF
+                      </a>
+                      <a class="dropdown-item" href="javascript:void(0);" (click)="toggleItems(index)">
+                        <i class="bx bx-list-ul me-1"></i> {{ showItems[index] ? 'Hide' : 'Show' }} Items
+                      </a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+          
+              <!-- Collapsible invoice item row -->
+              <tr *ngIf="showItems[index]">
+                <td colspan="7" class="bg-light">
+                  <div class="p-2">
+                    <strong>Invoice Items:</strong>
+                    <table class="table table-sm mt-2">
+                      <thead>
+                        <tr>
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of invoice.items">
+                          <td>{{ item.productName }}</td>
+                          <td>{{ item.productPrice | currency }}</td>
+                          <td>{{ item.quantity }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <router-outlet></router-outlet>
+  

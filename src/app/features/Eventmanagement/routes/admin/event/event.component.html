@@ -1,0 +1,246 @@
+<div class="container-fluid">
+  <!-- Search Bar -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" 
+               class="form-control" 
+               placeholder="Search events..." 
+               [(ngModel)]="searchTerm"
+               (keyup.enter)="searchEvents()">
+        <button class="btn btn-primary" (click)="searchEvents()">
+          <i class="bi bi-search"></i> Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Current Events Section -->
+  <div *ngIf="!isLoading" class="mb-5">
+    <h2 class="section-title mb-4">
+      <i class="bi bi-calendar-event me-2"></i>
+      Current Events
+    </h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let event of events">
+        <div class="card h-100">
+          <!-- Event Image -->
+          <div class="position-relative">
+            <img [src]="getImageUrl(event.imagePath ?? null)" 
+                 [alt]="event.title"
+                 class="card-img-top">
+            
+            <!-- Discount Badge -->
+            <div *ngIf="event.valeurRemise > 0" class="position-absolute top-0 end-0 m-3">
+              <span class="badge bg-danger">
+                <i class="bi bi-tag-fill me-1"></i>
+                {{ event.valeurRemise }}% OFF
+              </span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Event Title -->
+            <h5 class="card-title">{{ event.title }}</h5>
+            
+            <!-- Menu Section -->
+            <div class="menu-section">
+              <h6 class="text-primary mb-3">
+                <i class="bi bi-utensils me-2"></i>
+                Menu Information
+              </h6>
+              <div *ngIf="event.menu; else noMenu">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-medium">{{ event.menu.name }}</span>
+                  <div class="text-end">
+                    <ng-container *ngIf="event.menu.price > 0">
+                      <span class="text-decoration-line-through text-muted me-2" *ngIf="event.valeurRemise > 0">
+                        {{ event.menu.price | currency }}
+                      </span>
+                      <span class="fw-bold" [class.text-danger]="event.valeurRemise > 0">
+                        {{ calculateDiscountedPrice(event.menu.price, event.valeurRemise) | currency }}
+                      </span>
+                    </ng-container>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0" *ngIf="event.menu.description">
+                  {{ event.menu.description }}
+                </p>
+              </div>
+              <ng-template #noMenu>
+                <p class="text-muted mb-0">
+                  <i class="bi bi-info-circle me-1"></i>
+                  No menu available for this event
+                </p>
+              </ng-template>
+            </div>
+            
+            <!-- Event Description -->
+            <p class="card-text text-muted small mb-3">{{ event.description }}</p>
+            
+            <!-- Event Dates -->
+            <div class="event-dates">
+              <div class="small mb-2">
+                <i class="bi bi-calendar-event"></i>
+                <span class="ms-2">From: {{ event.startDate | date:'mediumDate' }}</span>
+              </div>
+              <div class="small mb-2">
+                <i class="bi bi-calendar-check"></i>
+                <span class="ms-2">To: {{ event.endDate | date:'mediumDate' }}</span>
+              </div>
+              <div class="small">
+                <i class="bi bi-clock"></i>
+                <span class="ms-2">{{ calculateDaysLeft(event.endDate) }} days left</span>
+              </div>
+            </div>
+
+            <!-- Price and Discount -->
+            <div class="price-section mb-3">
+              <div *ngIf="event.menu">
+                <span class="original-price" *ngIf="event.valeurRemise > 0">
+                  ${{ event.menu.price }}
+                </span>
+                <span class="discounted-price">
+                  ${{ calculateDiscountedPrice(event.menu.price, event.valeurRemise) }}
+                </span>
+                <span *ngIf="event.valeurRemise > 0" class="discount-badge">
+                  Save {{ event.valeurRemise }}%
+                </span>
+              </div>
+            </div>
+
+            <!-- Registration Button -->
+            <button class="btn btn-primary w-100" (click)="registerForEvent(event)">
+              <i class="bi bi-ticket-perforated me-2"></i>
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Current Events Message -->
+    <div *ngIf="!isLoading && events.length === 0" class="alert alert-info text-center my-5">
+      <i class="bi bi-info-circle me-2"></i>
+      No current events available.
+    </div>
+  </div>
+
+  <!-- Upcoming Events Section -->
+  <div *ngIf="!isLoading" class="mb-5">
+    <h2 class="section-title mb-4">
+      <i class="bi bi-calendar-plus me-2"></i>
+      Upcoming Events
+    </h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let event of upcomingEvents">
+        <div class="card h-100">
+          <!-- Event Image -->
+          <div class="position-relative">
+            <img [src]="getImageUrl(event.imagePath ?? null)" 
+                 [alt]="event.title"
+                 class="card-img-top">
+            
+            <!-- Discount Badge -->
+            <div *ngIf="event.valeurRemise > 0" class="position-absolute top-0 end-0 m-3">
+              <span class="badge bg-danger">
+                <i class="bi bi-tag-fill me-1"></i>
+                {{ event.valeurRemise }}% OFF
+              </span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Event Title -->
+            <h5 class="card-title">{{ event.title }}</h5>
+            
+            <!-- Menu Section -->
+            <div class="menu-section">
+              <h6 class="text-primary mb-3">
+                <i class="bi bi-utensils me-2"></i>
+                Menu Information
+              </h6>
+              <div *ngIf="event.menu; else noMenu">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-medium">{{ event.menu.name }}</span>
+                  <div class="text-end">
+                    <ng-container *ngIf="event.menu.price > 0">
+                      <span class="text-decoration-line-through text-muted me-2" *ngIf="event.valeurRemise > 0">
+                        {{ event.menu.price | currency }}
+                      </span>
+                      <span class="fw-bold" [class.text-danger]="event.valeurRemise > 0">
+                        {{ calculateDiscountedPrice(event.menu.price, event.valeurRemise) | currency }}
+                      </span>
+                    </ng-container>
+                  </div>
+                </div>
+                <p class="text-muted small mb-0" *ngIf="event.menu.description">
+                  {{ event.menu.description }}
+                </p>
+              </div>
+              <ng-template #noMenu>
+                <p class="text-muted mb-0">
+                  <i class="bi bi-info-circle me-1"></i>
+                  No menu available for this event
+                </p>
+              </ng-template>
+            </div>
+            
+            <!-- Event Description -->
+            <p class="card-text text-muted small mb-3">{{ event.description }}</p>
+            
+            <!-- Event Dates -->
+            <div class="event-dates">
+              <div class="small mb-2">
+                <i class="bi bi-calendar-event"></i>
+                <span class="ms-2">From: {{ event.startDate | date:'mediumDate' }}</span>
+              </div>
+              <div class="small mb-2">
+                <i class="bi bi-calendar-check"></i>
+                <span class="ms-2">To: {{ event.endDate | date:'mediumDate' }}</span>
+              </div>
+              <div class="small">
+                <i class="bi bi-clock"></i>
+                <span class="ms-2">{{ calculateDaysLeft(event.endDate) }} days left</span>
+              </div>
+            </div>
+
+            <!-- Price and Discount -->
+            <div class="price-section mb-3">
+              <div *ngIf="event.menu">
+                <span class="original-price" *ngIf="event.valeurRemise > 0">
+                  ${{ event.menu.price }}
+                </span>
+                <span class="discounted-price">
+                  ${{ calculateDiscountedPrice(event.menu.price, event.valeurRemise) }}
+                </span>
+                <span *ngIf="event.valeurRemise > 0" class="discount-badge">
+                  Save {{ event.valeurRemise }}%
+                </span>
+              </div>
+            </div>
+
+            <!-- Registration Button -->
+            <button class="btn btn-primary w-100" (click)="registerForEvent(event)">
+              <i class="bi bi-ticket-perforated me-2"></i>
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Upcoming Events Message -->
+    <div *ngIf="!isLoading && upcomingEvents.length === 0" class="alert alert-info text-center my-5">
+      <i class="bi bi-info-circle me-2"></i>
+      No upcoming events available.
+    </div>
+  </div>
+</div>

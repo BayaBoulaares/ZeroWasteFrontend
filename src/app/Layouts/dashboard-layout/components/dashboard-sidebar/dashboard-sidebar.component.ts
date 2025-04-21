@@ -10,22 +10,23 @@ export class DashboardSidebarComponent {
 
   menuItems = [
     {
+
       name: 'dashboard', label: 'Dashboard', link: '/admin/dashboard', icon: 'bx bx-home-circle', submenu: []
     },
 
     { name: 'Users', label: 'Users', link: '/admin/usersmanagement', icon: 'bx bx-group', submenu:[] },
     {
       name: 'menuItems', 
-      label: 'Menu Management', 
-      link: '#', 
-      icon: 'bx bx-food-menu', 
+      label: 'Menu Management',
+      link: '#',
+      icon: 'bx bx-food-menu',
       submenu: [
         { label: 'Meals', link: '/admin/mealsmanagement/meals' },
         { label: 'Ingredients', link: '/admin/mealsmanagement/ingredients' },
         { label: 'Recommendation', link: '/admin/mealsmanagement/meals/recemendation' }
       ]
     },
-    
+    { name: 'Invoices', label: 'Invoices', link: '/admin/invoice', icon: 'bx bx-food-menu', submenu:[] },
     {
       name: 'inventory', label: 'Inventory Management', link: '#', icon: 'bx bx-trending-up', submenu: [
         { label: 'Product', link: '/admin/inventory/product' },
@@ -47,10 +48,19 @@ export class DashboardSidebarComponent {
         { label: 'Shifts', link: '/admin/staffmanagement/shifts' },
         { label: 'Training Sessions', link: '/admin/staffmanagement/training-sessions' }
       ]
-    }
+    },
     // Add other menu items as needed
+    {
+      name: 'eventItems',
+      label: 'Event Management',
+      link: '#',
+      icon: 'bx bx-calendar-event', // Changed icon to be more appropriate for events
+      submenu: [
+        { label: 'Events', link: '/admin/eventmanagement/events' },
+        { label: 'Menus', link: '/admin/eventmanagement/menus' }
+      ]
+    },
   ];
-
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;

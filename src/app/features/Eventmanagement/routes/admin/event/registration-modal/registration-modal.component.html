@@ -1,0 +1,81 @@
+<div class="registration-modal">
+  <div class="modal-header">
+    <h2 class="modal-title">Register for Event</h2>
+    <button mat-icon-button (click)="close()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="event-info">
+    <h3 class="event-title">{{ data.event.title }}</h3>
+    <p class="event-description">{{ data.event.description }}</p>
+    
+    <div class="event-details">
+      <div class="detail-item">
+        <mat-icon>calendar_today</mat-icon>
+        <span>Start: {{ data.event.startDate | date:'mediumDate' }}</span>
+      </div>
+      <div class="detail-item">
+        <mat-icon>event_available</mat-icon>
+        <span>End: {{ data.event.endDate | date:'mediumDate' }}</span>
+      </div>
+      <div *ngIf="data.event.menu" class="detail-item">
+        <mat-icon>restaurant</mat-icon>
+        <span>Menu: {{ data.event.menu.name }}</span>
+      </div>
+      <div *ngIf="data.event.menu" class="detail-item">
+        <mat-icon>attach_money</mat-icon>
+        <span>Price: ${{ calculateDiscountedPrice(data.event.menu.price, data.event.valeurRemise) }}</span>
+        <span *ngIf="data.event.valeurRemise > 0" class="discount-badge">
+          ({{ data.event.valeurRemise }}% off)
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email Address</mat-label>
+      <input matInput 
+             type="email" 
+             formControlName="email"
+             placeholder="Enter your email">
+      <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="error" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ error }}</span>
+    </div>
+
+    <div class="modal-actions">
+      <button mat-button 
+              type="button" 
+              (click)="close()"
+              [disabled]="isLoading">
+        Cancel
+      </button>
+      <button mat-raised-button 
+              color="primary"
+              type="submit"
+              [disabled]="registrationForm.invalid || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20" class="mr-2"></mat-spinner>
+        Register
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="qrCodeData" class="qr-code-container">
+    <h4>Your Registration QR Code</h4>
+    <img [src]="qrCodeData" alt="Registration QR Code" class="qr-code">
+    <p class="qr-instructions">
+      A copy of this QR code has been sent to your email.
+      Please present it at the event entrance.
+    </p>
+  </div>
+</div> 

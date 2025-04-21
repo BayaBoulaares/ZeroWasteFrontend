@@ -1,0 +1,133 @@
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+      <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Events /</span> Add New Event
+      </h4>
+  
+      <!-- Basic Layout -->
+      <div class="row">
+        <div class="col-xl">
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">New Event Details</h5>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+                <!-- Title -->
+                <div class="mb-3">
+                  <label class="form-label" for="title">Event Title</label>
+                  <input type="text" 
+                         class="form-control" 
+                         id="title" 
+                         formControlName="title" 
+                         placeholder="Enter event title">
+                  <div *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched"
+                       class="text-danger small">
+                    Title is required (minimum 3 characters)
+                  </div>
+                </div>
+  
+                <!-- Description -->
+                <div class="mb-3">
+                  <label class="form-label" for="description">Description</label>
+                  <textarea class="form-control" 
+                            id="description" 
+                            formControlName="description" 
+                            rows="3"
+                            placeholder="Enter event description"></textarea>
+                  <div *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched"
+                       class="text-danger small">
+                    Description is required (minimum 10 characters)
+                  </div>
+                </div>
+  
+                <!-- Dates -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label" for="startDate">Start Date</label>
+                    <input type="datetime-local" 
+                           class="form-control" 
+                           id="startDate" 
+                           formControlName="startDate">
+                    <div *ngIf="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched"
+                         class="text-danger small">
+                      Start date is required
+                    </div>
+                  </div>
+  
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label" for="endDate">End Date</label>
+                    <input type="datetime-local" 
+                           class="form-control" 
+                           id="endDate" 
+                           formControlName="endDate">
+                    <div *ngIf="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched"
+                         class="text-danger small">
+                      End date is required
+                    </div>
+                  </div>
+                </div>
+  
+                <!-- Menu Selection -->
+                <div class="mb-3">
+                  <label class="form-label" for="menuId">Select Menu</label>
+                  <select class="form-select" 
+                          id="menuId" 
+                          formControlName="menuId">
+                    <option value="">Select a menu</option>
+                    <option *ngFor="let menu of availableMenus" 
+                            [value]="menu.menuId">
+                      {{ menu.name }} - {{ menu.price | currency }}
+                    </option>
+                  </select>
+                </div>
+  
+                <!-- Discount -->
+                <div class="mb-3">
+                  <label class="form-label" for="valeurRemise">Discount (%)</label>
+                  <input type="number" 
+                         class="form-control" 
+                         id="valeurRemise" 
+                         formControlName="valeurRemise" 
+                         min="0" 
+                         max="100">
+                </div>
+  
+                <!-- Image Upload -->
+                <div class="mb-3">
+                  <label class="form-label" for="image">Event Image</label>
+                  <input type="file" 
+                         class="form-control" 
+                         id="image" 
+                         (change)="onFileSelected($event)"
+                         accept="image/*">
+                  <div *ngIf="imagePreview" class="mt-2">
+                    <img [src]="imagePreview" 
+                         alt="Event preview" 
+                         style="max-width: 200px; max-height: 200px;">
+                  </div>
+                </div>
+  
+                <!-- Submit Buttons -->
+                <div class="mt-4">
+                  <button type="submit" 
+                          class="btn btn-primary me-2" 
+                          [disabled]="!eventForm.valid || !validateDates()">
+                    Add Event
+                  </button>
+                  <button type="button" 
+                          class="btn btn-outline-secondary" 
+                          routerLink="/admin/eventmanagement/events">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / Content -->
+    <div class="content-backdrop fade"></div>
+  </div>
+  

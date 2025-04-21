@@ -3,6 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './Layouts/main-layout/components/navbar/navbar.component';
 import { FooterComponent } from './Layouts/main-layout/components/footer/footer.component';
@@ -52,6 +59,23 @@ import { EmployeeTrainingComponent } from './features/StaffManagement/routes/mai
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
 import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
+import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
+import { MenusComponent } from './features/Eventmanagement/routes/admin/menus/menus.component';
+import { AddeventComponent } from './features/Eventmanagement/routes/admin/addevent/addevent.component';
+import { AddmenuComponent } from './features/Eventmanagement/routes/admin/addmenu/addmenu.component';
+import { UpdateeventComponent } from './features/Eventmanagement/routes/admin/updateevent/updateevent.component';
+import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/updatemenu/updatemenu.component';
+import { EventService } from './features/Eventmanagement/Services/event.service';
+import { MenusService } from './features/Eventmanagement/Services/menus.service';
+import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
+import { UploadComponent } from './features/Eventmanagement/routes/upload/upload.component';
+import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
+import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
+import { EmailService } from './features/Eventmanagement/Services/email.service';
+import { QRCodeService } from './features/Eventmanagement/Services/qrcode.service';
+import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
+import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
+import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +126,27 @@ import { AirecomendationComponent } from './features/menumangment/routes/admin/a
 
 
 
+    InvoiceComponent,
+    InvoiceCreateComponent,
+    InvoiceUpdateComponent,
+
+
+    EventComponent,
+    MenusComponent,
+    AddeventComponent,
+    AddmenuComponent,
+    UpdateeventComponent,
+    UpdatemenuComponent,
+    EventComponent,
+    MenusComponent,
+    AddeventComponent,
+    AddmenuComponent,
+    UpdateeventComponent,
+    UpdatemenuComponent,
+    EventbackComponent,
+    UploadComponent,
+    AjoutComponent,
+    RegistrationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -112,10 +157,18 @@ import { AirecomendationComponent } from './features/menumangment/routes/admin/a
     NgChartsModule,
     NgxPaginationModule,
     CommonModule,
-    
-    
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    EmailService,
+    QRCodeService
+  ],
   bootstrap: [AppComponent],
   exports: [
     FooterComponent,

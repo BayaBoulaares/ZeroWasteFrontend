@@ -1,0 +1,23 @@
+<div class="upload-form">
+    <label>Entity Type:
+      <select [(ngModel)]="entityType">
+        <option value="event">Event</option>
+        <option value="menu">Menu</option>
+      </select>
+    </label>
+  
+    <label>Entity ID:
+      <input type="number" [(ngModel)]="entityId" />
+    </label>
+  
+    <input type="file" (change)="onFileSelected($event)" />
+  
+    <button (click)="onUpload()">Upload</button>
+  
+    <div *ngIf="uploadProgress > 0">
+      Progress: {{ uploadProgress }}%
+    </div>
+  
+    <p>{{ message }}</p>
+  </div>
+  

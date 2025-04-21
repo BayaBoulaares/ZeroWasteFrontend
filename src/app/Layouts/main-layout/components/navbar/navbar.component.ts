@@ -3,6 +3,8 @@ import { CartService } from 'src/app/features/inventorymanagement/Services/cart.
 import { ModalService } from 'src/app/features/userManagement/Services/modal.service';
 import { UserService } from 'src/app/features/userManagement/Services/user.service';
 import { Router } from '@angular/router';
+import { Invoice, InvoiceItem } from 'src/app/features/invoiceManagement/Entities/invoice.model';
+import { InvoiceService } from 'src/app/features/invoiceManagement/Services/invoice.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,8 +20,9 @@ export class NavbarComponent implements OnInit {
     private modalService: ModalService,
     private userService: UserService,
     private cartService: CartService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private invoiceService: InvoiceService
+  ) { }
 
   ngOnInit(): void {
     this.cartService.orderCount$.subscribe(count => {
@@ -31,29 +34,69 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  toggleCartPopup(): void {
-    this.showCartPopup = !this.showCartPopup;
+  orderSuccess = false;
+
+  onPay(): void {
+    if (!this.isLoggedIn()) {
+      this.modalService.openLoginModal();
+      return;
+    }
+
+    const user = this.userService.getUser(); // Assume this returns the logged-in user with an ID
+    const items: InvoiceItem[] = this.orderedProducts.map(item => ({
+      productName: item.productName,
+      productPrice: item.productPrice,
+      quantity: item.orderKg
+    }));
+
+    const invoice: Invoice = {
+      date: new Date().toISOString(),
+      status: 'PAID',
+      user: { id: user.id },
+      items
+    };
+    console.log('Invoice:', invoice); 
+    this.invoiceService.createInvoice(invoice).subscribe({
+      next: () => {
+        this.invoiceService.getInvoicePdf(String(invoice.id)); 
+        this.orderSuccess = true;
+        this.cartService.clearOrders();
+        setTimeout(() => {
+          this.orderSuccess = false;
+          this.toggleCartPopup();
+          this.router.navigate(['/home']);
+        }, 2000);
+      },
+      error: err => {
+        console.error('Failed to create invoice:', err);
+      }
+    });
   }
 
-  openLogin(): void {
-    this.modalService.openLoginModal();
-  }
 
-  isLoggedIn(): boolean {
-    return this.userService.isAuthenticated();
-  }
+toggleCartPopup(): void {
+  this.showCartPopup = !this.showCartPopup;
+}
 
-  logout(): void {
-    this.userService.logOut();
-    this.router.navigate(['/home']);
-  }
-  removeFromCart(productId: number): void {
-    this.cartService.removeOrder(productId);
-  }
+openLogin(): void {
+  this.modalService.openLoginModal();
+}
+
+isLoggedIn(): boolean {
+  return this.userService.isAuthenticated();
+}
+
+logout(): void {
+  this.userService.logOut();
+  this.router.navigate(['/home']);
+}
+removeFromCart(productId: number): void {
+  this.cartService.removeOrder(productId);
+}
   get totalPrice(): number {
-    return this.orderedProducts.reduce((total, item) => {
-      return total + (item.orderKg * item.productPrice);
-    }, 0);
-  }
+  return this.orderedProducts.reduce((total, item) => {
+    return total + (item.orderKg * item.productPrice);
+  }, 0);
+}
   
 }

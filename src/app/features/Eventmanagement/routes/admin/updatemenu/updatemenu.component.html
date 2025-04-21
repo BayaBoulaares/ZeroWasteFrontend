@@ -1,0 +1,136 @@
+<div class="content-wrapper">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Menu Management /</span> Update Menu
+    </h4>
+
+    <div class="row">
+      <div class="col-xl">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Edit Menu</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="menuForm">
+              <div class="mb-3">
+                <label class="form-label" for="name">Menu Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  placeholder="Menu Name"
+                />
+                <div *ngIf="menuForm.get('name')?.invalid && menuForm.get('name')?.touched"
+                  class="text-danger small">
+                  Name is required (minimum 3 characters)
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea
+                  class="form-control"
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Menu Description"
+                ></textarea>
+                <div *ngIf="menuForm.get('description')?.invalid && menuForm.get('description')?.touched"
+                  class="text-danger small">
+                  Description is required (minimum 10 characters)
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="price">Price</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  formControlName="price"
+                  placeholder="Menu Price"
+                  min="0"
+                  step="0.01"
+                />
+                <div *ngIf="menuForm.get('price')?.invalid && menuForm.get('price')?.touched"
+                  class="text-danger small">
+                  Valid price is required
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label" for="category">Category</label>
+                <select
+                  class="form-select"
+                  id="category"
+                  formControlName="category"
+                >
+                  <option value="">Select category</option>
+                  <option value="APPETIZER">Appetizer</option>
+                  <option value="MAIN_COURSE">Main Course</option>
+                  <option value="DESSERT">Dessert</option>
+                  <option value="BEVERAGE">Beverage</option>
+                </select>
+                <div *ngIf="menuForm.get('category')?.invalid && menuForm.get('category')?.touched"
+                  class="text-danger small">
+                  Category is required
+                </div>
+              </div>
+
+              <!-- Current Image Display -->
+              <div class="mb-3" *ngIf="currentImagePath">
+                <label class="form-label">Current Image</label>
+                <div>
+                  <img [src]="base_url + '/uploads/' + currentImagePath" 
+                       alt="Current menu image" 
+                       class="img-thumbnail" 
+                       style="max-width: 200px; max-height: 200px;">
+                </div>
+              </div>
+
+              <!-- Image Upload Field -->
+              <div class="mb-3">
+                <label class="form-label" for="image">Update Menu Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image"
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                />
+                <small class="text-muted">Leave empty to keep current image</small>
+              </div>
+
+              <!-- New Image Preview -->
+              <div class="mb-3" *ngIf="selectedFile && imagePreviewUrl">
+                <label class="form-label">New Image Preview</label>
+                <div>
+                  <img [src]="imagePreviewUrl" 
+                       alt="New menu preview" 
+                       class="img-thumbnail" 
+                       style="max-width: 200px; max-height: 200px;">
+                </div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="menuForm.invalid">
+                  Update Menu
+                </button>
+                <button type="button" 
+                        class="btn btn-secondary" 
+                        routerLink="/admin/eventmanagement/menus">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / Content -->
+  <div class="content-backdrop fade"></div>
+</div>
