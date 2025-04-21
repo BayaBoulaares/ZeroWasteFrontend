@@ -1,0 +1,66 @@
+/* supplier-orders.component.css */
+.chat-container {
+    width: 400px;
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-box {
+    height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    padding-right: 10px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .chat-message {
+    margin-bottom: 10px;
+  }
+  
+  .user-message {
+    text-align: right;
+    color: #1c87c9;
+  }
+  
+  .bot-message {
+    text-align: left;
+    color: #4CAF50;
+  }
+  
+  .message-area {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    width: 15%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .bot-response {
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+  }
+  

@@ -1,0 +1,68 @@
+<div class="container mt-4">
+  <h2>Order Supplier List</h2>
+
+  <table class="table table-bordered mt-3" *ngIf="orders.length > 0; else noOrders">
+    <thead class="table-light">
+      <tr>
+        <th>Command</th>
+        <th>Ingredient</th>
+        <th>Quantity</th>
+        <th>Delivery Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        
+        <td>Commande #{{ order.orderID }}</td>
+        <td>{{ order.ingredient?.ingId || 'N/A' }}</td>
+        <td>{{ order.quantity  || 0}}</td>
+        <td>{{ order.deliveryDate }}</td>
+        <td>
+            <span [ngClass]="{
+              'text-success': order.orderStatus === 'COMPLETED',
+              'text-warning': order.orderStatus === 'PENDING',
+              'text-danger': order.orderStatus === 'CANCELED',
+              'text-info': order.orderStatus === 'CONFIRMED'
+              
+            }">
+              {{ order.orderStatus }}
+            </span>
+        <td>
+          <button class="btn btn-sm btn-primary me-2" (click)="toggleOrderStatus(order)">
+              <!-- Show different text based on orderStatus -->
+              {{ getButtonText(order.orderStatus) }}
+            </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noOrders>
+    <p>No orders found.</p>
+  </ng-template>
+</div>
+<div class="chat-container mt-5">
+  <h3>Chat with Support</h3>
+
+  <div class="chat-box">
+    <div *ngFor="let chat of chatHistory" class="chat-message">
+      <div *ngIf="chat.isUser" class="user-message">
+        <strong>Vous:</strong> {{ chat.message }}
+      </div>
+      <div *ngIf="!chat.isUser" class="bot-message">
+        <strong>Bot:</strong> {{ chat.message }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Input and Send Button -->
+  <div class="message-area">
+    <input [(ngModel)]="message" placeholder="Écris un message..." (keydown.enter)="sendMessage()" />
+    <button (click)="sendMessage()">Envoyer</button>
+  </div>
+
+  <!-- Display Bot Response -->
+  <p *ngIf="response" class="bot-response">Réponse: {{ response }}</p>
+</div>

@@ -1,0 +1,79 @@
+<div class="container mt-4">
+    <h2>Order List</h2>
+   
+    <button [routerLink]="['/admin/orders/ordermanagement/create-order']" class="btn btn-sm btn-primary" aria-label="View Order Details">
+      <i class="bi bi-eye"></i> Add
+    </button>
+    <table class="table table-bordered mt-3" *ngIf="orders.length > 0; else noOrders">
+      <thead class="table-light">
+        <tr>
+          <th>Delivery Date</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Supplier</th>
+          <th>Ingredient</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          
+          <td>{{ order.deliveryDate }}</td>
+          <td>{{ order.quantity  || 0}}</td>
+          <td>
+            <span [ngClass]="{
+              'text-success': order.orderStatus === 'COMPLETED',
+              'text-warning': order.orderStatus === 'PENDING',
+              'text-danger': order.orderStatus === 'CANCELED',
+              'text-info': order.orderStatus === 'CONFIRMED'
+            }">
+              {{ order.orderStatus }}
+            </span>
+          </td>
+          
+          <td>{{ order.supplier?.name || 'N/A' }}</td>
+          <td>{{ order.ingredient?.ingId || 'N/A' }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary me-2" (click)="toggleOrderStatus(order)">
+                <!-- Show different text based on orderStatus -->
+                {{ getButtonText(order.orderStatus) }}
+              </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.orderID!)">
+              Delete
+            </button>
+            <!-- Exemple de liste d'ordres -->
+
+  <!-- Vue d'une commande -->
+  <button [routerLink]="['/admin/orders/ordermanagement/orders/details', order.orderID]" class="btn btn-sm btn-primary" aria-label="View Order Details">
+    <i class="bi bi-eye"></i> View
+  </button>
+
+
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <ng-template #noOrders>
+      <p>No orders found.</p>
+    </ng-template>
+    <div class="card shadow-sm rounded-4 p-3" style="width: 220px; height: 150px;">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="bg-light rounded-circle p-2">
+          <i class="bi bi-bag-check fs-4 text-warning"></i> <!-- Bootstrap icon for Orders -->
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+        </div>
+      </div>
+    
+      <h6 class="mt-2 fw-bold">Orders</h6>
+      <h3>{{ count || 0 }}</h3> <!-- Affiche le nombre de commandes actives du mois -->
+      <small class="text-success">
+        <i class="bi bi-arrow-up"></i> This month’s total
+      </small>
+    </div>
+  </div>    

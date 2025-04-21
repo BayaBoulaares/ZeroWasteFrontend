@@ -29,6 +29,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.9",
     "front-office": "file:",
+    "html2pdf.js": "^0.10.3",
     "ng2-charts": "^4.1.1",
     "ngx-pagination": "^6.0.3",
     "qrcode": "^1.5.4",

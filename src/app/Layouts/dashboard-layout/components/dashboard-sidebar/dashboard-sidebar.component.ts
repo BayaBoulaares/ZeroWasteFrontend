@@ -60,6 +60,18 @@ export class DashboardSidebarComponent {
         { label: 'Menus', link: '/admin/eventmanagement/menus' }
       ]
     },
+    {
+      name: 'orderItems',
+      label: 'Order Management',
+      link: '#',
+      icon: 'bx bx-calendar-event', 
+      submenu: [
+        { label: 'Orders', link: '/admin/orders/ordermanagement/orders' }, 
+        { label: 'Supplier Orders', link: '/admin/orders/ordermanagement/suppliers' },
+      ]
+        
+  
+    },    
   ];
 
   toggleSidebar() {

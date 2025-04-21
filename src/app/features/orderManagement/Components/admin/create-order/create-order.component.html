@@ -1,0 +1,72 @@
+<div class="container">
+  <h2>Create Order</h2>
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+
+    <!-- Delivery Date -->
+    <div class="form-group mb-3">
+      <label for="deliveryDate">Delivery Date</label>
+      <input
+        type="date"
+        id="deliveryDate"
+        formControlName="deliveryDate"
+        class="form-control"
+        [class.is-invalid]="orderForm.get('deliveryDate')?.invalid && orderForm.get('deliveryDate')?.touched"
+        required
+      />
+    </div>
+
+    <!-- Quantity -->
+    <div class="form-group mb-3">
+      <label for="quantity">Quantity</label>
+      <input
+        type="number"
+        id="quantity"
+        formControlName="quantity"
+        class="form-control"
+        min="1"
+        [class.is-invalid]="orderForm.get('quantity')?.invalid && orderForm.get('quantity')?.touched"
+        required
+      />
+    </div>
+
+    <!-- Order Status -->
+    <div class="form-group mb-3">
+      <label for="orderStatus">Status</label>
+<select id="orderStatus" class="form-select" formControlName="orderStatus">
+  <option value="PENDING">Pending</option>
+  <option value="CANCELED">Canceled</option>
+  <option value="CONFIRMED">Confirmed</option>
+  <option value="COMPLETED">Completed</option>
+</select>
+
+      
+    </div>
+
+    <!-- Supplier -->
+    <div class="form-group mb-3">
+      <label for="supplier">Supplier</label>
+      <select id="supplier" formControlName="supplierID" class="form-control" required>
+        <option *ngFor="let supplier of suppliers" [value]="supplier.supplierID">
+          {{ supplier.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Ingredient -->
+    <div class="form-group mb-3">
+      <label for="ingredient">Ingredient</label>
+      <select id="ingredient" formControlName="ingId" class="form-control" required>
+        <option *ngFor="let ingredient of ingredients" [value]="ingredient.ingId">
+          {{ ingredient.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Create Order</button>
+    <button class="btn btn-primary" (click)="router.navigate(['/admin/orders/ordermanagement/orders'])">
+      Back to Order List
+    </button>
+    
+  </form>
+</div>

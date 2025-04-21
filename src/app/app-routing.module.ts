@@ -48,11 +48,17 @@ import { RegistrationModalComponent } from './features/Eventmanagement/routes/ad
 import { MenufrontComponent } from './features/Eventmanagement/routes/main/menufront/menufront.component';
 import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
 import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
+import { ShiftRecommendationComponent } from './features/StaffManagement/routes/admin/shift-recommendation/shift-recommendation.component';
+
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
-import { ShiftRecommendationComponent } from './features/StaffManagement/routes/admin/shift-recommendation/shift-recommendation.component';
-
+import { CreateOrderComponent } from './features/orderManagement/Components/admin/create-order/create-order.component';
+import { OrderListComponent } from './features/orderManagement/Components/admin/order-list/order-list.component';
+import { SupplierListComponent } from './features/orderManagement/Components/admin/supplier-list/supplier-list.component';
+import { SupplierOrdersComponent } from './features/orderManagement/Components/main/supplier-orders/supplier-orders.component';
+import { ChatComponent } from './features/orderManagement/Components/main/chat/chat.component';
+import { OrderDetailsComponent } from './features/orderManagement/Components/admin/order-details/order-details.component';
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
@@ -143,6 +149,19 @@ const routes: Routes = [
           { path: 'event-performance', component: EventPerformanceTrackerComponent}
         ],
       },
+         
+      {
+        path: 'orders/ordermanagement',   // Remarque le chemin modifié ici
+  children: [
+    { path: 'orders', component: OrderListComponent },
+    { path: 'create-order', component: CreateOrderComponent },
+    { path: 'suppliers', component: SupplierListComponent },
+    // Route avec paramètre dynamique :id
+    { path: 'orders/details/:id', component: OrderDetailsComponent }
+         
+          
+        ]
+      },
     ],
   },
 
@@ -159,7 +178,8 @@ const routes: Routes = [
       { path: 'event-menus', component: MenufrontComponent },
       { path: 'menus', component: MenusComponent },
       { path: 'ai-discount-events', component: AiDiscountDashboardComponent },
-
+      { path: 'chat', component: ChatComponent },
+      { path: 'supplier/orders', component: SupplierOrdersComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ],
   },

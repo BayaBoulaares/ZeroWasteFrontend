@@ -5,7 +5,6 @@ import { EventService } from '../../../Services/event.service';
 import { MenusService } from '../../../Services/menus.service';
 import { Menus } from '../../../Entities/menus';
 import { Event } from '../../../Entities/event';
-
 @Component({
   selector: 'app-addevent',
   templateUrl: './addevent.component.html',

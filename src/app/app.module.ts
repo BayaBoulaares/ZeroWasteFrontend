@@ -80,6 +80,12 @@ import { AiDiscountCardComponent } from './features/Eventmanagement/components/a
 import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
 import { EventAnalyticsService } from './features/Eventmanagement/Services/event-analytics.service';
 import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
+import { CreateOrderComponent } from './features/orderManagement/Components/admin/create-order/create-order.component';
+import { OrderListComponent } from './features/orderManagement/Components/admin/order-list/order-list.component';
+import { SupplierListComponent } from './features/orderManagement/Components/admin/supplier-list/supplier-list.component';
+import { SupplierOrdersComponent } from './features/orderManagement/Components/main/supplier-orders/supplier-orders.component';
+import { ChatComponent } from './features/orderManagement/Components/main/chat/chat.component';
+import { OrderDetailsComponent } from './features/orderManagement/Components/admin/order-details/order-details.component';
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
@@ -132,20 +138,9 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     ProductSectionComponent,
     StockStaticComponent,
     AirecomendationComponent,
-
-
-
     InvoiceComponent,
     InvoiceCreateComponent,
     InvoiceUpdateComponent,
-
-
-    EventComponent,
-    MenusComponent,
-    AddeventComponent,
-    AddmenuComponent,
-    UpdateeventComponent,
-    UpdatemenuComponent,
     EventComponent,
     MenusComponent,
     AddeventComponent,
@@ -159,14 +154,21 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     AiDiscountCardComponent,
     AiDiscountDashboardComponent,
     EventPerformanceTrackerComponent,
-    ShiftRecommendationComponent
+    ShiftRecommendationComponent,
+    CreateOrderComponent,
+    OrderListComponent,
+    SupplierListComponent,
+    SupplierOrdersComponent,
+    ChatComponent,
+    OrderDetailsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule,
+    NgChartsModule,
+    NgxPaginationModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
@@ -174,8 +176,6 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     MatIconModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
-    NgChartsModule,
-    NgxPaginationModule,
     CommonModule,
     ReactiveFormsModule,
   ],
