@@ -1,0 +1,111 @@
+<div class="content-wrapper">
+  <!-- Content -->
+
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Meals/</span>Recommend Meals</h4>
+    <!-- Basic Layout & Basic with Icons -->
+    <div class="row">
+      <!-- Basic Layout -->
+      <div class="col-xxl">
+        <div class="card mb-4">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Smart recommandation</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()">
+              <hr />
+              <!-- Saison -->
+              <div class="row mb-3">
+                <label class="form-label" for="season">Season</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input type="text" class="form-control" id="season" placeholder="Winter" name="season"
+                      [(ngModel)]="requestData.season" required />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Événement / Tendance -->
+              <div class="row mb-3">
+                <label class="form-label" for="event">Event</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-trending-up"></i></span>
+                    <input type="text" class="form-control" id="event" placeholder="Ramadan" name="event"
+                      [(ngModel)]="requestData.event" required />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Score de tendance -->
+              <div class="row mb-3">
+                <label class="form-label" for="trend_score">Trend </label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-bar-chart"></i></span>
+                    <input type="number" class="form-control" id="trend_score" placeholder="0.8" name="trend_score"
+                      [(ngModel)]="requestData.trend_score" required />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Habitudes locales -->
+              <div class="row mb-3">
+                <label class="form-label" for="local_habit">Habits</label>
+                <div class="col-sm-10">
+                  <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-world"></i></span>
+                    <input type="text" class="form-control" id="local_habit" 
+                      name="local_habit" [(ngModel)]="requestData.local_habit" required />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bouton de soumission -->
+              <div class="row justify-content-end">
+                <div >
+                  <button type="submit" class="btn btn-primary" >Recommend</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <!-- Basic with Icons -->
+      <div class="col-xxl">
+        <!-- Affichage des recommandations avec style Bootstrap -->
+        <div *ngIf="mealRecommendations.length > 0" class="col-xxl">
+          <div class="card mb-4">
+            <div class="card-header d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">Recommended Meals</h5>
+            </div>
+            <div class="card-body">
+              <div class="col-lg-6 mb-4 mb-xl-0">
+                <small class="text-light fw-semibold">Probabilitis</small>
+                <div class="demo-inline-spacing mt-3">
+                  <ol class="list-group list-group-numbered">
+                    <li *ngFor="let meal of mealRecommendations"
+                     class="list-group-item">
+                      {{ meal.meal }}
+                      <span class="badge bg-info" style="position: absolute; top: 10px; right: 6px; z-index: 10;">{{ meal.probability }} %</span>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Affichage des erreurs avec style Bootstrap -->
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- / Content -->
+
+</div>

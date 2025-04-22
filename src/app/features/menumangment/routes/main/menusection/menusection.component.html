@@ -32,20 +32,16 @@
             <h4>{{ meal.name }}</h4>
             <p class="ingredients">{{ meal.description }}</p>
             <p class="price">{{ meal.price }} <span class="currency">TND</span></p>
-            <!-- ⭐ Section Rating -->
+            <!-- Rating Stars -->
             <div class="rating text-center mt-2">
               <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-                <i
-                  class="fa"
-                  [ngClass]="{
-                    'fa-star': star <= (meal.rating || 0),
-                    'fa-star-o': star > (meal.rating || 0)
-                  }"
-                  (click)="rateMeal(meal, star)"
-                  style="cursor:pointer; color:gold;"></i>
+                <i class="fa" [ngClass]="{
+        'fa-star': star <= (meal.averageRating ?? 0),
+        'fa-star-o': star > (meal.averageRating ?? 0)
+      }" (click)="rateMeal(meal, star)" style="cursor:pointer; color:gold;"></i>
               </ng-container>
+              <div class="mt-1 small text-muted">Avg: {{ meal.averageRating?.toFixed(1) }}/5</div>
             </div>
-
             <button class="btn-low-radius" (click)="orderMeal(meal)">Order</button>
           </div>
         </div>
@@ -56,4 +52,3 @@
   </div>
 
 </section>
-

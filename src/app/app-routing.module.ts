@@ -33,6 +33,7 @@ import { StockTransactionComponent } from './features/inventorymanagement/Compon
 import { StockTransactionFormComponent } from './features/inventorymanagement/Components/admin/stock-transaction-form/stock-transaction-form.component';
 import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
 import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
+import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
 
 
 import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
@@ -47,6 +48,9 @@ import { RegistrationModalComponent } from './features/Eventmanagement/routes/ad
 import { MenufrontComponent } from './features/Eventmanagement/routes/main/menufront/menufront.component';
 import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
 import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
+import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
+import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
+import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -58,13 +62,13 @@ const routes: Routes = [
     path: 'reset-password',
     component: ResetPasswordComponent
   },
-  
+
   {
     path: 'admin',
     component: DashboardLayoutComponent,
     // canActivate: [adminGuard],
     children: [
-      {path:'dashboard',component:DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent },
       {
         path: 'mealsmanagement',
         children: [
@@ -74,10 +78,11 @@ const routes: Routes = [
           { path: 'meals/update/:id', component: UpdateMealComponent },
           { path: 'ingredients/add', component: AddIngredientComponent },
           { path: 'ingredients/update/:id', component: UpdateIngredientComponent },
+          { path: 'meals/recemendation', component: AirecomendationComponent }
 
         ],
-        
-      }, 
+
+      },
       {
         path: 'staffmanagement',
         children: [
@@ -103,17 +108,25 @@ const routes: Routes = [
       { path: 'usersmanagement/update/:id', component: UserUpdateComponent },
       { path: 'usersmanagement/add', component: UserCreateComponent },
 
-      { path: 'inventory',
+      {
+        path: 'inventory',
         children: [
-          {path: 'product', component: InventoryProductComponent},
-          {path: 'product/add', component: ProductFormComponent},
-          {path: 'product/update/:id', component: ProductFormComponent},
-          {path: 'stockTransaction', component: StockTransactionComponent},
-          {path: 'stockTransaction/add', component: StockTransactionFormComponent},
-          {path: 'stockTransaction/update/:id', component: StockTransactionFormComponent},
-          {path: 'stockStatic', component: StockStaticComponent},
+          { path: 'product', component: InventoryProductComponent },
+          { path: 'product/add', component: ProductFormComponent },
+          { path: 'product/update/:id', component: ProductFormComponent },
+          { path: 'stockTransaction', component: StockTransactionComponent },
+          { path: 'stockTransaction/add', component: StockTransactionFormComponent },
+          { path: 'stockTransaction/update/:id', component: StockTransactionFormComponent },
+          { path: 'stockStatic', component: StockStaticComponent },
           // {path: 'stockTransaction'},
-    ]},
+        ]
+      },
+      {
+        path: 'invoice',
+        component: InvoiceComponent
+      },
+      { path: 'invoices/add', component: InvoiceCreateComponent },
+      { path: 'invoices/update/:id', component: InvoiceUpdateComponent },
       {
         path: 'eventmanagement',
         children: [
@@ -130,7 +143,7 @@ const routes: Routes = [
       },
     ],
   },
-  
+
   {
     path: '',
     component: MainLayoutComponent,
@@ -155,4 +168,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -60,6 +60,7 @@ import { EmployeeShiftsComponent } from './features/StaffManagement/routes/main/
 import { EmployeeTrainingComponent } from './features/StaffManagement/routes/main/employee-training/employee-training.component';
 import { EmployeeShiftRequestsComponent } from './features/StaffManagement/routes/main/employee-shift-requests/employee-shift-requests.component';
 import { StaffDashboardComponent } from './features/StaffManagement/routes/admin/staff-dashboard/staff-dashboard.component';
+import { AirecomendationComponent } from './features/menumangment/routes/admin/airecomendation/airecomendation.component';
 import { EventComponent } from './features/Eventmanagement/routes/admin/event/event.component';
 import { MenusComponent } from './features/Eventmanagement/routes/admin/menus/menus.component';
 import { AddeventComponent } from './features/Eventmanagement/routes/admin/addevent/addevent.component';
@@ -79,6 +80,9 @@ import { AiDiscountCardComponent } from './features/Eventmanagement/components/a
 import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
 import { EventAnalyticsService } from './features/Eventmanagement/Services/event-analytics.service';
 import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
+import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
+import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
+import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 
 @NgModule({
   declarations: [
@@ -126,6 +130,21 @@ import { EventPerformanceTrackerComponent } from './features/Eventmanagement/com
     StockTransactionFormComponent,
     ProductSectionComponent,
     StockStaticComponent,
+    AirecomendationComponent,
+
+
+
+    InvoiceComponent,
+    InvoiceCreateComponent,
+    InvoiceUpdateComponent,
+
+
+    EventComponent,
+    MenusComponent,
+    AddeventComponent,
+    AddmenuComponent,
+    UpdateeventComponent,
+    UpdatemenuComponent,
     EventComponent,
     MenusComponent,
     AddeventComponent,

@@ -24,7 +24,6 @@
               <th>Unit</th>
               <th>Required</th>
               <th>Price per unit</th>
-              <th>Stock</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -36,7 +35,6 @@
               <td>{{ing.unit}}</td>
               <td>{{ing.required}}</td>
               <td>{{ing.pricePerUnit}}</td>
-              <td>{{ing.stock}}</td>
               <td>
                 <span [class]="getStatusClass(ing.status)">
                   {{ ing.status }}

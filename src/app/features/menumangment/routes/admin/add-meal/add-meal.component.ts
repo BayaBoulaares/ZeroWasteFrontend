@@ -20,6 +20,8 @@ export class AddMealComponent  implements OnInit {
   ingredientsList: Ingredients[] = []; 
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;  
+  ingredientErrors: Map<number, string> = new Map();
+
   constructor(private fb: FormBuilder,private mealservice: MealsService,private router: Router) {
     this.mealForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -137,29 +139,36 @@ export class AddMealComponent  implements OnInit {
 
     }
     onQuantityChange(ingredientId: number | undefined, event: Event): void {
-      const inputElement = event.target as HTMLInputElement;  // Cast explicitement l'élément en HTMLInputElement
-      const value = inputElement?.value;  // Utilisation sécurisée de value
+      const inputElement = event.target as HTMLInputElement;
+      const value = inputElement?.value;
     
       if (ingredientId !== undefined && value !== undefined) {
         const parsedQuantity = parseInt(value, 10);
+        const ingredient = this.allIngredients.find(ing => ing.ingId === ingredientId);
     
-        // Vérifiez si la quantité saisie est valide et si elle ne dépasse pas la quantité en base de données
-        const ingredient = this.allIngredients.find(ingredient => ingredient.ingId === ingredientId);
-        
         if (ingredient && parsedQuantity >= 0 && parsedQuantity <= ingredient.quantity) {
+          this.ingredientErrors.delete(ingredientId); // Efface l'erreur si tout est bon
+    
           if (parsedQuantity > 0) {
-            this.selectedIngredients.set(ingredientId, parsedQuantity);  // Stocker la quantité sélectionnée
+            this.selectedIngredients.set(ingredientId, parsedQuantity);
           } else {
-            this.selectedIngredients.delete(ingredientId);  // Supprimer si la quantité est 0 ou moins
+            this.selectedIngredients.delete(ingredientId);
           }
         } else {
-          // Si la quantité saisie est invalide, remettez la valeur à la quantité maximale disponible
-          inputElement.value = ingredient?.quantity.toString() || '0';  // Réinitialiser la valeur à la quantité disponible
-          alert(`La quantité ne peut pas être supérieure à ${ingredient?.quantity} et ne doit pas être négative.`);
+          inputElement.value = ingredient?.quantity.toString() || '0';
+    
+          this.ingredientErrors.set(
+            ingredientId,
+            `La quantité doit être comprise entre 1 et ${ingredient?.quantity}`
+          );
         }
       }
     }
     
+    getRemainingQuantity(ingredient: Ingredients): number {
+      const selectedQuantity = this.selectedIngredients.get(ingredient.ingId) || 0;
+      return ingredient.quantity - selectedQuantity;
+    }
     
     
     
