@@ -1,0 +1,54 @@
+<div class="voice-search-container">
+  <div class="voice-search-wrapper">
+    <!-- Main voice button -->
+    <button 
+      class="btn voice-btn" 
+      [ngClass]="{
+        'recording': isRecording, 
+        'processing': isProcessing,
+        'idle': !isRecording && !isProcessing
+      }" 
+      (click)="startVoiceSearch()" 
+      [disabled]="isProcessing"
+      [title]="isRecording ? 'Stop listening' : (isProcessing ? 'Processing your voice...' : 'Search by voice')">
+      <div class="btn-content">
+        <i class="bx" [ngClass]="isRecording ? 'bx-microphone' : 'bx-microphone'"></i>
+        <span class="pulse-ring" *ngIf="isRecording"></span>
+      </div>
+    </button>
+    
+    <!-- Countdown timer and recording indicator -->
+    <div class="recording-indicators" *ngIf="isRecording">
+      <div class="countdown-timer">
+        <span>{{ countdownValue }}s</span>
+      </div>
+      
+      <!-- Voice level visualization -->
+      <div class="voice-levels">
+        <div class="level" *ngFor="let i of [0,1,2,3,4]" 
+             [ngClass]="{'active': recordingVolume * 5 > i}">
+        </div>
+      </div>
+      
+      <!-- Speak now prompt -->
+      <div class="speak-prompt">
+        <span>Speak now...</span>
+      </div>
+    </div>
+    
+
+  
+  <div *ngIf="transcript" class="transcript-container mt-2">
+    <div class="transcript-text">
+      <i class="bx bx-check-circle text-success me-1"></i>
+      "{{ transcript }}"
+    </div>
+  </div>
+  
+  <div *ngIf="error" class="error-container mt-2">
+    <div class="error-text">
+      <i class="bx bx-error-circle text-danger me-1"></i>
+      {{ error }}
+    </div>
+  </div>
+</div>

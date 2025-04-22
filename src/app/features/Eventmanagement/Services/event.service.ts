@@ -144,6 +144,7 @@ export class EventService {
     formData.append('startDate', event.startDate);
     formData.append('endDate', event.endDate);
     formData.append('valeurRemise', event.valeurRemise.toString());
+    formData.append('Nbr', (event.Nbr || 0).toString()); // Add Nbr parameter
     if (event.menus) {
       if (event.menus?.menuId !== undefined) {
         formData.append('menuId', event.menus.menuId.toString());

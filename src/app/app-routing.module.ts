@@ -45,6 +45,8 @@ import { EventbackComponent } from './features/Eventmanagement/routes/admin/even
 import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
 import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
 import { MenufrontComponent } from './features/Eventmanagement/routes/main/menufront/menufront.component';
+import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
+import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -122,7 +124,8 @@ const routes: Routes = [
           { path: 'menus/update/:id', component: UpdatemenuComponent },
           { path: 'menus', component: MenusComponent },
           { path: 'events', component: EventbackComponent },
-          { path: 'events/registration', component: RegistrationModalComponent}
+          { path: 'events/registration', component: RegistrationModalComponent},
+          { path: 'event-performance', component: EventPerformanceTrackerComponent}
         ],
       },
     ],
@@ -140,6 +143,7 @@ const routes: Routes = [
       { path: 'events', component: EventComponent },
       { path: 'event-menus', component: MenufrontComponent },
       { path: 'menus', component: MenusComponent },
+      { path: 'ai-discount-events', component: AiDiscountDashboardComponent },
 
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ],

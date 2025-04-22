@@ -30,6 +30,7 @@ export class UpdateeventComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       valeurRemise: [0, [Validators.min(0), Validators.max(100)]],
+      nbr: [0, [Validators.required, Validators.min(1)]],
       menuId: [''],
       image: [null]
     });
@@ -65,6 +66,7 @@ export class UpdateeventComponent implements OnInit {
           startDate: this.formatDate(event.startDate),
           endDate: this.formatDate(event.endDate),
           valeurRemise: event.valeurRemise,
+          nbr: event.Nbr,
           menuId: event.menus?.menuId
         });
         if (event.imagePath) {
@@ -105,7 +107,7 @@ export class UpdateeventComponent implements OnInit {
         new Date(formValue.endDate).toISOString(),
         '', // imagePath
         formValue.valeurRemise,
-        formValue.Nbr,
+        formValue.nbr, // Use the nbr from the form
         formValue.menuId ? { menuId: formValue.menuId } as Menus : undefined,
         
       );

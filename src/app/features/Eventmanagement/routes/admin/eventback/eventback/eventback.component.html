@@ -2,11 +2,38 @@
   <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h4 class="fw-bold py-3 mb-0"><span class="text-muted fw-light"></span>Event Management</h4>
-      <button class="btn btn-primary" (click)="addNewEvent()">
-        <i class="bx bx-plus me-1"></i> Add New Event
-      </button>
+      <div class="d-flex gap-2">
+        <button class="btn btn-info" routerLink="/admin/eventmanagement/event-performance">
+          <i class="bx bx-line-chart me-1"></i> AI Event Performance
+        </button>
+        <button class="btn btn-primary" (click)="addNewEvent()">
+          <i class="bx bx-plus me-1"></i> Add New Event
+        </button>
+      </div>
     </div>
 
+    <!-- Search and Voice Search -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="input-group me-3">
+            <span class="input-group-text"><i class="bx bx-search"></i></span>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Search events by title, description, or cuisine..." 
+              [(ngModel)]="searchQuery"
+              (input)="filterEvents()"
+            >
+            <button class="btn btn-outline-secondary" type="button" (click)="searchQuery = ''; filterEvents()">
+              <i class="bx bx-x"></i>
+            </button>
+          </div>
+          <app-voice-search (searchQuery)="handleVoiceSearch($event)"></app-voice-search>
+        </div>
+      </div>
+    </div>
+    
     <!-- Alert for errors -->
     <div *ngIf="error" class="alert alert-danger" role="alert">
       {{ error }}
@@ -21,7 +48,7 @@
 
     <!-- Event cards -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col" *ngFor="let event of events">
+      <div class="col" *ngFor="let event of filteredEvents">
         <div class="card h-100">
           <img [src]="getImageUrl(event.imagePath)" 
                class="card-img-top" 
@@ -37,6 +64,59 @@
                 To: {{ event.endDate | date:'medium' }}
               </small>
             </p>
+            
+            <!-- AI Discount Information -->
+            <div class="discount-info mb-3" *ngIf="event.menus?.price">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Pricing</h6>
+                <div class="d-flex align-items-center">
+                  <!-- Base discount badge -->
+                  <span class="badge bg-secondary me-2" *ngIf="event.valeurRemise > 0">
+                    Base: {{ event.valeurRemise }}%
+                  </span>
+                  
+                  <!-- AI discount badge -->
+                  <span class="badge" [ngClass]="getAiDiscountInfo(event).recommendationSource === 'ai' ? 'bg-success' : 'bg-info'" *ngIf="hasAiDiscount(event)">
+                    <i [ngClass]="getAiDiscountInfo(event).recommendationSource === 'ai' ? 'bx bx-brain' : 'bx bx-time'" class="me-1"></i>
+                    AI: {{ getAiDiscountInfo(event).aiOnlyDiscount }}%
+                  </span>
+                </div>
+              </div>
+              
+              <div class="price-details p-2 border rounded">
+                <!-- Original price -->
+                <div class="d-flex justify-content-between">
+                  <span>Original price:</span>
+                  <span>{{ getAiDiscountInfo(event).originalPrice | currency }}</span>
+                </div>
+                
+                <!-- Discounted price -->
+                <div class="d-flex justify-content-between fw-bold">
+                  <span>Discounted price:</span>
+                  <span class="text-danger">{{ getAiDiscountInfo(event).discountedPrice | currency }}</span>
+                </div>
+                
+                <!-- Savings -->
+                <div class="d-flex justify-content-between text-success" *ngIf="getAiDiscountInfo(event).dynamicDiscount > 0">
+                  <span>Savings:</span>
+                  <span>{{ getAiDiscountInfo(event).savings | currency }}</span>
+                </div>
+                
+                <!-- AI explanation -->
+                <div class="mt-2 small text-muted" *ngIf="hasAiDiscount(event)">
+                  <i class="bx bx-info-circle me-1"></i>
+                  {{ getAiDiscountInfo(event).explanation }}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Available places -->
+            <div class="mb-3">
+              <span class="badge" [ngClass]="{'bg-success': event.Nbr > 10, 'bg-warning': event.Nbr <= 10 && event.Nbr > 0, 'bg-danger': event.Nbr <= 0}">
+                {{ event.Nbr > 0 ? event.Nbr + ' places available' : 'Sold out' }}
+              </span>
+            </div>
+            
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button class="btn btn-sm btn-outline-primary" (click)="editEvent(event.eventid || 0)">
@@ -56,8 +136,13 @@
     </div>
 
     <!-- No events message -->
-    <div *ngIf="!loading && events.length === 0" class="alert alert-info" role="alert">
+    <div *ngIf="!loading && filteredEvents.length === 0 && events.length === 0" class="alert alert-info" role="alert">
       No events found. Click the "Add New Event" button to create one.
+    </div>
+    
+    <!-- No search results message -->
+    <div *ngIf="!loading && filteredEvents.length === 0 && events.length > 0" class="alert alert-info" role="alert">
+      No events match your search "{{ searchQuery }}". Try a different search term or clear the search.
     </div>
   </div>
 </div>

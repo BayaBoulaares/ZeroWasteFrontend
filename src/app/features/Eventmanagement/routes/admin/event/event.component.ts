@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BASE_URL } from 'src/consts';
 import { EventService } from '../../../Services/event.service';
+import { AiDiscountService } from '../../../Services/ai-discount.service';
 import { Event } from '../../../Entities/event';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,7 @@ export class EventComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private aiDiscountService: AiDiscountService,
     private router: Router,
     private dialog: MatDialog
   ) {}
@@ -76,22 +78,184 @@ export class EventComponent implements OnInit {
     );
   }
 
+  /**
+   * Calculate Levenshtein distance between two strings
+   * This measures how many single-character edits are needed to change one string into another
+   */
+  private levenshteinDistance(a: string, b: string): number {
+    const matrix: number[][] = [];
+    
+    // Initialize the matrix
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+    
+    for (let i = 0; i <= a.length; i++) {
+      matrix[0][i] = i;
+    }
+    
+    // Fill the matrix
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1,     // insertion
+            matrix[i - 1][j] + 1      // deletion
+          );
+        }
+      }
+    }
+    
+    return matrix[b.length][a.length];
+  }
+  
+  /**
+   * Check if two strings are similar (differ by at most maxDistance characters)
+   */
+  private areSimilar(a: string, b: string, maxDistance: number = 2): boolean {
+    // If either string is empty, they're not similar
+    if (!a || !b) return false;
+    
+    // If one string contains the other, they're similar
+    if (a.includes(b) || b.includes(a)) return true;
+    
+    // For very short words, use a smaller max distance
+    const actualMaxDistance = Math.min(maxDistance, Math.floor(Math.max(a.length, b.length) / 2));
+    
+    // Calculate Levenshtein distance
+    const distance = this.levenshteinDistance(a, b);
+    return distance <= actualMaxDistance;
+  }
+  
+  /**
+   * Check if any word in text is similar to any word in the search term
+   */
+  private hasSimilarWord(text: string, searchTerm: string): boolean {
+    if (!text || !searchTerm) return false;
+    
+    const textWords = text.toLowerCase().split(/\s+/);
+    const searchWords = searchTerm.toLowerCase().split(/\s+/);
+    
+    for (const searchWord of searchWords) {
+      // Skip very short words (less than 3 characters)
+      if (searchWord.length < 3) continue;
+      
+      for (const textWord of textWords) {
+        // Skip very short words (less than 3 characters)
+        if (textWord.length < 3) continue;
+        
+        if (this.areSimilar(searchWord, textWord)) {
+          console.log(`Similar words found: "${searchWord}" ~ "${textWord}"`);
+          return true;
+        }
+      }
+    }
+    
+    return false;
+  }
+
   searchEvents(): void {
+    console.log('Searching for:', this.searchTerm);
+    
+    // If search term is empty, reset to all events
     if (!this.searchTerm.trim()) {
-      this.loadEvents();
+      this.filterAndCategorizeEvents(this.events);
       return;
     }
 
-    this.eventService.searchEvents(this.searchTerm).subscribe({
-      next: (events: Event[]) => {
-        this.events = events;
-        this.categorizeEvents();
-      },
-      error: (error: any) => {
-        console.error('Error searching events:', error);
-        this.error = 'Failed to search events';
+    const searchTermLower = this.searchTerm.toLowerCase();
+    console.log('Search term (lowercase):', searchTermLower);
+    
+    // First check for availability keywords
+    if (searchTermLower.includes('available') || 
+        searchTermLower.includes('place') || 
+        searchTermLower.includes('spot') || 
+        searchTermLower.includes('ticket') || 
+        searchTermLower.includes('seat') || 
+        searchTermLower.includes('register')) {
+      
+      // Filter events that have available places
+      const availableEvents = this.events.filter(event => {
+        const places = this.getPlaces(event);
+        return places > 0;
+      });
+      
+      this.filterAndCategorizeEvents(availableEvents);
+      return;
+    }
+    
+    // Filter events based on search term
+    let filteredEvents = this.events.filter(event => {
+      // Get all the searchable content from the event
+      const eventContent = [
+        event.title || '',
+        event.description || '',
+        event.menus?.name || ''
+      ].join(' ').toLowerCase();
+      
+      // First check for exact matches
+      if (eventContent.includes(searchTermLower)) {
+        return true;
       }
+      
+      // If no exact match, check for fuzzy matches
+      const searchWords = searchTermLower.split(/\s+/);
+      const contentWords = eventContent.split(/\s+/);
+      
+      // For each search word, check if there's a similar word in the content
+      for (const searchWord of searchWords) {
+        // Skip very short words
+        if (searchWord.length < 3) continue;
+        
+        for (const contentWord of contentWords) {
+          // Skip very short words
+          if (contentWord.length < 3) continue;
+          
+          // If words are similar, consider it a match
+          if (this.areSimilar(searchWord, contentWord)) {
+            return true;
+          }
+        }
+      }
+      
+      return false;
     });
+
+    console.log('Fuzzy search found events:', filteredEvents.length);
+    this.filterAndCategorizeEvents(filteredEvents);
+  }
+  
+  /**
+   * Handle voice search query from the voice search component
+   * @param query The voice search query
+   */
+  handleVoiceSearch(query: string): void {
+    console.log('Voice search query received:', query);
+    this.searchTerm = query;
+    this.searchEvents();
+  }
+  
+  /**
+   * Use an alternative search term suggested in the "Did you mean" section
+   * @param alternative The alternative search term to use
+   */
+  useAlternativeSearch(alternative: string): void {
+    this.searchTerm = alternative;
+    this.searchEvents();
+  }
+  
+
+  
+  /**
+   * Filter and categorize events into upcoming and current
+   * @param events The events to filter and categorize
+   */
+  private filterAndCategorizeEvents(events: Event[]): void {
+    this.events = events;
+    this.categorizeEvents();
   }
 
   calculateDaysLeft(endDateString: string): number {
@@ -108,29 +272,43 @@ export class EventComponent implements OnInit {
     hasDiscount: boolean;
     discountPercentage: string;
     menuName: string;
+    isAiDiscounted: boolean;
+    aiExplanation: string;
+    badgeClass: string;
   } {
+    const discountInfo = this.getAiDiscountInfo(event);
     const menu = event.menus;
-    const original = menu?.price || 0;
     const menuName = menu?.name || 'No menu selected';
-    const discount = event.valeurRemise || 0;
     
-    const discounted = this.calculateDiscountedPrice(original, discount);
-    const savings = original - discounted;
-
+    // Calculate the total discount percentage (base + AI)
+    const totalDiscount = discountInfo.dynamicDiscount;
+    
     return {
-      original: original.toFixed(2),
-      discounted: discounted.toFixed(2),
-      savings: savings.toFixed(2),
-      hasDiscount: discount > 0,
-      discountPercentage: discount.toFixed(0),
-      menuName: menuName
+      original: discountInfo.originalPrice.toFixed(2),
+      discounted: discountInfo.discountedPrice.toFixed(2),
+      savings: discountInfo.savings.toFixed(2),
+      hasDiscount: totalDiscount > 0,
+      discountPercentage: totalDiscount.toFixed(0),
+      menuName: menuName,
+      isAiDiscounted: discountInfo.isAiDiscounted,
+      aiExplanation: discountInfo.explanation,
+      badgeClass: discountInfo.badgeClass
     };
   }
 
   calculateDiscountedPrice(price: number, discount: number): number {
-    if (!price || price <= 0) return 0;
-    if (!discount || discount <= 0) return price;
-    return price - (price * discount / 100);
+    return this.aiDiscountService.calculateDiscountedPrice(price, discount);
+  }
+  
+  // Get AI discount information for an event
+  getAiDiscountInfo(event: Event) {
+    return this.aiDiscountService.getDiscountInfo(event);
+  }
+  
+  // Check if event has AI-powered discount
+  hasAiDiscount(event: Event): boolean {
+    const discountInfo = this.getAiDiscountInfo(event);
+    return discountInfo.isAiDiscounted;
   }
 
   getImageUrl(imagePath: string | undefined): string {

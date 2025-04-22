@@ -3,17 +3,9 @@
   margin-bottom: 2rem;
 }
 
-.search-wrapper {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
-  padding: 0.5rem;
-  transition: all 0.3s ease;
-}
-
-.search-wrapper:focus-within {
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
-  transform: translateY(-2px);
+.search-menu-section {
+  padding: 1rem !important;
+  margin-bottom: 0 !important;
 }
 
 .search-input-group {
@@ -21,20 +13,42 @@
   background: transparent;
 }
 
-.search-icon-wrapper {
-  background-color: #f1f8e9;
+/* Search button styling */
+.search-btn {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 2px 10px rgba(76, 175, 80, 0.2);
   border: none;
-  border-radius: 8px 0 0 8px;
-  color: #4caf50;
-  padding-left: 1rem;
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Fix alignment with voice recorder */
+.input-group-append {
+  display: flex;
+  align-items: center;
+}
+
+.search-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  background-color: #43a047;
 }
 
 .search-input {
   border: none;
-  border-radius: 0;
+  border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   box-shadow: none !important;
+  background-color: white;
 }
 
 .search-input:focus {
@@ -49,12 +63,29 @@
   border-radius: 0 8px 8px 0;
   padding: 0.5rem 1.5rem;
   font-weight: 500;
-  transition: all 0.3s ease;
 }
 
 .btn-search:hover {
   background-color: #388e3c;
   box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Green styling for voice button */
+.green-voice-btn ::ng-deep .voice-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.green-voice-btn ::ng-deep .voice-btn:hover {
+  background-color: #43a047;
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+}
+
+.green-voice-btn ::ng-deep .voice-btn.recording {
+  background-color: #e53935;
+  box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
 }
 
 /* Main container styling */

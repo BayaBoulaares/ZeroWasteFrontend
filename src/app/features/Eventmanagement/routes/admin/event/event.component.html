@@ -3,11 +3,9 @@
   <div class="search-container mb-4">
     <div class="row">
       <div class="col-md-8 col-lg-6 mx-auto">
-        <div class="search-wrapper">
+        <div class="menu-section search-menu-section">
           <div class="input-group search-input-group">
-            <span class="input-group-text search-icon-wrapper">
-              <i class="fas fa-search"></i>
-            </span>
+            <!-- Search input -->
             <input 
               type="text" 
               class="form-control search-input" 
@@ -16,10 +14,15 @@
               (keyup.enter)="searchEvents()"
               aria-label="Search events"
             >
-            <button class="btn btn-search" (click)="searchEvents()">
-              <i class="fas fa-search d-md-none"></i>
-              <span class="d-none d-md-inline">Search</span>
-            </button>
+            <!-- Button container for perfect alignment -->
+            <div class="button-container d-flex align-items-center">
+              <!-- Search button -->
+              <button class="btn search-btn me-2" (click)="searchEvents()">
+                <i class="bi bi-search" style="font-size: 1.5rem;"></i>
+              </button>
+              <!-- Voice search on the right -->
+              <app-voice-search (searchQuery)="handleVoiceSearch($event)" class="green-voice-btn"></app-voice-search>
+            </div>
           </div>
         </div>
       </div>
@@ -53,9 +56,14 @@
                 <h6>{{ getPriceDisplay(event).menuName }}</h6>
               </div>
               <div class="price-section">
-                <div *ngIf="getPriceDisplay(event).hasDiscount" class="discount-badge">
-                  {{ getPriceDisplay(event).discountPercentage }}% OFF
+                <!-- Total discount badge -->
+                <div class="discount-badges d-flex mb-2">
+                  <div *ngIf="getPriceDisplay(event).hasDiscount" class="discount-badge ai-badge" [ngClass]="getPriceDisplay(event).badgeClass">
+                    <i class="fas fa-tag me-1"></i>
+                    {{ getPriceDisplay(event).discountPercentage }}% OFF
+                  </div>
                 </div>
+                
                 <div class="price-row">
                   <span class="price-label">Original Price:</span>
                   <span class="original-price">${{ getPriceDisplay(event).original }}</span>
@@ -67,6 +75,13 @@
                 <div *ngIf="getPriceDisplay(event).hasDiscount" class="price-row">
                   <span class="price-label">You Save:</span>
                   <span class="savings">${{ getPriceDisplay(event).savings }}</span>
+                </div>
+                
+                <!-- AI explanation -->
+                <div *ngIf="getPriceDisplay(event).isAiDiscounted" class="ai-explanation mt-2 small" 
+                     [ngClass]="{'text-success': +getPriceDisplay(event).discountPercentage > +(event.valeurRemise || 0), 'text-info': +getPriceDisplay(event).discountPercentage <= +(event.valeurRemise || 0)}">
+                  <i class="fas fa-robot me-1"></i>
+                  {{ getPriceDisplay(event).aiExplanation }}
                 </div>
               </div>
               <div class="event-dates">
@@ -113,9 +128,14 @@
                 <h6>{{ getPriceDisplay(event).menuName }}</h6>
               </div>
               <div class="price-section">
-                <div *ngIf="getPriceDisplay(event).hasDiscount" class="discount-badge">
-                  {{ getPriceDisplay(event).discountPercentage }}% OFF
+                <!-- Total discount badge -->
+                <div class="discount-badges d-flex mb-2">
+                  <div *ngIf="getPriceDisplay(event).hasDiscount" class="discount-badge ai-badge" [ngClass]="getPriceDisplay(event).badgeClass">
+                    <i class="fas fa-tag me-1"></i>
+                    {{ getPriceDisplay(event).discountPercentage }}% OFF
+                  </div>
                 </div>
+                
                 <div class="price-row">
                   <span class="price-label">Original Price:</span>
                   <span class="original-price">${{ getPriceDisplay(event).original }}</span>
@@ -127,6 +147,13 @@
                 <div *ngIf="getPriceDisplay(event).hasDiscount" class="price-row">
                   <span class="price-label">You Save:</span>
                   <span class="savings">${{ getPriceDisplay(event).savings }}</span>
+                </div>
+                
+                <!-- AI explanation -->
+                <div *ngIf="getPriceDisplay(event).isAiDiscounted" class="ai-explanation mt-2 small" 
+                     [ngClass]="{'text-success': +getPriceDisplay(event).discountPercentage > +(event.valeurRemise || 0), 'text-info': +getPriceDisplay(event).discountPercentage <= +(event.valeurRemise || 0)}">
+                  <i class="fas fa-robot me-1"></i>
+                  {{ getPriceDisplay(event).aiExplanation }}
                 </div>
               </div>
               <div class="event-dates">

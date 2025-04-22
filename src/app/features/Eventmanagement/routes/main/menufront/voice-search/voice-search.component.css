@@ -1,0 +1,266 @@
+.voice-search-container {
+  display: inline-block;
+  position: relative;
+}
+
+.voice-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.voice-search-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.voice-btn {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 2px 10px rgba(76, 175, 80, 0.2);
+  border: none;
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.voice-btn i {
+  font-size: 1.5rem;
+  z-index: 2;
+}
+
+.voice-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  background-color: #43a047;
+}
+
+.voice-btn:active {
+  transform: scale(0.95);
+}
+
+
+
+/* Button states */
+.voice-btn.idle {
+  background-color: #4caf50;
+  color: white;
+}
+
+.voice-btn.recording {
+  background-color: #e53935;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.voice-btn.processing {
+  background-color: #2e7d32;
+  color: white;
+}
+
+/* Pulse animation for recording state */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(234, 67, 53, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(234, 67, 53, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(234, 67, 53, 0);
+  }
+}
+
+/* Pulse ring animation */
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(234, 67, 53, 0.4);
+  opacity: 0.8;
+  z-index: 1;
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+/* Recording indicators */
+.recording-indicators {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Countdown timer */
+.countdown-timer {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 8px;
+}
+
+/* Voice level visualization */
+.voice-levels {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 30px;
+  width: 100%;
+  margin: 8px 0;
+}
+
+.level {
+  width: 8px;
+  height: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 3px;
+  border-radius: 2px;
+  transition: all 0.1s ease;
+}
+
+.level.active {
+  background-color: #EA4335;
+  box-shadow: 0 0 8px rgba(234, 67, 53, 0.7);
+}
+
+.level:nth-child(1).active { height: 5px; }
+.level:nth-child(2).active { height: 10px; }
+.level:nth-child(3).active { height: 15px; }
+.level:nth-child(4).active { height: 20px; }
+.level:nth-child(5).active { height: 25px; }
+
+/* Speak now prompt */
+.speak-prompt {
+  color: white;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  animation: pulse-text 1.5s infinite;
+}
+
+/* Manual input styles */
+.manual-input {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  margin-top: 10px;
+  animation: fade-in 0.3s ease-out;
+  z-index: 100;
+}
+
+.manual-input .input-group {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.manual-input .form-control {
+  border: none;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+}
+
+.manual-input .btn {
+  background-color: #4285F4;
+  border: none;
+  padding: 0 15px;
+}
+
+.manual-input .btn:hover {
+  background-color: #3367d6;
+}
+
+.manual-input .btn i {
+  font-size: 1.2rem;
+}
+
+@keyframes pulse-text {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px) translateX(-50%); }
+  to { opacity: 1; transform: translateY(0) translateX(-50%); }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+}
+
+.transcript-container, .error-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 10px;
+  width: 250px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.transcript-text {
+  background-color: rgba(25, 135, 84, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  color: #198754;
+  border-left: 3px solid #198754;
+}
+
+.error-text {
+  background-color: rgba(220, 53, 69, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  color: #dc3545;
+  border-left: 3px solid #dc3545;
+}
