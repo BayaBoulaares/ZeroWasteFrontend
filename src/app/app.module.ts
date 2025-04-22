@@ -45,6 +45,8 @@ import { Product } from './features/inventorymanagement/Entities/product';
 import { StockTransactionComponent } from './features/inventorymanagement/Components/admin/stock-transaction/stock-transaction.component';
 import { ProductSectionComponent } from './features/inventorymanagement/Components/main/product-section/product-section/product-section.component';
 import { CommonModule } from '@angular/common';
+import { VoiceSearchComponent } from './features/Eventmanagement/routes/main/menufront/voice-search/voice-search.component';
+import { VoiceSearchService } from './features/Eventmanagement/Services/voice-search.service';
 import { StockStaticComponent } from './features/inventorymanagement/Components/admin/stock-static/stock-static.component';
 import { EmployeeFormComponent } from './features/StaffManagement/routes/admin/employee/employee-form/employee-form.component';
 import { EmployeeListComponent } from './features/StaffManagement/routes/admin/employee/employee-list/employee-list.component';
@@ -73,6 +75,11 @@ import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/aj
 import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
 import { EmailService } from './features/Eventmanagement/Services/email.service';
 import { QRCodeService } from './features/Eventmanagement/Services/qrcode.service';
+import { AiDiscountService } from './features/Eventmanagement/Services/ai-discount.service';
+import { AiDiscountCardComponent } from './features/Eventmanagement/components/ai-discount-card/ai-discount-card.component';
+import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
+import { EventAnalyticsService } from './features/Eventmanagement/Services/event-analytics.service';
+import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
@@ -84,6 +91,7 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     FooterComponent,
     MainLayoutComponent,
     HomeComponent,
+    VoiceSearchComponent,
     MenusectionComponent,
     AddMealComponent,
     MealsComponent,
@@ -116,7 +124,7 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     UserCreateComponent,
     LoginFComponent,
     ResetPasswordComponent,
-  InventoryProductComponent,
+    InventoryProductComponent,
     ProductFormComponent,
     StockTransactionComponent,
     StockTransactionFormComponent,
@@ -146,7 +154,10 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     EventbackComponent,
     UploadComponent,
     AjoutComponent,
-    RegistrationModalComponent
+    RegistrationModalComponent,
+    AiDiscountCardComponent,
+    AiDiscountDashboardComponent,
+    EventPerformanceTrackerComponent
   ],
   imports: [
     BrowserModule,
@@ -154,20 +165,24 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule,
-    NgxPaginationModule,
-    CommonModule,
-    BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
+    NgChartsModule,
+    NgxPaginationModule,
+    CommonModule,
+    ReactiveFormsModule,
   ],
   providers: [
+    VoiceSearchService,
     EmailService,
-    QRCodeService
+    QRCodeService,
+    AiDiscountService,
+    EventAnalyticsService
   ],
   bootstrap: [AppComponent],
   exports: [
@@ -175,6 +190,7 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     NavbarComponent,
     DashboardSidebarComponent,
     DashboardNavbarComponent,
+    VoiceSearchComponent
   ]
 })
 export class AppModule { }

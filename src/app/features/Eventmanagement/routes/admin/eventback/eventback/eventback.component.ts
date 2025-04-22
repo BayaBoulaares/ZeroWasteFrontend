@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from '../../../../Services/event.service';
+import { AiDiscountService } from '../../../../Services/ai-discount.service';
 import { Event } from '../../../../Entities/event';
 import { BASE_URL } from 'src/consts';
 
@@ -11,12 +12,15 @@ import { BASE_URL } from 'src/consts';
 })
 export class EventbackComponent implements OnInit {
   events: Event[] = [];
+  filteredEvents: Event[] = [];
   loading: boolean = true;
   error: string | null = null;
   readonly base_url = BASE_URL;
+  searchQuery: string = '';
 
   constructor(
     private eventService: EventService,
+    private aiDiscountService: AiDiscountService,
     private router: Router
   ) { }
 
@@ -24,7 +28,7 @@ export class EventbackComponent implements OnInit {
     this.loadEvents();
   }
 
-  getImageUrl(imagePath: string): string {
+  getImageUrl(imagePath: string | undefined): string {
     if (!imagePath) {
       return 'https://via.placeholder.com/300x200';
     }
@@ -42,6 +46,7 @@ export class EventbackComponent implements OnInit {
     this.eventService.getEvents().subscribe({
       next: (data) => {
         this.events = data;
+        this.filteredEvents = [...this.events];
         console.log('Loaded events:', this.events);
         this.loading = false;
       },
@@ -85,10 +90,54 @@ export class EventbackComponent implements OnInit {
 
   // Calculate the discounted price
   calculateDiscountedPrice(originalPrice: number, discountPercentage: number): number {
-    if (!originalPrice || originalPrice <= 0) return 0;
-    if (!discountPercentage || discountPercentage <= 0) return originalPrice;
-    
-    const discount = (discountPercentage / 100) * originalPrice;
-    return originalPrice - discount;
+    return this.aiDiscountService.calculateDiscountedPrice(originalPrice, discountPercentage);
+  }
+
+  // Get AI discount information for an event
+  getAiDiscountInfo(event: Event) {
+    return this.aiDiscountService.getDiscountInfo(event);
+  }
+  
+  // Check if event has AI-powered discount
+  hasAiDiscount(event: Event): boolean {
+    const discountInfo = this.getAiDiscountInfo(event);
+    return discountInfo.isAiDiscounted;
+  }
+
+  // Filter events based on search query
+  filterEvents(): void {
+    if (!this.searchQuery.trim()) {
+      this.filteredEvents = [...this.events];
+      return;
+    }
+
+    const query = this.searchQuery.toLowerCase();
+    this.filteredEvents = this.events.filter(event => {
+      const title = (event.title || '').toLowerCase();
+      const description = (event.description || '').toLowerCase();
+      const content = title + ' ' + description;
+      
+      // Check for cuisine types in the search query
+      const cuisineTypes = [
+        'chinese', 'korean', 'tunisian', 'italian', 'french',
+        'mediterranean', 'indian', 'japanese', 'mexican', 'international'
+      ];
+      
+      // If the query matches a cuisine type and the event content contains that cuisine
+      for (const cuisine of cuisineTypes) {
+        if (query.includes(cuisine) && content.includes(cuisine)) {
+          return true;
+        }
+      }
+      
+      // General text search
+      return title.includes(query) || description.includes(query);
+    });
+  }
+
+  // Handle voice search query
+  handleVoiceSearch(query: string): void {
+    this.searchQuery = query;
+    this.filterEvents();
   }
 }

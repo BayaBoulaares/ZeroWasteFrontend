@@ -44,6 +44,10 @@ import { AddmenuComponent } from './features/Eventmanagement/routes/admin/addmen
 import { UpdatemenuComponent } from './features/Eventmanagement/routes/admin/updatemenu/updatemenu.component';
 import { EventbackComponent } from './features/Eventmanagement/routes/admin/eventback/eventback/eventback.component';
 import { AjoutComponent } from './features/Eventmanagement/routes/admin/ajout/ajout.component';
+import { RegistrationModalComponent } from './features/Eventmanagement/routes/admin/event/registration-modal/registration-modal.component';
+import { MenufrontComponent } from './features/Eventmanagement/routes/main/menufront/menufront.component';
+import { AiDiscountDashboardComponent } from './features/Eventmanagement/routes/user/ai-discount-dashboard/ai-discount-dashboard.component';
+import { EventPerformanceTrackerComponent } from './features/Eventmanagement/components/event-performance-tracker/event-performance-tracker.component';
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
@@ -132,7 +136,9 @@ const routes: Routes = [
           { path: 'menus/add', component: AddmenuComponent },
           { path: 'menus/update/:id', component: UpdatemenuComponent },
           { path: 'menus', component: MenusComponent },
-          { path: 'events', component: EventbackComponent }
+          { path: 'events', component: EventbackComponent },
+          { path: 'events/registration', component: RegistrationModalComponent},
+          { path: 'event-performance', component: EventPerformanceTrackerComponent}
         ],
       },
     ],
@@ -148,7 +154,9 @@ const routes: Routes = [
       { path: 'product', component: ProductSectionComponent },
       { path: 'staff-profile', component: EmployeeProfileComponent },
       { path: 'events', component: EventComponent },
+      { path: 'event-menus', component: MenufrontComponent },
       { path: 'menus', component: MenusComponent },
+      { path: 'ai-discount-events', component: AiDiscountDashboardComponent },
 
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ],

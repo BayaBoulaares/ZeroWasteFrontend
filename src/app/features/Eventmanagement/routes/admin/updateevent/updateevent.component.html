@@ -66,6 +66,21 @@
                   </div>
                 </div>
               </div>
+              <!-- Number of Places -->
+<div class="mb-3">
+  <label class="form-label" for="nbr">Number of Places</label>
+  <input type="number"
+         class="form-control"
+         id="nbr"
+         formControlName="nbr"
+         placeholder="Enter number of available places"
+         min="1">
+  <div *ngIf="eventForm.get('nbr')?.invalid && eventForm.get('nbr')?.touched"
+       class="text-danger">
+    <small>Number of places is required and must be greater than 0</small>
+  </div>
+</div>
+
 
               <!-- Menu Selection -->
               <div class="mb-3">

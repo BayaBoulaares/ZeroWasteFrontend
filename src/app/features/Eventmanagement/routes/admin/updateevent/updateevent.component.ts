@@ -30,6 +30,7 @@ export class UpdateeventComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       valeurRemise: [0, [Validators.min(0), Validators.max(100)]],
+      nbr: [0, [Validators.required, Validators.min(1)]],
       menuId: [''],
       image: [null]
     });
@@ -65,7 +66,8 @@ export class UpdateeventComponent implements OnInit {
           startDate: this.formatDate(event.startDate),
           endDate: this.formatDate(event.endDate),
           valeurRemise: event.valeurRemise,
-          menuId: event.menu?.menuId
+          nbr: event.Nbr,
+          menuId: event.menus?.menuId
         });
         if (event.imagePath) {
           this.imagePreview = `http://localhost:8089/gaspillagezero/uploads/${event.imagePath}`;
@@ -96,29 +98,41 @@ export class UpdateeventComponent implements OnInit {
 
   onSubmit() {
     if (this.eventForm.valid) {
-      const formData = new FormData();
       const formValue = this.eventForm.value;
+      const eventData = new Event(
+        this.route.snapshot.params['id'], // eventid
+        formValue.title,
+        formValue.description,
+        new Date(formValue.startDate).toISOString(),
+        new Date(formValue.endDate).toISOString(),
+        '', // imagePath
+        formValue.valeurRemise,
+        formValue.nbr, // Use the nbr from the form
+        formValue.menuId ? { menuId: formValue.menuId } as Menus : undefined,
+        
+      );
 
-      formData.append('title', formValue.title);
-      formData.append('description', formValue.description);
-      formData.append('startDate', new Date(formValue.startDate).toISOString());
-      formData.append('endDate', new Date(formValue.endDate).toISOString());
-      formData.append('valeurRemise', formValue.valeurRemise);
-      if (formValue.menuId) {
-        formData.append('menuId', formValue.menuId);
-      }
       if (this.selectedFile) {
-        formData.append('image', this.selectedFile);
+        this.eventService.updateEventWithImage(eventData, this.selectedFile).subscribe({
+          next: () => {
+            console.log('Event updated successfully with image');
+            this.router.navigate(['/admin/eventmanagement/events']);
+          },
+          error: (error) => {
+            console.error('Error updating event with image:', error);
+          }
+        });
+      } else {
+        this.eventService.updateEventWithImage(eventData, null).subscribe({
+          next: () => {
+            console.log('Event updated successfully');
+            this.router.navigate(['/admin/eventmanagement/events']);
+          },
+          error: (error) => {
+            console.error('Error updating event:', error);
+          }
+        });
       }
-
-      this.eventService.updateEvent(formValue).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/eventmanagement/events']);
-        },
-        error: (error) => {
-          console.error('Error updating event:', error);
-        }
-      });
     }
   }
 }

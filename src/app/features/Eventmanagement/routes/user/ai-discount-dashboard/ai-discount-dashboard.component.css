@@ -1,0 +1,35 @@
+.ai-badge {
+  background-color: rgba(105, 108, 255, 0.08);
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.badge {
+  font-weight: 500;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+.btn-group .btn {
+  transition: all 0.2s ease;
+}
+
+.position-relative .badge {
+  animation: pulse 2s infinite;
+  z-index: 10;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}

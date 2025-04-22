@@ -24,7 +24,7 @@ export class MenusComponent implements OnInit {
     this.loadMenus();
   }
 
-  getImageUrl(imagePath: string): string {
+  getImageUrl(imagePath: string | undefined): string {
     if (!imagePath) {
       return 'https://via.placeholder.com/300x200';
     }

@@ -1,0 +1,51 @@
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px 0 rgba(34, 41, 47, 0.15);
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  animation: pulse 2s infinite;
+  font-weight: 500;
+}
+
+.price-section {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.discounted-price {
+  font-size: 1.25rem;
+}
+
+.discount-explanation {
+  display: flex;
+  align-items: center;
+}
+
+.discount-explanation i {
+  font-size: 1.1rem;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
