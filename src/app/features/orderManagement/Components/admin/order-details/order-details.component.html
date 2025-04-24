@@ -1,96 +1,100 @@
-<div class="container-fluid p-4">
-    <div class="card">
-      <!-- Header -->
-      <div class="card-header d-flex justify-content-between align-items-center position-relative">
-        <h4 class="mb-0">Orders / Order Details</h4>
-  
-        <div class="d-flex align-items-center">
-          <button class="btn btn-outline-secondary me-2" (click)="printOrder()">
-            <i class="bi bi-printer"></i> Print Order
+<div class="container-fluid p-4" [@fadeIn]>
+  <div class="card shadow rounded-4">
+    <!-- Header -->
+    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center rounded-top-4 px-4 pt-4">
+      <h4 class="fw-bold text-primary mb-0">
+        <i class="bi bi-box-seam me-2"></i> Order Details
+      </h4>
+
+      <div class="d-flex align-items-center gap-3">
+        <!-- Print -->
+        <button class="btn btn-outline-dark" (click)="printOrder()">
+          <i class="bi bi-printer me-1"></i> Print
+        </button>
+
+        <!-- Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
           </button>
-  
-          <div class="dropdown d-inline-block me-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              More Options
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" (click)="exportAsPDF()">Exporter en PDF</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-danger" href="#" (click)="cancelOrder()">Cancel Order</a></li>
-            </ul>
-          </div>
-  
-          <!-- Notifications -->
-          <div class="position-relative">
-            <i class="bi bi-bell fs-4" style="cursor: pointer;" (click)="toggleNotifications()"
-               [ngClass]="{ 'text-primary': showNotifications }"></i>
-            <span *ngIf="notificationService.getNotifications().length > 0"
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {{ notificationService.getNotifications().length }}
-            </span>
-  
-            <div *ngIf="showNotifications"
-                 class="notifications-panel card shadow position-absolute end-0 mt-2"
-                 style="width: 300px; z-index: 1000;">
-              <div *ngIf="notificationService.getNotifications().length > 0; else noNotifications">
-                <div *ngFor="let notification of notificationService.getNotifications()"
-                     class="border-bottom px-3 py-2 d-flex justify-content-between align-items-start">
-                  <div>
-                    <div class="fw-bold">{{ notification.title }}</div>
-                    <div class="small text-muted">{{ notification.message }}</div>
-                    <div class="text-muted small mt-1">{{ notification.date | date:'short' }}</div>
-                  </div>
-                  <i class="bi bi-x-lg text-danger ms-2" style="cursor: pointer;" (click)="removeNotification(notification)"></i>
-                </div>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li><a class="dropdown-item" (click)="exportAsPDF()">📄 Export as PDF</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" (click)="cancelOrder()">❌ Cancel Order</a></li>
+          </ul>
+        </div>
+
+        <!-- Notifications -->
+        <div class="position-relative">
+          <i class="bi bi-bell fs-4" style="cursor: pointer;" (click)="toggleNotifications()"
+             [ngClass]="{ 'text-warning': showNotifications }"></i>
+          <span *ngIf="notificationService.getNotifications().length > 0"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ notificationService.getNotifications().length }}
+          </span>
+
+          <div *ngIf="showNotifications"
+               class="notifications-panel card shadow-sm position-absolute end-0 mt-2"
+               style="width: 300px; z-index: 1050;">
+            <div *ngIf="notificationService.getNotifications().length > 0; else noNotifications">
+              <div *ngFor="let notification of notificationService.getNotifications()"
+                   class="border-bottom px-3 py-2">
+                <div class="fw-semibold">{{ notification.title }}</div>
+                <div class="small text-muted">{{ notification.message }}</div>
+                <div class="text-muted small mt-1">{{ notification.date | date:'short' }}</div>
+                <i class="bi bi-x-lg text-danger float-end mt-1" style="cursor: pointer;" (click)="removeNotification(notification)"></i>
               </div>
-  
-              <ng-template #noNotifications>
-                <div class="text-center text-muted p-4">
-                  <i class="bi bi-inbox fs-1 mb-2"></i>
-                  <p class="mb-0">Aucune notification</p>
-                </div>
-              </ng-template>
             </div>
+            <ng-template #noNotifications>
+              <div class="text-center text-muted p-4">
+                <i class="bi bi-inbox fs-1 mb-2"></i>
+                <p class="mb-0">No notifications</p>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>
-  
-      <!-- Loading Spinner -->
-      <div *ngIf="isLoading" class="card-body text-center p-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="card-body text-center p-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Order Content -->
+    <div *ngIf="!isLoading && order" class="card-body px-4 py-3" id="orderDetails">
+      <div class="mb-4">
+        <h5 class="fw-bold">Order #{{ order.orderID }}</h5>
+        <div class="text-muted small">
+          <p><strong>📅 Delivery Date:</strong> {{ order?.deliveryDate | date:'dd/MM/yyyy'}}</p>
+          <p><strong>📦 Quantity:</strong> {{ order.quantity || 0 }}</p>
+          <p><strong>🥕 Ingredient:</strong> {{ order.ingredient?.name || 'N/A' }}</p>
+          <p><strong>🏢 Supplier:</strong> {{ order.supplier?.name || 'N/A' }}</p>
         </div>
       </div>
-  
-      <!-- Order Details -->
-      <div *ngIf="!isLoading && order" class="card-body" id="orderDetails">
-        <h5>Order #{{ order.orderID }}</h5>
-  
-        <div class="text-muted small mb-4">
-          <p><strong>Delivery Date:</strong> {{ order.deliveryDate | date: 'dd/MM/yyyy HH:mm' }}</p>
-          <p><strong>Quantity:</strong> {{ order.quantity || 0 }}</p>
-          <p><strong>Ingredient ID:</strong> {{ order.ingredient?.ingId || 'N/A' }}</p>
-          <p><strong>Supplier:</strong> {{ order.supplier?.name || 'N/A' }}</p>
-        </div>
-  
-        <!-- Order Status -->
-        <div class="mt-4">
-          <h5>Order Status</h5>
-          <div class="alert" [ngClass]="{
-            'alert-warning': order.orderStatus === 'PENDING',
-            'alert-primary': order.orderStatus === 'CONFIRMED',
-            'alert-success': order.orderStatus === 'COMPLETED',
-            'alert-danger': order.orderStatus === 'CANCELED'
-          }">
-            {{ order.orderStatus }}
-          </div>
+
+      <!-- Status -->
+      <div>
+        <h6 class="fw-semibold">Order Status</h6>
+        <div class="alert mb-0 rounded-pill px-4 py-2 text-center w-50" 
+             [ngClass]="{
+               'alert-warning': order.orderStatus === 'PENDING',
+               'alert-primary': order.orderStatus === 'CONFIRMED',
+               'alert-success': order.orderStatus === 'COMPLETED',
+               'alert-danger': order.orderStatus === 'CANCELED'
+             }">
+          {{ order.orderStatus }}
         </div>
       </div>
-  
-      <!-- Back Button -->
-      <button class="btn btn-outline-primary mt-4" routerLink="/admin/orders/ordermanagement/orders">
+    </div>
+
+    <!-- Back Button -->
+    <div class="card-footer bg-white border-0 px-4 pb-4 d-flex justify-content-start">
+      <button class="btn btn-outline-primary" routerLink="/admin/orders/ordermanagement/orders">
         ← Back to Orders
       </button>
     </div>
   </div>
-  
+</div>

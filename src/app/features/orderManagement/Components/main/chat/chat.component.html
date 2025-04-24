@@ -1,4 +1,37 @@
-<h2>Chat IA</h2>
-<input [(ngModel)]="message" placeholder="Écris un message..." />
-<button (click)="sendMessage()">Envoyer</button>
-<p>Réponse : {{ response }}</p>
+<div class="card shadow rounded-4 overflow-hidden h-100 d-flex flex-column">
+  <div class="card-header bg-primary text-white text-center py-2">
+    <h6 class="mb-0">💬 AI Assistant</h6>
+  </div>
+
+  <!-- Chat Messages -->
+  <div class="flex-grow-1 p-3 overflow-auto" style="background: #f8f9fa;" id="chat-container">
+    <div *ngFor="let msg of messages" class="mb-2 d-flex"
+         [ngClass]="{'justify-content-end': msg.role === 'user', 'justify-content-start': msg.role === 'assistant'}">
+      <div class="p-2 rounded-3 shadow-sm"
+           [ngClass]="{
+             'bg-primary text-white': msg.role === 'user',
+             'bg-light text-dark': msg.role === 'assistant'
+           }">
+        <div>{{ msg.content }}</div>
+        <small class="d-block text-end text-muted">{{ msg.timestamp | date:'shortTime' }}</small>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="d-flex align-items-center text-muted">
+      <div class="spinner-border spinner-border-sm me-2 text-primary" role="status"></div>
+      <span>Thinking...</span>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="card-footer bg-white border-top p-2">
+    <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="d-flex align-items-center">
+      <input type="text" formControlName="message"
+             class="form-control rounded-pill me-2"
+             placeholder="Type your message..." />
+      <button type="submit" class="btn btn-primary rounded-pill px-3"
+              [disabled]="!chatForm.valid || isLoading">
+        <i class="bi bi-send"></i>
+      </button>
+    </form>
+  </div>
+</div>

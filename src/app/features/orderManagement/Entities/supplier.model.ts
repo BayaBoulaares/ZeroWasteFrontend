@@ -4,5 +4,6 @@ export interface Supplier {
     contactInfo: string;
     ratings: number;
     productCatalog: string;
+    isFavorite?: boolean;
   }
   

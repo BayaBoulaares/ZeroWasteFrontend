@@ -1,65 +1,93 @@
-/* chat.component.css */
+/* Green-themed chat */
 .chat-container {
-    width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  .chat-box {
-    height: 300px;
-    overflow-y: scroll;
-    margin-bottom: 20px;
-    padding-right: 10px;
-    border-bottom: 2px solid #ccc;
-  }
-  
-  .chat-message {
-    margin-bottom: 10px;
-  }
-  
-  .user-message {
-    text-align: right;
-    color: #1c87c9;
-  }
-  
-  .bot-message {
-    text-align: left;
-    color: #4CAF50;
-  }
-  
-  .message-area {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  input {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    width: 15%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .bot-response {
-    margin-top: 10px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-  }
-  
+  width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #4CAF50; /* Green background */
+}
+
+.chat-box {
+  height: 300px;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+  padding-right: 10px;
+  border-bottom: 2px solid #ccc;
+}
+
+.chat-message {
+  margin-bottom: 10px;
+}
+
+.user-message {
+  text-align: right;
+  color: #33965E; /* Green color for user messages */
+}
+
+.bot-message {
+  text-align: left;
+  color: #4CAF50; /* Green color for bot messages */
+}
+
+.message-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 15%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50; /* Green button */
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.bot-response {
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.chat-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4CAF50; /* Green toggle button */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  transition: all 0.3s ease;
+}
+
+.chat-toggle-btn:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.chat-box-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  z-index: 9998;
+  width: 400px;
+  max-width: 90vw;
+}

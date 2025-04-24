@@ -1,9 +1,14 @@
 import { Supplier } from '../Entities/supplier.model';
 export interface Order {
-  orderID?: number;
+  orderID: number;
   deliveryDate: any;
-    quantity: number;
   orderStatus: 'PENDING' | 'COMPLETED' | 'CANCELED' | 'CONFIRMED';
   supplier: Supplier;
-  ingredient?: any; // Ou crée un modèle spécifique
+  ingredients: {  // Remplacez 'ingredient' par 'ingredients' (tableau)
+    ingredient: any;  // Gardez votre type existant
+    quantity: number;
+  }[];
+  quantity: number;
+  ingredient?: any; 
+  isUrgent?: boolean;  // Ou crée un modèle spécifique
 }

@@ -4,21 +4,22 @@ import { SupplierService } from '../../../Services/supplier.service';
 import { Supplier } from '../../../Entities/supplier.model'; // Adjust the import path as necessary
 import { Order } from '../../../Entities/order.model'; // Adjust the import path as necessary
 import { HttpClient } from '@angular/common/http';
-interface ChatMessage {
-  message: string;
-  isUser: boolean;
-}
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-supplier-orders',
-  templateUrl: './supplier-orders.component.html'
+  templateUrl: './supplier-orders.component.html',
 })
 export class SupplierOrdersComponent implements OnInit {
   supplierId = 1;
   orders: Order[] = [];
   message = ''; // Message input by the user
   response = ''; // Response from the bot
-  userId = 1; // Placeholder for user ID
-  chatHistory: ChatMessage[] = [];
+  userId = 1; 
+  chatVisible = false;
+
+  urgentOrders: Order[] = [];
+  // Placeholder for user ID
   constructor(private orderService: OrderService, private supplier: SupplierService, private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -38,8 +39,14 @@ export class SupplierOrdersComponent implements OnInit {
         }
         return order;
       });
-      this.orders = this.orders.filter(o => o.quantity > 0 && o.deliveryDate && o.supplier && o.ingredient)
+      this.orders = this.orders.filter(o => o.quantity > 0 && o.deliveryDate && o.supplier && o.ingredient);
+      this.checkUpcomingDeliveries();
+
     });
+    setInterval(() => {
+      this.checkUpcomingDeliveries();
+    }, 10 * 60 * 1000);
+    
   }
   toggleOrderStatus(order: Order): void {
     if (!order.orderID) return; // Avoid error if orderID is undefined
@@ -99,26 +106,49 @@ export class SupplierOrdersComponent implements OnInit {
         return 'Unknown Status';  // Fallback in case there's an unexpected status
     }
   }
-  sendMessage(): void {
-    if (this.message.trim()) {
-      this.chatHistory.push({ message: this.message, isUser: true });
+  toggleChat() {
+    this.chatVisible = !this.chatVisible;
+  }
+  // Dans order-list.component.ts
+  checkUpcomingDeliveries(): void {
+    this.urgentOrders = this.orders.filter(order => 
+      this.checkIfUrgent(order.deliveryDate) && order.orderStatus === 'PENDING'
+    );
 
-      const body = { userId: this.userId, userMessage: this.message };
-      this.http.post<string>('http://localhost:8089/chat/send', body).subscribe(
-        (res) => {
-          this.chatHistory.push({ message: res, isUser: false });
-          this.response = res;
-          this.scrollToBottom();
-        },
-        (error) => console.error('Error:', error)
-      );
+    this.urgentOrders.forEach(order => {
+      
+      this.updateOrderStatus(order, 'CONFIRMED');
+    });
+  }
+  private checkIfUrgent(deliveryDate: string): boolean {
+    const delivery = new Date(deliveryDate);
+    const now = new Date();
+    const inTwoDays = new Date(now);
+    inTwoDays.setDate(now.getDate() + 2);
+    return delivery >= now && delivery <= inTwoDays;
+  }
 
-      this.message = ''; // Clear the input field
+
+  updateOrderStatus(order: Order, newStatus: 'PENDING' | 'COMPLETED' | 'CANCELED' | 'CONFIRMED'): void {
+    const updatedOrder = { 
+      ...order, 
+      orderStatus: newStatus,
+      isUrgent: this.checkIfUrgent(order.deliveryDate)
+    };
+
+    this.orderService.updateOrderStatus(order.orderID, updatedOrder).subscribe({
+      next: () => {
+        order.orderStatus = newStatus;
+        order.isUrgent = updatedOrder.isUrgent;
+      },
+      error: (err) => {
+        console.error('Error updating status:', err);
+        Swal.fire('Error', 'Failed to update order status', 'error');
+      }
+    });
+  }
+
+    getStatusClass(status: string): string {
+      return status.toLowerCase();
     }
-  }
-
-  scrollToBottom(): void {
-    const chatBox = document.querySelector('.chat-box');
-    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
-  }
 }

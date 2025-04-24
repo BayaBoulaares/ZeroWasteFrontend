@@ -1,79 +1,167 @@
-<div class="container mt-4">
-    <h2>Order List</h2>
-   
-    <button [routerLink]="['/admin/orders/ordermanagement/create-order']" class="btn btn-sm btn-primary" aria-label="View Order Details">
-      <i class="bi bi-eye"></i> Add
-    </button>
-    <table class="table table-bordered mt-3" *ngIf="orders.length > 0; else noOrders">
-      <thead class="table-light">
-        <tr>
-          <th>Delivery Date</th>
-          <th>Quantity</th>
-          <th>Status</th>
-          <th>Supplier</th>
-          <th>Ingredient</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let order of orders">
-          
-          <td>{{ order.deliveryDate }}</td>
-          <td>{{ order.quantity  || 0}}</td>
-          <td>
-            <span [ngClass]="{
-              'text-success': order.orderStatus === 'COMPLETED',
-              'text-warning': order.orderStatus === 'PENDING',
-              'text-danger': order.orderStatus === 'CANCELED',
-              'text-info': order.orderStatus === 'CONFIRMED'
-            }">
-              {{ order.orderStatus }}
-            </span>
-          </td>
-          
-          <td>{{ order.supplier?.name || 'N/A' }}</td>
-          <td>{{ order.ingredient?.ingId || 'N/A' }}</td>
-          <td>
-            <button class="btn btn-sm btn-primary me-2" (click)="toggleOrderStatus(order)">
-                <!-- Show different text based on orderStatus -->
-                {{ getButtonText(order.orderStatus) }}
-              </button>
-            <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.orderID!)">
-              Delete
-            </button>
-            <!-- Exemple de liste d'ordres -->
+<div class="container mt-4" [@fadeIn]>
+  <!-- Header + Total Orders Card -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0 fw-bold">🧾 Order Management</h2>
 
-  <!-- Vue d'une commande -->
-  <button [routerLink]="['/admin/orders/ordermanagement/orders/details', order.orderID]" class="btn btn-sm btn-primary" aria-label="View Order Details">
-    <i class="bi bi-eye"></i> View
-  </button>
-
-
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <ng-template #noOrders>
-      <p>No orders found.</p>
-    </ng-template>
-    <div class="card shadow-sm rounded-4 p-3" style="width: 220px; height: 150px;">
+    <div class="card shadow-lg rounded-4 p-3 bg-white" style="width: 220px; height: 150px;">
       <div class="d-flex justify-content-between align-items-center">
         <div class="bg-light rounded-circle p-2">
-          <i class="bi bi-bag-check fs-4 text-warning"></i> <!-- Bootstrap icon for Orders -->
+          <i class="bi bi-bag-check fs-4 text-warning"></i>
         </div>
         <div class="dropdown">
-          <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+          <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-three-dots-vertical"></i>
           </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">🔄 Refresh</a></li>
+            <li><a class="dropdown-item" href="#">📤 Export</a></li>
+          </ul>
         </div>
       </div>
-    
-      <h6 class="mt-2 fw-bold">Orders</h6>
-      <h3>{{ count || 0 }}</h3> <!-- Affiche le nombre de commandes actives du mois -->
-      <small class="text-success">
-        <i class="bi bi-arrow-up"></i> This month’s total
-      </small>
+      <h6 class="mt-2 fw-bold">Total Orders</h6>
+      <h3 class="mb-1">
+        <span class="count-up" [attr.data-target]="count || 0">{{ count || 0 }}</span>
+      </h3>
+      <small class="text-success"><i class="bi bi-arrow-up"></i> This month's total</small>
     </div>
-  </div>    
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="card border-0 shadow-lg mb-4">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div class="d-flex gap-3 align-items-center flex-wrap">
+          <button [routerLink]="['/admin/orders/ordermanagement/create-order']" class="btn btn-primary d-flex align-items-center">
+            <i class="bi bi-plus-circle me-2"></i> New Order
+          </button>
+
+          <div class="input-group" style="width: 250px;">
+            <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" class="form-control border-start-0" [(ngModel)]="searchQuery"
+              (input)="applyFilters()" placeholder="Search orders...">
+          </div>
+
+          <select class="form-select" [(ngModel)]="selectedSupplier" (change)="applyFilters()" style="width: 200px;">
+            <option value="">All Suppliers</option>
+            <option *ngFor="let supplier of getUniqueSuppliers()" [value]="supplier">{{ supplier }}</option>
+          </select>
+        </div>
+
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-funnel"></i> Filters
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li *ngFor="let status of orderStatus">
+              <button class="dropdown-item" type="button" 
+                      (click)="filterByStatus(status)" 
+                      [class.active]="status === selectedStatus">
+                <span class="badge me-2" [ngClass]="getStatusClass(status)"></span>
+                {{ status }}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" *ngIf="filteredOrders.length > 0; else noOrders">
+          <thead class="table-light">
+            <tr>
+              <th class="ps-4">📅 Delivery Date</th>
+              <th>🔢 Quantity</th>
+              <th>Status</th>
+              <th>🚛 Supplier</th>
+              <th>🧂 Ingredient</th>
+              <th class="text-end pe-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of filteredOrders; let first = first" [@fadeIn] 
+                [class.table-info]="first">
+              <td class="ps-4 fw-medium">{{ order.deliveryDate | date:'mediumDate' }}</td>
+              <td>{{ order.quantity || 0 }}</td>
+              <td>
+                <span class="badge rounded-pill py-2 px-3" [ngClass]="{
+                  'bg-success': order.orderStatus === 'COMPLETED',
+                  'bg-warning text-dark': order.orderStatus === 'PENDING',
+                  'bg-danger': order.orderStatus === 'CANCELED',
+                  'bg-info text-dark': order.orderStatus === 'CONFIRMED'
+                }">
+                  {{"PENDING" === order.orderStatus ? '⏳ PENDING' : 
+                    order.orderStatus === 'COMPLETED' ? '✅ COMPLETED' : 
+                    order.orderStatus === 'CANCELED' ? '❌ CANCELED' : 
+                    order.orderStatus === 'CONFIRMED' ? '📦 CONFIRMED' : order.orderStatus }}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="bg-light rounded-circle p-2 me-2">
+                    <i class="bi bi-truck text-primary"></i>
+                  </div>
+                  <span>{{ order.supplier?.name || 'N/A' }}</span>
+                </div>
+              </td>
+              <td>{{ order.ingredient?.name || 'N/A' }}</td>
+              <td class="text-end pe-4">
+                <div class="d-flex justify-content-end gap-2">
+                  <button class="btn btn-sm btn-outline-primary" (click)="toggleOrderStatus(order)"
+                    [title]="getButtonText(order.orderStatus)">
+                    <i class="bi" [ngClass]="{
+                      'bi-check-circle': order.orderStatus === 'PENDING',
+                      'bi-arrow-repeat': order.orderStatus === 'COMPLETED',
+                      'bi-arrow-counterclockwise': order.orderStatus === 'CANCELED',
+                      'bi-x-circle': order.orderStatus === 'CONFIRMED'
+                    }"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteOrder(order.orderID!)" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                  <button [routerLink]="['/admin/orders/ordermanagement/orders/details', order.orderID]"
+                    class="btn btn-sm btn-outline-secondary" title="View Details">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+<!-- Pagination Controls -->
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" href="#" (click)="changePage(1); $event.preventDefault()">First</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" href="#" (click)="changePage(currentPage - 1); $event.preventDefault()">Previous</a>
+    </li>
+
+    <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" 
+        [class.active]="i + 1 === currentPage">
+      <a class="page-link" href="#" (click)="changePage(i + 1); $event.preventDefault()">{{ i + 1 }}</a>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <a class="page-link" href="#" (click)="changePage(currentPage + 1); $event.preventDefault()">Next</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <a class="page-link" href="#" (click)="changePage(totalPages); $event.preventDefault()">Last</a>
+    </li>
+  </ul>
+</nav>
+</div>
+      <!-- No Orders Template -->
+      <ng-template #noOrders>
+        <div class="text-center py-5">
+          <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+          <h4 class="mt-3">No orders found</h4>
+          <p class="text-muted">Try adjusting your search or create a new order</p>
+          <button [routerLink]="['/admin/orders/ordermanagement/create-order']" class="btn btn-primary mt-2">
+            <i class="bi bi-plus-circle"></i> Create Order
+          </button>
+        </div>
+      </ng-template>
+   

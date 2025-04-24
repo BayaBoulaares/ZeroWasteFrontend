@@ -1,0 +1,57 @@
+.table {
+    th, td {
+      vertical-align: middle;
+    }
+    th {
+      background-color: #f0f8ff;
+      font-weight: 600;
+    }
+  }
+  
+  .card {
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+  }
+  /* Ajoutez dans votre fichier CSS */
+.btn-favorite {
+  transition: all 0.3s ease;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.2);
+}
+
+.favorite-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.6rem;
+}
+/* Hover effect for table rows */
+.hover-table-row:hover {
+  background-color: #f8f9fa; /* Light grey background on hover */
+  transition: background-color 0.3s ease;
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: translateY(-5px); /* Lift effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Smooth shadow */
+  transition: all 0.3s ease;
+}
+
+/* For the dots menu */
+.dot-menu {
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.dot-menu:hover {
+  color: #4CAF50; /* Highlight the dots when hovered */
+}
+

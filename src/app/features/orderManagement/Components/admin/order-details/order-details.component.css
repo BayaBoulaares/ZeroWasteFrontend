@@ -1,0 +1,28 @@
+/* Pour mettre en valeur le statut dans la liste */
+.bg-confirmed { background-color: #cfe2ff; }
+.bg-pending { background-color: #fff3cd; }
+.bg-completed { background-color: #d1e7dd; }
+.bg-canceled { background-color: #f8d7da; }
+
+.card {
+    border-radius: 1.5rem;
+    overflow: hidden;
+  
+    .card-header {
+      background-color: #f8f9fa;
+    }
+  
+    .notifications-panel {
+      border-radius: 0.75rem;
+    }
+  
+    .dropdown-menu {
+      border-radius: 0.5rem;
+    }
+  
+    .alert {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+  }
+  

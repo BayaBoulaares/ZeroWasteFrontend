@@ -7,11 +7,20 @@ import { Supplier } from '../../../Entities/supplier.model';
 import { IngredientsService } from 'src/app/features/menumangment/Services/ingredients.service';
 import { Ingredients } from 'src/app/features/menumangment/Entities/ingredients';
 import { Router } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-create-order',
   templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.css']
+  styleUrls: ['./create-order.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class CreateOrderComponent implements OnInit {
   orderForm!: FormGroup;
@@ -67,8 +76,8 @@ export class CreateOrderComponent implements OnInit {
     const order = {
       deliveryDate: rawValue.deliveryDate,
       quantity: rawValue.quantity,
-      orderStatus: rawValue.orderStatus,  // Capture the selected status from the form
-      supplier: {
+      orderStatus: rawValue.orderStatus,
+            supplier: {
         supplierID: Number(rawValue.supplierID)
       },
       ingredient: {
