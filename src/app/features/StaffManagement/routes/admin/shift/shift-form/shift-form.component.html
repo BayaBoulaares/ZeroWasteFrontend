@@ -79,7 +79,7 @@
                     formControlName="employeeId"
                   >
                     <option value="">Select Employee (Optional)</option>
-                    <option *ngFor="let employee of employees" [value]="employee.idEmployee">
+                    <option *ngFor="let employee of employees" [value]="employee.id">
                       {{ employee.name }} ({{ employee.role }})
                     </option>
                   </select>

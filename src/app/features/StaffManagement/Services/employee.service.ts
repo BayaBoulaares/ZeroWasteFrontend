@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Employee } from '../Entities/employee.model';
 
-export interface Employee {
+/* export interface Employee {
   idEmployee: number;
   name: string;
   role: string;
   contactinfo: string;
   salary: number;
   hiredate: string;
-}
+} */
 
 @Injectable({
   providedIn: 'root'

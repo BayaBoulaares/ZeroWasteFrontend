@@ -48,26 +48,26 @@
                   'badge rounded-pill bg-label-info': employee.role === 'Waiter',
                   'badge rounded-pill bg-label-warning': employee.role === 'Cashier',
                   'badge rounded-pill bg-label-danger': employee.role === 'Delivery'
-                }">{{ employee.role }}</span>
+                }">{{ employee.employeeRole }}</span>
               </td>
-              <td>{{ employee.contactinfo }}</td>
+              <td>{{ employee.email }}</td>
               <td>${{ employee.salary }}</td>
               <td>{{ employee.hiredate | date:'mediumDate' }}</td>
               <td class="text-center">
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary me-2" (click)="editEmployee(employee.idEmployee)" title="Edit">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-primary me-2" (click)="editEmployee(employee.id)" title="Edit">
                   <i class="bx bx-edit-alt"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-icon btn-outline-danger" (click)="confirmDelete(employee.idEmployee)" title="Delete">
+                <button type="button" class="btn btn-sm btn-icon btn-outline-danger" (click)="confirmDelete(employee.id)" title="Delete">
                   <i class="bx bx-trash"></i>
                 </button>
                 
                 <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="confirmDeleteModal{{employee.idEmployee}}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="confirmDeleteModal{{employee.id}}" tabindex="-1" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title">Confirm Delete</h5>
-                        <button type="button" class="btn-close" (click)="cancelDelete(employee.idEmployee)" aria-label="Close"></button>
+                        <button type="button" class="btn-close" (click)="cancelDelete(employee.id)" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <div class="text-center mb-4">
@@ -81,10 +81,10 @@
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" (click)="cancelDelete(employee.idEmployee)">
+                        <button type="button" class="btn btn-outline-secondary" (click)="cancelDelete(employee.id)">
                           Cancel
                         </button>
-                        <button type="button" class="btn btn-danger" (click)="deleteEmployee(employee.idEmployee)">
+                        <button type="button" class="btn btn-danger" (click)="deleteEmployee(employee.id)">
                           Yes, Delete
                         </button>
                       </div>

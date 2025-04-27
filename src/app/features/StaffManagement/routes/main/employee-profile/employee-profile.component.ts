@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeProfileService } from '../../../Services/EmployeeProfile.service';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 @Component({
   selector: 'app-employee-profile',
@@ -8,12 +9,15 @@ import { EmployeeProfileService } from '../../../Services/EmployeeProfile.servic
 })
 export class EmployeeProfileComponent implements OnInit {
   activeTab: string = 'info';
-
+  user: any = null;
   pendingRequestsCount: number = 0;
 
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  constructor(private employeeProfileService: EmployeeProfileService, private userService: UserService) { }
 
+  
   ngOnInit(): void {
+    this.user= this.userService.getUser();
+    console.log(this.user);
     this.loadPendingRequestsCount();
     
     // Set up periodic check for new requests (every 60 seconds)
@@ -22,6 +26,7 @@ export class EmployeeProfileComponent implements OnInit {
     }, 60000);
   }
 
+  
   setActiveTab(tab: string): void {
     this.activeTab = tab;
     

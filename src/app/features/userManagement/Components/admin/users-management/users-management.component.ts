@@ -16,6 +16,8 @@ export class UsersManagementComponent {
 
   ngOnInit(): void {
     this.getUsers();
+    console.log('Users:', this.users);
+    console.log('User:', this.userService.getUser());
   }
 
   async getUsers(): Promise<void> {
@@ -23,7 +25,7 @@ export class UsersManagementComponent {
     try {
       const data = await this.userService.getAllUsers(token);
       this.users = data.usersList;
-     // console.log('Users:', data.usersList);
+      console.log('Users:', data.usersList);
     } catch (error) {
       this.alerts.push({
         type: 'alert-danger',

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {  EmployeeProfileService } from '../../../Services/EmployeeProfile.service';
 import { Employee } from '../../../Entities/employee.model';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 @Component({
   selector: 'app-employee-info',
@@ -8,17 +9,19 @@ import { Employee } from '../../../Entities/employee.model';
   styleUrls: ['./employee-info.component.css']
 })
 export class EmployeeInfoComponent implements OnInit {
-  employee: Employee | null = null;
+  //employee: Employee | null = null;
   loading: boolean = true;
   error: string | null = null;
-
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  user: any = null;
+  constructor(private employeeProfileService: EmployeeProfileService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.loadEmployeeInfo();
+    this.user= this.userService.getUser();
+    console.log(this.user);
+    //this.loadEmployeeInfo();
   }
 
-  loadEmployeeInfo(): void {
+  /* loadEmployeeInfo(): void {
     this.loading = true;
     this.employeeProfileService.getMyInfo().subscribe({
       next: (data) => {
@@ -31,5 +34,5 @@ export class EmployeeInfoComponent implements OnInit {
         console.error('Error fetching employee info:', err);
       }
     });
-  }
-}
+  }*/
+} 

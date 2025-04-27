@@ -106,7 +106,7 @@ export class ShiftFormComponent implements OnInit {
     // If an employee is selected, add it to the shift
     if (this.shiftForm.value.employeeId) {
       const selectedEmployee = this.employees.find(
-        emp => emp.idEmployee === +this.shiftForm.value.employeeId
+        emp => emp.id === +this.shiftForm.value.employeeId
       );
       if (selectedEmployee) {
         shiftData.employee = selectedEmployee;

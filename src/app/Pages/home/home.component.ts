@@ -3,6 +3,7 @@ import * as AOS from 'aos';
 import { Meals } from 'src/app/features/menumangment/Entities/meals';
 import { MealsService } from 'src/app/features/menumangment/Services/meals.service';
 import { MenusService } from 'src/app/features/menumangment/Services/menus.service';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,15 @@ export class HomeComponent implements OnInit {
   categories: string[] = ['Brunch', 'Breakfast', 'Lunch', 'Dinner', 'Dessert'];
   selectedCategory: string = 'Brunch';
   discountedMeals: Meals[] = [];
-  constructor(private menuservice: MenusService,private mealservice: MealsService){}
+  user: any = null;
+  constructor(private menuservice: MenusService,private mealservice: MealsService,private userService:UserService){}
   
   ngOnInit(): void {
+    this.user = this.userService.getUser();
+    console.log(this.user);
     AOS.init();
     this.getMeals();  
+
   }
   getMeals() {
     this.mealservice.getMeals().subscribe((data) => {

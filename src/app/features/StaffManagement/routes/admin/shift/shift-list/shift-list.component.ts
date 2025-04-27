@@ -197,7 +197,7 @@ export class ShiftListComponent implements OnInit {
     document.body.setAttribute('style', 'overflow: hidden; padding-right: 17px;');
     document.getElementById('backdrop')?.classList.add('modal-backdrop', 'fade', 'show');
     
-    this.loadEmployeeShifts(employee.idEmployee);
+    this.loadEmployeeShifts(employee.id);
   }
 
   closeEmployeeFreeDaysModal(): void {
@@ -317,7 +317,7 @@ export class ShiftListComponent implements OnInit {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() - 1, 1);
     this.selectedDate = null;
     if (this.selectedEmployee) {
-      this.loadEmployeeShifts(this.selectedEmployee.idEmployee);
+      this.loadEmployeeShifts(this.selectedEmployee.id);
     }
   }
   
@@ -325,7 +325,7 @@ export class ShiftListComponent implements OnInit {
     this.currentMonth = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + 1, 1);
     this.selectedDate = null;
     if (this.selectedEmployee) {
-      this.loadEmployeeShifts(this.selectedEmployee.idEmployee);
+      this.loadEmployeeShifts(this.selectedEmployee.id);
     }
   }
   
@@ -338,7 +338,7 @@ export class ShiftListComponent implements OnInit {
       this.selectedDate = date;
       // Regenerate calendar to show selected date
       if (this.selectedEmployee) {
-        this.loadEmployeeShifts(this.selectedEmployee.idEmployee);
+        this.loadEmployeeShifts(this.selectedEmployee.id);
       }
     }
   }

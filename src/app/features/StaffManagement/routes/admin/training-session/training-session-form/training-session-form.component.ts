@@ -32,7 +32,7 @@ export class TrainingSessionFormComponent implements OnInit {
       topic: ['', [Validators.required]],
       date: ['', [Validators.required]],
       trainer: ['', [Validators.required]],
-      employeeId: ['', [Validators.required]]
+      id: ['', [Validators.required]]
     });
   }
 
@@ -58,7 +58,7 @@ export class TrainingSessionFormComponent implements OnInit {
             topic: session.topic,
             date: formattedDate,
             trainer: session.trainer,
-            employeeId: session.employee?.idEmployee || ''
+            id: session.employee?.id || ''
           });
           this.loading = false;
         },
@@ -87,6 +87,7 @@ export class TrainingSessionFormComponent implements OnInit {
     this.submitted = true;
 
     if (this.sessionForm.invalid) {
+      console.log('invali')
       return;
     }
 
@@ -100,9 +101,9 @@ export class TrainingSessionFormComponent implements OnInit {
     };
 
     // Add employee if selected
-    if (this.sessionForm.value.employeeId) {
+    if (this.sessionForm.value.id) {
       const selectedEmployee = this.employees.find(
-        emp => emp.idEmployee === +this.sessionForm.value.employeeId
+        emp => emp.id === +this.sessionForm.value.id
       );
       
       if (selectedEmployee) {
