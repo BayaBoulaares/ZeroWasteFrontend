@@ -20,7 +20,7 @@ export class DashboardNavbarComponent {
   defaultImageUrl: string = 'https://res.cloudinary.com/dmdvu18ki/image/upload/v1745759200/noImage_nhztmy.png';
 
   // Logic to set profile picture URL (use user image if available, otherwise use default)
-  profileImageUrl: string = this.user.image ? this.user.image : this.defaultImageUrl;
+  profileImageUrl: string = this.user?.image ? this.user.image : this.defaultImageUrl;
 
   logout(): void {
     this.userService.logOut();

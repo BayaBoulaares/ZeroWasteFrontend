@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
   user = this.userService.getUser();
   orderSuccess = false;
   defaultImageUrl: string = 'https://res.cloudinary.com/dmdvu18ki/image/upload/v1745759200/noImage_nhztmy.png';
-  profileImageUrl: string = this.user.image ? this.user.image : this.defaultImageUrl;
+  profileImageUrl: string = this.user?.image ? this.user.image : this.defaultImageUrl;
 
   onPay(): void {
     if (!this.isLoggedIn()) {
