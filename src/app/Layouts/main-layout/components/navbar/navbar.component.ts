@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
     private invoiceService: InvoiceService
   ) { }
 
+  
   ngOnInit(): void {
     this.cartService.orderCount$.subscribe(count => {
       this.orderCount = count;
@@ -32,9 +33,13 @@ export class NavbarComponent implements OnInit {
     this.cartService.orderedProducts$.subscribe(products => {
       this.orderedProducts = products;
     });
-  }
 
+    
+  }
+  user = this.userService.getUser();
   orderSuccess = false;
+  defaultImageUrl: string = 'https://res.cloudinary.com/dmdvu18ki/image/upload/v1745759200/noImage_nhztmy.png';
+  profileImageUrl: string = this.user.image ? this.user.image : this.defaultImageUrl;
 
   onPay(): void {
     if (!this.isLoggedIn()) {
@@ -42,7 +47,7 @@ export class NavbarComponent implements OnInit {
       return;
     }
 
-    const user = this.userService.getUser(); // Assume this returns the logged-in user with an ID
+    const user = this.userService.getUser(); 
     const items: InvoiceItem[] = this.orderedProducts.map(item => ({
       productName: item.productName,
       productPrice: item.productPrice,

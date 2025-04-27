@@ -7,7 +7,8 @@ export class Users {
         public city: string,
         public role: string,
         public enabled: boolean,
-        public password?: string
+        public password?: string,
+        public image?:String
       ) {}
     
       isAdmin(): boolean {

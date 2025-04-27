@@ -88,6 +88,11 @@
       <!-- Auth Buttons -->
       <a class="btn-getstarted" *ngIf="!isLoggedIn()" (click)="openLogin()">LogIn</a>
       <a class="btn-getstarted" *ngIf="isLoggedIn()" (click)="logout()">Logout</a>
+
+      <!-- Profile Image after logout button -->
+      <div *ngIf="isLoggedIn()" class="avatar-container">
+        <img [src]="profileImageUrl" alt="Profile Image" class="w-px-50 h-px-50 rounded-circle" />
+      </div>
     </div>
   </div>
 </header>

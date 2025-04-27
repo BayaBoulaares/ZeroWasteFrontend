@@ -93,10 +93,7 @@ export class LoginFComponent implements AfterViewInit {
           this.router.navigate(['admin']);
         }
         this.closeModal();
-
-        /* console.log(localStorage.getItem('token',))
-        console.log(localStorage.getItem('role',)) */
-        console.log(localStorage.getItem('user',))
+        console.log(this.userService.getUser())
       } else {
         this.showError(response.message)
       }
@@ -121,7 +118,8 @@ export class LoginFComponent implements AfterViewInit {
     email: '',
     password: '',
     city: '',
-    role: 'user'
+    role: 'user',
+    image: null as File | null
   };
 
   async handleRegister() {
@@ -132,6 +130,24 @@ export class LoginFComponent implements AfterViewInit {
 
 
     try {
+      let imageUrl = null;
+
+      if (this.signupData.image) {
+        const uploadData = new FormData();
+        uploadData.append('file', this.signupData.image);
+        uploadData.append('upload_preset', 'gaspillagezero');
+
+        const cloudinaryResponse = await fetch('https://api.cloudinary.com/v1_1/dmdvu18ki/image/upload', {
+          method: 'POST',
+          body: uploadData
+        });
+
+        const cloudinaryResult = await cloudinaryResponse.json();
+        imageUrl = cloudinaryResult.secure_url;
+        //console.log(imageUrl);
+        this.signupData.image = imageUrl;
+      }
+
       const response = await this.userService.register(this.signupData);
       if (response.statusCode === 201) {
         this.storeAuthData(response.token, response.role, response.user);
@@ -182,5 +198,21 @@ export class LoginFComponent implements AfterViewInit {
   }
 
 
+
+  imagePreviewUrl: string | null = null;
+
+  handleImageUpload(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.signupData.image = file;
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreviewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
 }
