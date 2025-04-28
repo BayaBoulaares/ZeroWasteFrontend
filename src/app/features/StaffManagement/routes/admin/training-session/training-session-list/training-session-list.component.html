@@ -44,7 +44,7 @@
               <td>{{ session.trainer }}</td>
               <td>
                 <div *ngIf="session.employee; else unassigned">
-                  <span class="badge bg-label-primary me-1">{{ session.employee.role || 'Employee' }}</span>
+                  <span class="badge bg-label-primary me-1">{{ session.employee.employeeRole || 'Employee' }}</span>
                   {{ session.employee.name }}
                 </div>
                 <ng-template #unassigned>

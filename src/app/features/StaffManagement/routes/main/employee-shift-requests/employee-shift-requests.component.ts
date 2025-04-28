@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShiftChangeRequest } from '../../../Entities/shift-change-request.model';
 import { EmployeeProfileService } from '../../../Services/EmployeeProfile.service';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 
 @Component({
@@ -15,16 +16,18 @@ export class EmployeeShiftRequestsComponent implements OnInit {
   showRejectionReason: boolean = false;
   rejectionReason: string = '';
   selectedRequestId: number | null = null;
+  user: any;
 
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  constructor(private employeeProfileService: EmployeeProfileService,private userService:UserService) { }
 
   ngOnInit(): void {
+    this.user= this.userService.getUser();
     this.loadRequests();
   }
 
   loadRequests(): void {
     this.loading = true;
-    this.employeeProfileService.getMyPendingShiftChangeRequests().subscribe({
+    this.employeeProfileService.getMyPendingShiftChangeRequests(this.user.id).subscribe({
       next: (data) => {
         this.requests = data;
         this.loading = false;
@@ -38,7 +41,7 @@ export class EmployeeShiftRequestsComponent implements OnInit {
   }
 
   acceptRequest(id: number): void {
-    this.employeeProfileService.respondToShiftChangeRequest(id, 'ACCEPT').subscribe({
+    this.employeeProfileService.respondToShiftChangeRequest(this.user.id,id, 'ACCEPT').subscribe({
       next: () => {
         this.requests = this.requests.filter(req => req.idRequest !== id);
         this.showToast('success', 'Request Accepted', 'You have accepted the shift change request. It has been added to your schedule.');
@@ -64,6 +67,7 @@ export class EmployeeShiftRequestsComponent implements OnInit {
   rejectRequest(): void {
     if (this.selectedRequestId) {
       this.employeeProfileService.respondToShiftChangeRequest(
+        this.user.id,
         this.selectedRequestId, 
         'REJECT',
         this.rejectionReason

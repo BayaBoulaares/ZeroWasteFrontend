@@ -103,5 +103,12 @@ removeFromCart(productId: number): void {
     return total + (item.orderKg * item.productPrice);
   }, 0);
 }
+
+isEmployee(): boolean {
+  if (this.user) {
+    return this.user.role === 'EMPLOYEE' ;
+  }
+  return false;
+}
   
 }

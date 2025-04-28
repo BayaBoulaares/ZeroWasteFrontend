@@ -37,7 +37,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
   
   loadPendingRequestsCount(): void {
-    this.employeeProfileService.getMyPendingShiftChangeRequests().subscribe({
+    this.employeeProfileService.getMyPendingShiftChangeRequests(this.user.id).subscribe({
       next: (data) => {
         this.pendingRequestsCount = data.length;
       },

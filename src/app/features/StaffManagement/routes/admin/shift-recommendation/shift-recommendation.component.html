@@ -1,0 +1,276 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">
+      <span class="text-muted fw-light">Staff Management /</span> AI Shift Recommendations
+    </h4>
+  
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible" role="alert">
+      <div>{{ successMessage }}</div>
+      <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+    </div>
+  
+    <!-- Alert for errors -->
+    <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">
+      <div>{{ error }}</div>
+      <button type="button" class="btn-close" (click)="error = ''" aria-label="Close"></button>
+    </div>
+  
+    <div class="row">
+      <!-- Recommendation Form Card -->
+      <div class="col-md-4 col-12 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Get AI Recommendations</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="recommendationForm" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="date" class="form-label">Shift Date</label>
+                <input 
+                  type="date" 
+                  id="date" 
+                  class="form-control" 
+                  formControlName="date"
+                  [ngClass]="{ 'is-invalid': recommendationForm.get('date')?.invalid && recommendationForm.get('date')?.touched }"
+                >
+                <div class="invalid-feedback" *ngIf="recommendationForm.get('date')?.invalid && recommendationForm.get('date')?.touched">
+                  Shift date is required
+                </div>
+              </div>
+  
+              <div class="row mb-3">
+                <div class="col-6">
+                  <label for="startTime" class="form-label">Start Time</label>
+                  <input 
+                    type="time" 
+                    id="startTime" 
+                    class="form-control" 
+                    formControlName="startTime"
+                    [ngClass]="{ 'is-invalid': recommendationForm.get('startTime')?.invalid && recommendationForm.get('startTime')?.touched }"
+                  >
+                  <div class="invalid-feedback" *ngIf="recommendationForm.get('startTime')?.invalid && recommendationForm.get('startTime')?.touched">
+                    Start time is required
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label for="endTime" class="form-label">End Time</label>
+                  <input 
+                    type="time" 
+                    id="endTime" 
+                    class="form-control" 
+                    formControlName="endTime"
+                    [ngClass]="{ 'is-invalid': recommendationForm.get('endTime')?.invalid && recommendationForm.get('endTime')?.touched }"
+                  >
+                  <div class="invalid-feedback" *ngIf="recommendationForm.get('endTime')?.invalid && recommendationForm.get('endTime')?.touched">
+                    End time is required
+                  </div>
+                </div>
+              </div>
+  
+              <div class="mb-4">
+                <label for="role" class="form-label">Role Required</label>
+                <select 
+                  id="role" 
+                  class="form-select" 
+                  formControlName="role"
+                  [ngClass]="{ 'is-invalid': recommendationForm.get('role')?.invalid && recommendationForm.get('role')?.touched }"
+                >
+                  <option value="">Select a role</option>
+                  <option *ngFor="let role of roles" [value]="role">
+                    {{ role }}
+                  </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="recommendationForm.get('role')?.invalid && recommendationForm.get('role')?.touched">
+                  Role is required
+                </div>
+              </div>
+  
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary" [disabled]="recommendationForm.invalid || loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                  Get Recommendations
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Recommendations Display or Shift Creation Form -->
+      <div class="col-md-8 col-12">
+        <!-- Selected employee shift creation form -->
+        <div *ngIf="selectedEmployee" class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Create Shift with Recommended Employee</h5>
+            <button type="button" class="btn-close" (click)="cancelSelection()" aria-label="Close"></button>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="shiftCreationForm" (ngSubmit)="createShift()">
+              <div class="alert alert-success mb-4">
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-sm me-2">
+                    <span class="avatar-initial rounded bg-label-primary">
+                      {{ selectedEmployee.name.charAt(0) }}
+                    </span>
+                  </div>
+                  <div>
+                    <h6 class="mb-0">{{ selectedEmployee.name }}</h6>
+                    <span class="badge {{ getSuitabilityClass(selectedEmployee.suitability) }}">{{ selectedEmployee.suitability }} Suitability</span>
+                  </div>
+                </div>
+                <p class="mt-2 mb-0">{{ selectedEmployee.explanation }}</p>
+              </div>
+  
+              <div class="row mb-3">
+                <div class="col-md-12">
+                  <label for="shift-date" class="form-label">Shift Date</label>
+                  <input 
+                    type="date" 
+                    id="shift-date" 
+                    class="form-control" 
+                    formControlName="date" 
+                    [ngClass]="{ 'is-invalid': shiftCreationForm.get('date')?.invalid && shiftCreationForm.get('date')?.touched }"
+                  >
+                  <div class="invalid-feedback" *ngIf="shiftCreationForm.get('date')?.invalid && shiftCreationForm.get('date')?.touched">
+                    Date is required
+                  </div>
+                </div>
+              </div>
+  
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="shift-start" class="form-label">Start Time</label>
+                  <input 
+                    type="time" 
+                    id="shift-start" 
+                    class="form-control" 
+                    formControlName="startTime"
+                    [ngClass]="{ 'is-invalid': shiftCreationForm.get('startTime')?.invalid && shiftCreationForm.get('startTime')?.touched }"
+                  >
+                  <div class="invalid-feedback" *ngIf="shiftCreationForm.get('startTime')?.invalid && shiftCreationForm.get('startTime')?.touched">
+                    Start time is required
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="shift-end" class="form-label">End Time</label>
+                  <input 
+                    type="time" 
+                    id="shift-end" 
+                    class="form-control" 
+                    formControlName="endTime"
+                    [ngClass]="{ 'is-invalid': shiftCreationForm.get('endTime')?.invalid && shiftCreationForm.get('endTime')?.touched }"
+                  >
+                  <div class="invalid-feedback" *ngIf="shiftCreationForm.get('endTime')?.invalid && shiftCreationForm.get('endTime')?.touched">
+                    End time is required
+                  </div>
+                </div>
+              </div>
+  
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-secondary me-2" (click)="cancelSelection()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="shiftCreationForm.invalid || submitting">
+                  <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                  Create Shift
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+  
+        <!-- AI Recommendations Display -->
+        <div *ngIf="!selectedEmployee" class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">AI-Powered Recommendations</h5>
+            <button *ngIf="recommendations" class="btn btn-sm btn-outline-secondary" (click)="clearResults()">
+              <i class="bx bx-refresh me-1"></i> Clear
+            </button>
+          </div>
+          
+          <div *ngIf="loading" class="card-body text-center p-5">
+            <div class="spinner-border text-primary mb-3" role="status">
+              <span class="visually-hidden">Loading recommendations...</span>
+            </div>
+            <p class="mb-0">Our AI is analyzing employee data to find the best match...</p>
+          </div>
+          
+          <div *ngIf="!loading && !recommendations" class="card-body text-center p-5">
+            <div class="mb-4">
+              <i class="bx bx-bulb fs-1 text-primary"></i>
+            </div>
+            <h5>Get Smart Shift Recommendations</h5>
+            <p class="text-muted mb-0">
+              Fill out the form to get AI-powered staff recommendations based on availability, workload, and role.
+            </p>
+          </div>
+          
+          <div *ngIf="!loading && recommendations" class="card-body">
+            <div class="alert alert-info mb-4">
+              <div class="d-flex align-items-center mb-2">
+                <i class="bx bx-calendar-check fs-4 me-2"></i>
+                <h6 class="mb-0">Recommendations for {{ recommendations[0]?.recommendationDate | date:'mediumDate' }}</h6>
+              </div>
+              <p class="mb-0">
+                <strong>Shift:</strong> {{ recommendations[0]?.shift }} | 
+                <strong>Role:</strong> {{ recommendations[0]?.role }}
+              </p>
+            </div>
+            
+            <!-- Employee Recommendation Cards -->
+          <!-- Employee Recommendation Cards -->
+<div class="mb-4">
+    <h6 class="mb-3">Recommended Employees</h6>
+    <div class="row g-3">
+      <div *ngFor="let employee of extractEmployees(); let i = index" class="col-md-6">
+        <div class="card h-100 employee-card" 
+             [class.border-primary]="i === 0" 
+             [class.bg-label-primary]="i === 0"
+             (click)="selectEmployee(employee)">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">
+                    <span class="employee-name">{{ employee.name }}</span>
+                    <span class="badge bg-label-primary ms-1">#{{ employee.rank }}</span>
+                  </h6>
+              <div class="badge {{ getSuitabilityClass(employee.suitability) }}">{{ employee.suitability }}</div>
+            </div>
+            <p class="card-text text-muted small mb-0">{{ employee.explanation }}</p>
+            <div class="mt-3">
+              <button class="btn btn-sm btn-primary w-100">
+                <i class="bx bx-user-check me-1"></i> Select Employee
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+              <!-- If no employees could be extracted -->
+              <div *ngIf="extractEmployees().length === 0" class="alert alert-warning">
+                <i class="bx bx-error-circle me-1"></i>
+                Could not parse individual employees from the AI recommendation. Please refer to the full recommendation below.
+              </div>
+            </div>
+            
+            <!-- Original AI Response -->
+            <div class="mb-3">
+              <h6 class="mb-3">Full AI Recommendation</h6>
+              <div class="recommendation-content border rounded p-3">
+                <div [innerHTML]="formatAIResponse(recommendations[0]?.aiRecommendations)"></div>
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-outline-secondary" routerLink="/admin/staffmanagement/shifts">
+                <i class="bx bx-arrow-back me-1"></i> Back to Shifts
+              </button>
+              <button type="button" class="btn btn-primary" routerLink="/admin/staffmanagement/shifts/new">
+                <i class="bx bx-plus me-1"></i> Create Shift Manually
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

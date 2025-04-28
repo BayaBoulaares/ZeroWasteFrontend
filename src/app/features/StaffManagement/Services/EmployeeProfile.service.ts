@@ -6,7 +6,6 @@ import { ShiftChangeRequest } from '../Entities/shift-change-request.model';
 import { Shift } from '../Entities/shift.model';
 import { TrainingSession } from '../Entities/training-session.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,29 +14,28 @@ export class EmployeeProfileService {
 
   constructor(private http: HttpClient) { }
 
-  getMyInfo(): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiUrl}/info`);
+  getMyInfo(employeeId: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.apiUrl}/info/${employeeId}`);
   }
 
-  getMyShifts(): Observable<Shift[]> {
-    return this.http.get<Shift[]>(`${this.apiUrl}/shifts`);
+  getMyShifts(employeeId: number): Observable<Shift[]> {
+    return this.http.get<Shift[]>(`${this.apiUrl}/shifts/${employeeId}`);
   }
 
-  getMyTrainingSessions(): Observable<TrainingSession[]> {
-    return this.http.get<TrainingSession[]>(`${this.apiUrl}/training-sessions`);
+  getMyTrainingSessions(employeeId: number): Observable<TrainingSession[]> {
+    return this.http.get<TrainingSession[]>(`${this.apiUrl}/training-sessions/${employeeId}`);
   }
   
-  // New methods for shift change requests
-  getMyShiftChangeRequests(): Observable<ShiftChangeRequest[]> {
-    return this.http.get<ShiftChangeRequest[]>(`${this.apiUrl}/shift-change-requests`);
+  getMyShiftChangeRequests(employeeId: number): Observable<ShiftChangeRequest[]> {
+    return this.http.get<ShiftChangeRequest[]>(`${this.apiUrl}/shift-change-requests/${employeeId}`);
   }
   
-  getMyPendingShiftChangeRequests(): Observable<ShiftChangeRequest[]> {
-    return this.http.get<ShiftChangeRequest[]>(`${this.apiUrl}/shift-change-requests/pending`);
+  getMyPendingShiftChangeRequests(employeeId: number): Observable<ShiftChangeRequest[]> {
+    return this.http.get<ShiftChangeRequest[]>(`${this.apiUrl}/shift-change-requests/${employeeId}/pending`);
   }
   
-  respondToShiftChangeRequest(id: number, action: 'ACCEPT' | 'REJECT', message?: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/shift-change-requests/${id}/respond`, {
+  respondToShiftChangeRequest(employeeId: number, requestId: number, action: 'ACCEPT' | 'REJECT', message?: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/shift-change-requests/${employeeId}/${requestId}/respond`, {
       action: action,
       message: message
     });

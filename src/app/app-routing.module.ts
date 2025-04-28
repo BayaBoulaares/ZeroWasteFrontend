@@ -51,6 +51,7 @@ import { EventPerformanceTrackerComponent } from './features/Eventmanagement/com
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
+import { ShiftRecommendationComponent } from './features/StaffManagement/routes/admin/shift-recommendation/shift-recommendation.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -97,6 +98,7 @@ const routes: Routes = [
           { path: 'shifts', component: ShiftListComponent },
           { path: 'shifts/new', component: ShiftFormComponent },
           { path: 'shifts/edit/:id', component: ShiftFormComponent },
+          { path: 'shift-recommendations', component: ShiftRecommendationComponent },
 
           // Training Session routes
           { path: 'training-sessions', component: TrainingSessionListComponent },

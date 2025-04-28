@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeProfileService } from '../../../Services/EmployeeProfile.service';
 import { Shift } from '../../../Entities/shift.model';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 @Component({
   selector: 'app-employee-shifts',
@@ -17,18 +18,20 @@ export class EmployeeShiftsComponent implements OnInit {
   calendarDays: CalendarDay[] = [];
   weekdays: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   monthNames: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  user: any; 
+  constructor(private employeeProfileService: EmployeeProfileService, private userService: UserService) { }
 
   ngOnInit(): void {
+    this.user= this.userService.getUser();
     this.loadShifts();
   }
 
   loadShifts(): void {
     this.loading = true;
-    this.employeeProfileService.getMyShifts().subscribe({
+    this.employeeProfileService.getMyShifts(this.user.id).subscribe({
       next: (data) => {
         this.shifts = data;
+        console.log('Shifts loaded:', this.shifts);
         this.loading = false;
         this.generateCalendar();
       },

@@ -33,8 +33,10 @@
             <li><a href="#">Dropdown 4</a></li>
           </ul>
         </li>
-        <li><a routerLink="/staff-profile" routerLinkActive="active">Employee Portal</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li *ngIf="isEmployee()">
+          <a routerLink="/staff-profile" routerLinkActive="active">Employee Portal</a>
+        </li>
+                <li><a href="#contact">Contact</a></li>
       </ul>
       <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
     </nav>

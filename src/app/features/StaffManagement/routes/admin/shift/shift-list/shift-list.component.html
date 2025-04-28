@@ -14,6 +14,9 @@
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5 class="mb-0">Shifts</h5>
       <div>
+        <button type="button" class="btn btn-outline-primary me-2" routerLink="/admin/staffmanagement/shift-recommendations">
+          <i class="bx bx-bulb me-1"></i> AI Recommendations
+        </button>
         <button type="button" class="btn btn-outline-primary me-2" (click)="showRequestSummaryModal()">
           <i class="bx bx-envelope me-1"></i> View Requests
           <span *ngIf="pendingResponses > 0" class="badge bg-danger ms-1">{{ pendingResponses }}</span>
@@ -40,6 +43,7 @@
             <th>Start Time</th>
             <th>End Time</th>
             <th>Employee</th>
+            <th></th>
             <th class="text-center">Actions</th>
           </tr>
         </thead>
@@ -50,16 +54,18 @@
             <td>{{ formatTime(shift.endTime) }}</td>
             <td>
               <div *ngIf="shift.employee; else unassigned">
-                <span class="badge bg-label-primary me-1">{{ shift.employee.role }}</span>
+                <span class="badge bg-label-primary me-1">{{ shift.employee.employeeRole }}</span>
                 {{ shift.employee.name }}
-                <button type="button" class="btn btn-sm btn-outline-primary ms-2" 
-                      (click)="openEmployeeFreeDaysModal(shift.employee)">
-                  <i class="bx bx-calendar-plus me-1"></i> Request Change
-                </button>
               </div>
               <ng-template #unassigned>
                 <span class="badge bg-label-secondary">Unassigned</span>
               </ng-template>
+            </td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-primary ms-2" 
+                      (click)="openEmployeeFreeDaysModal(shift.employee)">
+                  <i class="bx bx-calendar-plus me-1"></i> Request Change
+                </button>
             </td>
             <td class="text-center">
               <button type="button" class="btn btn-sm btn-icon btn-outline-primary me-2" (click)="shift.idShift && editShift(shift.idShift)" title="Edit">

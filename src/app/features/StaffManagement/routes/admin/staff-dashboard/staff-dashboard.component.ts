@@ -27,7 +27,7 @@ export class StaffDashboardComponent implements OnInit, AfterViewInit {
   loading = true;
   error = '';
   currentYear = new Date().getFullYear();
-  username = 'Nour';
+  username = 'Admin';
 
   constructor(private dashboardService: DashboardService) { }
 

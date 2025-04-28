@@ -83,6 +83,7 @@ import { EventPerformanceTrackerComponent } from './features/Eventmanagement/com
 import { InvoiceComponent } from './features/invoiceManagement/Components/admin/invoice/invoice.component';
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
+import { ShiftRecommendationComponent } from './features/StaffManagement/routes/admin/shift-recommendation/shift-recommendation.component';
 
 @NgModule({
   declarations: [
@@ -157,7 +158,8 @@ import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/
     RegistrationModalComponent,
     AiDiscountCardComponent,
     AiDiscountDashboardComponent,
-    EventPerformanceTrackerComponent
+    EventPerformanceTrackerComponent,
+    ShiftRecommendationComponent
   ],
   imports: [
     BrowserModule,

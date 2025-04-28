@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeProfileService } from '../../../Services/EmployeeProfile.service';
 import { TrainingSession } from '../../../Entities/training-session.model';
+import { UserService } from 'src/app/features/userManagement/Services/user.service';
 
 @Component({
   selector: 'app-employee-training',
@@ -11,16 +12,17 @@ export class EmployeeTrainingComponent implements OnInit {
   trainingSessions: TrainingSession[] = [];
   loading: boolean = true;
   error: string | null = null;
-
-  constructor(private employeeProfileService: EmployeeProfileService) { }
+  user: any; 
+  constructor(private employeeProfileService: EmployeeProfileService,private userService: UserService) { }
 
   ngOnInit(): void {
+    this.user= this.userService.getUser();
     this.loadTrainingSessions();
   }
 
   loadTrainingSessions(): void {
     this.loading = true;
-    this.employeeProfileService.getMyTrainingSessions().subscribe({
+    this.employeeProfileService.getMyTrainingSessions(this.user.id).subscribe({
       next: (data) => {
         this.trainingSessions = data;
         this.loading = false;
