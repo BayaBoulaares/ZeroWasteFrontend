@@ -1,0 +1,105 @@
+
+  
+h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 3rem;
+    color: #333;
+    font-weight: bold;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  
+  
+  
+  
+  
+  .recommended-products {
+    display: flex;
+    overflow-x: auto;
+    gap: 30px;
+    padding: 20px 0;
+    scroll-behavior: smooth;
+  }
+  
+  .product-card {
+    background-color: #33a0048d;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transform: scale(1);
+  }
+  
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+ 
+  
+  .product-card:hover .product-image {
+    transform: scale(1.1);
+  }
+  
+  .product-card h4 {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .product-card p {
+    font-size: 1rem;
+    color: #199f1e;
+    margin-bottom: 15px;
+  }
+  
+  .product-card .btn {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background-color: #ff6f61; /* Couleur vibrante */
+    color: #20dd2d;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product-card .btn:hover {
+    background-color: #e55347; /* Couleur plus foncée au survol */
+  }
+  .small-product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    display: block; /* supprime l'espace blanc sous l'image */
+  }
+  
+  .small-product-image:hover {
+    transform: scale(1.05); /* zoom léger au survol */
+  }
+  

@@ -30,6 +30,7 @@ export class EventComponent implements OnInit {
   events: Event[] = [];
   upcomingEvents: Event[] = [];
   currentEvents: Event[] = [];
+  finishedEvents: Event[] = [];
   searchTerm: string = '';
   isLoading: boolean = true;
   error: string | null = null;
@@ -47,10 +48,29 @@ export class EventComponent implements OnInit {
 
   loadEvents(): void {
     this.isLoading = true;
+    console.log('Starting to load events from service...');
     this.eventService.getEvents().subscribe({
       next: (data) => {
-        this.events = data;
+        console.log('Raw events data received:', data);
+        console.log('Number of events received:', data.length);
+        
+        if (data.length > 0) {
+          console.log('First event details:', JSON.stringify(data[0]));
+        }
+        
+        // Ensure each event has the Nbr property properly set
+        this.events = data.map(event => {
+          // If the event doesn't have Nbr property but has nbr, use that
+          if (event.Nbr === undefined && (event as any).nbr !== undefined) {
+            console.log(`Converting nbr to Nbr for event ${event.eventid}:`, (event as any).nbr);
+            event.Nbr = (event as any).nbr;
+          }
+          return event;
+        });
+        
+        console.log('Events after mapping:', this.events);
         this.categorizeEvents();
+        console.log('Events after categorizing - Current:', this.currentEvents.length, 'Upcoming:', this.upcomingEvents.length);
         this.isLoading = false;
       },
       error: (error) => {
@@ -62,20 +82,92 @@ export class EventComponent implements OnInit {
   }
 
   categorizeEvents(): void {
+    console.log('Categorizing events, total events:', this.events.length);
+    
+    if (!this.events || this.events.length === 0) {
+      console.warn('No events to categorize');
+      this.upcomingEvents = [];
+      this.currentEvents = [];
+      this.finishedEvents = [];
+      return;
+    }
+    
     const now = new Date();
-    this.upcomingEvents = this.events.filter(event => 
-      new Date(event.startDate) > now
-    ).sort((a, b) => 
-      new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-    );
-
-    this.currentEvents = this.events.filter(event => {
-      const startDate = new Date(event.startDate);
-      const endDate = new Date(event.endDate);
-      return startDate <= now && endDate >= now;
-    }).sort((a, b) => 
-      new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-    );
+    console.log('Current date for comparison:', now);
+    
+    try {
+      // Process upcoming events - events that haven't started yet
+      this.upcomingEvents = this.events.filter(event => {
+        if (!event.startDate) {
+          console.warn('Event missing startDate:', event);
+          return false;
+        }
+        
+        const startDate = new Date(event.startDate);
+        const isUpcoming = startDate > now;
+        console.log(`Event ${event.title} startDate:`, startDate, 'Is upcoming:', isUpcoming);
+        return isUpcoming;
+      }).sort((a, b) => 
+        // Sort by start date (earliest first)
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+      );
+      
+      console.log('Upcoming events count:', this.upcomingEvents.length);
+      
+      // Process current events - events that have started but not ended
+      this.currentEvents = this.events.filter(event => {
+        if (!event.startDate || !event.endDate) {
+          console.warn('Event missing startDate or endDate:', event);
+          return false;
+        }
+        
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+        // An event is current if it has started but not ended
+        const isCurrent = startDate <= now && endDate >= now;
+        
+        console.log(`Event ${event.title} - startDate: ${startDate}, endDate: ${endDate}, isCurrent: ${isCurrent}`);
+        return isCurrent;
+      }).sort((a, b) => 
+        // Sort by end date (soonest ending first)
+        new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      );
+      
+      console.log('Current events count:', this.currentEvents.length);
+      
+      // Process finished events - events that have ended
+      this.finishedEvents = this.events.filter(event => {
+        if (!event.endDate) {
+          console.warn('Event missing endDate:', event);
+          return false;
+        }
+        
+        const endDate = new Date(event.endDate);
+        // An event is finished if it has ended
+        const isFinished = endDate < now;
+        
+        console.log(`Event ${event.title} - endDate: ${endDate}, isFinished: ${isFinished}`);
+        return isFinished;
+      }).sort((a, b) => 
+        // Sort by end date (most recently ended first)
+        new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+      );
+      
+      console.log('Finished events count:', this.finishedEvents.length);
+      
+      // If no events are categorized but we have events, check if they're all finished
+      if (this.upcomingEvents.length === 0 && this.currentEvents.length === 0 && 
+          this.finishedEvents.length === 0 && this.events.length > 0) {
+        console.warn('No events were categorized despite having events. Showing all events as upcoming.');
+        this.upcomingEvents = [...this.events];
+      }
+    } catch (error) {
+      console.error('Error categorizing events:', error);
+      // Fallback: show all events as upcoming
+      this.upcomingEvents = [...this.events];
+      this.currentEvents = [];
+      this.finishedEvents = [];
+    }
   }
 
   /**
@@ -258,11 +350,28 @@ export class EventComponent implements OnInit {
     this.categorizeEvents();
   }
 
-  calculateDaysLeft(endDateString: string): number {
+  calculateDaysLeft(dateString: string): number {
     const today = new Date();
-    const end = new Date(endDateString);
-    const diffTime = end.getTime() - today.getTime();
+    const targetDate = new Date(dateString);
+    const diffTime = targetDate.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+  
+  // Get days left or passed for an event
+  getDaysText(event: Event): string {
+    if (this.hasEventFinished(event)) {
+      // For finished events, show days since it ended
+      const daysPassed = Math.abs(this.calculateDaysLeft(event.endDate));
+      return daysPassed === 1 ? '1 day ago' : `${daysPassed} days ago`;
+    } else if (this.hasEventStarted(event)) {
+      // For current events, show days until it ends
+      const daysLeft = this.calculateDaysLeft(event.endDate);
+      return daysLeft === 1 ? '1 day left' : `${daysLeft} days left`;
+    } else {
+      // For upcoming events, show days until it starts
+      const daysToStart = this.calculateDaysLeft(event.startDate);
+      return daysToStart === 1 ? 'Starts tomorrow' : `Starts in ${daysToStart} days`;
+    }
   }
 
   getPriceDisplay(event: Event): {
@@ -362,10 +471,38 @@ export class EventComponent implements OnInit {
       return 0;
     }
   }
+  
+  // Helper method to get the current system date for template comparison
+  getSystemDate(): Date {
+    return new Date();
+  }
+  
+  // Helper method to check if an event has started
+  hasEventStarted(event: Event): boolean {
+    const now = new Date();
+    const startDate = new Date(event.startDate);
+    return startDate <= now;
+  }
+  
+  // Helper method to check if an event has finished
+  hasEventFinished(event: Event): boolean {
+    const now = new Date();
+    const endDate = new Date(event.endDate);
+    return endDate < now;
+  }
+  
+  // Helper method to check if an event is available for registration
+  isEventAvailableForRegistration(event: Event): boolean {
+    return this.getPlaces(event) > 0 && !this.hasEventStarted(event);
+  }
 
   registerForEvent(event: Event): void {
-    // Don't open modal if no places available
-    if (event.Nbr <= 0) {
+    // Don't open modal if no places available or if the event has already started
+    const now = new Date();
+    const startDate = new Date(event.startDate);
+    
+    if (event.Nbr <= 0 || startDate <= now) {
+      console.log(`Cannot register for event: ${event.title} - Places: ${event.Nbr}, Started: ${startDate <= now}`);
       return;
     }
     

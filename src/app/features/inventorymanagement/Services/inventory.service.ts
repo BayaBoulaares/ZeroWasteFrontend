@@ -9,6 +9,7 @@ import { BASE_URL } from 'src/consts';
 })
 export class InventoryService {
 private base_url = `${BASE_URL}/product`;
+
   constructor(private httpClient : HttpClient) { }
 
   getAllProducts(): Observable<Product[]>{
@@ -35,5 +36,14 @@ private base_url = `${BASE_URL}/product`;
       headers: { 'Content-Type': 'application/json' }
     });
   }
+
+  addProductWithImage(formData: FormData) {
+    return this.httpClient.post(`${BASE_URL}/product/products/upload`, formData);
+  }
+  
+  updateProductWithImage(id: number, formData: FormData) {
+    return this.httpClient.put(`${BASE_URL}/product/products/upload/${id}`, formData);
+  }
+  
   
 }
