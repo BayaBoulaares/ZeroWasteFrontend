@@ -68,19 +68,19 @@
               </div>
   
               <div class="mb-4">
-                <label for="role" class="form-label">Role Required</label>
+                <label for="employeeRole" class="form-label">Role Required</label>
                 <select 
-                  id="role" 
+                  id="employeeRole" 
                   class="form-select" 
-                  formControlName="role"
-                  [ngClass]="{ 'is-invalid': recommendationForm.get('role')?.invalid && recommendationForm.get('role')?.touched }"
+                  formControlName="employeeRole"
+                  [ngClass]="{ 'is-invalid': recommendationForm.get('employeeRole')?.invalid && recommendationForm.get('employeeRole')?.touched }"
                 >
                   <option value="">Select a role</option>
-                  <option *ngFor="let role of roles" [value]="role">
+                  <option *ngFor="let role of employeeRole" [value]="role">
                     {{ role }}
                   </option>
                 </select>
-                <div class="invalid-feedback" *ngIf="recommendationForm.get('role')?.invalid && recommendationForm.get('role')?.touched">
+                <div class="invalid-feedback" *ngIf="recommendationForm.get('employeeRole')?.invalid && recommendationForm.get('employeeRole')?.touched">
                   Role is required
                 </div>
               </div>
@@ -213,7 +213,7 @@
               </div>
               <p class="mb-0">
                 <strong>Shift:</strong> {{ recommendations[0]?.shift }} | 
-                <strong>Role:</strong> {{ recommendations[0]?.role }}
+                <strong>Role:</strong> {{ recommendations[0]?.employeeRole }}
               </p>
             </div>
             

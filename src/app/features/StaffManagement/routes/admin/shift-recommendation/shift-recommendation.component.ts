@@ -19,7 +19,7 @@ export class ShiftRecommendationComponent implements OnInit {
   error = '';
   successMessage = '';
   recommendations: any = null;
-  roles: string[] = [];
+  employeeRole: string[] = [];
   selectedEmployee: any = null;
   
   constructor(
@@ -34,7 +34,7 @@ export class ShiftRecommendationComponent implements OnInit {
       date: [this.getTomorrow(), Validators.required],
       startTime: ['09:00', Validators.required],
       endTime: ['17:00', Validators.required],
-      role: ['', Validators.required]
+      employeeRole: ['', Validators.required]
     });
 
     // Initialize shift creation form
@@ -42,7 +42,7 @@ export class ShiftRecommendationComponent implements OnInit {
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
-      employeeId: ['', Validators.required],
+      id: ['', Validators.required],
       employeeName: ['', Validators.required]
     });
   }
@@ -70,9 +70,9 @@ export class ShiftRecommendationComponent implements OnInit {
         });
       }
       
-      if (params['role']) {
+      if (params['employeeRole']) {
         this.recommendationForm.patchValue({
-          role: params['role']
+          employeeRole: params['employeeRole']
         });
       }
     });
@@ -82,7 +82,7 @@ export class ShiftRecommendationComponent implements OnInit {
     this.employeeService.getAllEmployees().subscribe({
       next: (employees) => {
         // Extract unique roles from employees
-        this.roles = [...new Set(employees.map(emp => emp.employeeRole))];
+        this.employeeRole = [...new Set(employees.map(emp => emp.employeeRole))];
       },
       error: (err) => {
         console.error('Error loading employee roles:', err);
@@ -113,7 +113,7 @@ export class ShiftRecommendationComponent implements OnInit {
       formValue.date,
       formValue.startTime + ':00',
       formValue.endTime + ':00',
-      formValue.role
+      formValue.employeeRole
     ).subscribe({
       next: (data) => {
         this.recommendations = data;
@@ -153,7 +153,7 @@ export class ShiftRecommendationComponent implements OnInit {
   
     while ((match = regex.exec(aiText)) !== null) {
       const employeeName = match[1].trim();
-      const employeeId = parseInt(match[2]);
+      const id = parseInt(match[2]);
       
       // Determine suitability based on position in the list
       // First employee is High, others are Medium unless explicitly stated
@@ -201,7 +201,7 @@ export class ShiftRecommendationComponent implements OnInit {
       }
       
       employeeData.push({
-        id: employeeId,
+        id: id,
         name: employeeName,
         suitability: suitability,
         explanation: explanation,
@@ -220,7 +220,7 @@ export class ShiftRecommendationComponent implements OnInit {
       date: this.recommendationForm.value.date,
       startTime: this.recommendationForm.value.startTime,
       endTime: this.recommendationForm.value.endTime,
-      employeeId: employee.id,
+      id: employee.id,
       employeeName: employee.name
     });
   }
