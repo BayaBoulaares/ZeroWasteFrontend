@@ -1,6 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -22,7 +20,10 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "types": [
+      "node"
+    ] // Keep it empty or only include browser-compatible types
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

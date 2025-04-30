@@ -1,0 +1,113 @@
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">Update Safety Inspection</h4>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <form [formGroup]="inspectionForm" (ngSubmit)="onSubmit()">
+            <!-- Basic Information -->
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Inspector Name *</label>
+                <input type="text" class="form-control" formControlName="inspector_name" placeholder="Inspector's Name" required />
+              </div>
+              <div class="col">
+                <label class="form-label">Premises Name *</label>
+                <input type="text" class="form-control" formControlName="premises_name" placeholder="Premises Name" required />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Address *</label>
+                <input type="text" class="form-control" formControlName="address" placeholder="Full Address" required />
+              </div>
+              <div class="col">
+                <label class="form-label">Inspection Type</label>
+                <select class="form-control" formControlName="inspectionType">
+                  <option [value]="InspectionType.Inspection">Inspection</option>
+                  <option [value]="InspectionType.Re_Inspection">Re-Inspection</option>
+                  <option [value]="InspectionType.Complaint">Complaint</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Dates Section -->
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Inspection Date *</label>
+                <input type="datetime-local" class="form-control" formControlName="inspection_date" required />
+              </div>
+              <div class="col">
+                <label class="form-label">Report Time</label>
+                <input type="datetime-local" class="form-control" formControlName="report_time" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Reinspection Date</label>
+                <input type="datetime-local" class="form-control" formControlName="reinspectionDate" />
+              </div>
+              <div class="col">
+                <label class="form-label">Status</label>
+                <select class="form-control" formControlName="inspectionStatus">
+                  <option [value]="InspectionStatus.Pass">Pass</option>
+                  <option [value]="InspectionStatus.Closed">Closed</option>
+                  <option [value]="InspectionStatus.Conditional_Pass">Conditional Pass</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Infractions Section -->
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Crucial Infractions</label>
+                <input type="number" min="0" class="form-control" formControlName="crucial_infractions" />
+              </div>
+              <div class="col">
+                <label class="form-label">Significant Infractions</label>
+                <input type="number" min="0" class="form-control" formControlName="significant_infractions" />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Minor Infractions</label>
+                <input type="number" min="0" class="form-control" formControlName="minor_infractions" />
+              </div>
+              <div class="col">
+                <label class="form-label">Corrected During Inspection</label>
+                <input type="number" min="0" class="form-control" formControlName="corrected_during_inspection" />
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="mb-3">
+              <label class="form-label">Infractions Description</label>
+              <textarea class="form-control" formControlName="infractions" rows="2"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Additional Comments</label>
+              <textarea class="form-control" formControlName="description" rows="3"></textarea>
+            </div>
+
+            <!-- Business Status -->
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" formControlName="isOutOfBusiness" id="outOfBusinessCheck">
+              <label class="form-check-label" for="outOfBusinessCheck">Out of Business</label>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary me-2" [disabled]="inspectionForm.invalid">Update Inspection</button>
+              <button type="button" class="btn btn-outline-secondary" routerLink="/admin/SafetyManagment/SafetyInspection">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

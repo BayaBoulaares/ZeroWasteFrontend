@@ -1,0 +1,132 @@
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"> Restaurant  /</span> Restaurant </h4>
+   
+    
+
+<div class="card mb-4">
+    <h5 class="card-header">Details :</h5>
+    
+    <hr class="m-0">    
+   <div class="card-body">
+      <div class="row gy-1">
+        <!-- Modal Sizes -->
+        <div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+          <div class="container" style="max-width: 800px;">
+              <div class="card shadow-lg rounded-4 p-4">
+                  <div class="card-header bg-primary text-white rounded-3 mb-4">
+                      <h4 class="mb-0 text-center">Safety Inspection Details</h4>
+                  </div>
+      
+                  <div class="card-body">
+                      <div class="mb-4">
+                          <strong>Inspection ID:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.inspectionID }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Inspector Name:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.inspector_name }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Inspection Date:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.inspection_date ? formatDate(listdetails.inspection_date) : 'N/A' }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Premises Name:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.premises_name }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Address:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.address }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Inspection Type:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.inspectionType }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Status:</strong><br>
+                          <span class="badge fs-6 mt-2 px-4 py-2"
+                              [ngClass]="{
+                                  'bg-success': listdetails?.inspectionStatus === 'Pass',
+                                  'bg-danger': listdetails?.inspectionStatus === 'Closed',
+                                  'bg-warning': listdetails?.inspectionStatus === 'Conditional_Pass'
+                              }">
+                              {{ listdetails?.inspectionStatus }}
+                          </span>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Crucial Infractions:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.crucial_infractions }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Significant Infractions:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.significant_infractions }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Minor Infractions:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.minor_infractions }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Corrected During Inspection:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.corrected_during_inspection }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Report Time:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.report_time ? formatTime(listdetails.report_time) : 'N/A' }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Description:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.description || 'N/A' }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Reinspection Date:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.reinspectionDate ? formatDate(listdetails.reinspectionDate) : 'N/A' }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Out of Business:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.isOutOfBusiness ? 'Yes' : 'No' }}</p>
+                      </div>
+      
+                      <div class="mb-4">
+                          <strong>Restaurant:</strong>
+                          <p class="form-control-plaintext ps-3">{{ listdetails?.restaurant?.name || 'N/A' }}</p>
+                      </div>
+      
+                      <div class="text-center mt-4">
+                          <button class="btn btn-secondary px-4 me-3" routerLink="/admin/SafetyManagment/SafetyInspection">
+                              Back
+                          </button>
+                      
+                          <button class="btn btn-success px-4" (click)="generatePDF()" title="Export to PDF">
+                              <i class="mdi mdi-file-pdf-box mr-2"></i> Export as PDF
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+          
+
+        
+        
+
+        
+        
+      </div>
+    </div>
+  </div>
+</div>

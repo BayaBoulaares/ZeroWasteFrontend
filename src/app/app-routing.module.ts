@@ -14,12 +14,16 @@ import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { UsersManagementComponent } from './features/userManagement/Components/admin/users-management/users-management.component';
 import { UserUpdateComponent } from './features/userManagement/Components/admin/user-update/user-update.component';
 import { UserCreateComponent } from './features/userManagement/Components/admin/user-create/user-create.component';
-import { LoginComponent } from './features/userManagement/Components/admin/login/login.component';
 import { noAuthGuard , adminGuard, userGuard } from './features/userManagement/Services/guards/user.guard';
 import { RegisterComponent } from './features/userManagement/Components/admin/register/register.component';
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
 import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/safety-inspection/safety-inspection.component';
 import { RestaurantComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant/restaurant.component';
+import { RestaurantDetailsComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant-details/restaurant-details.component';
+import { SafetyInspectionService } from './features/SafetyCompilance/Services/safety-inspection.service';
+import { DetailsInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/details-inspection/details-inspection.component';
+import { UpdatesafetyinspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/updatesafetyinspection/updatesafetyinspection.component';
+import { FrontinspectionComponent } from './features/SafetyCompilance/Componets/front/frontinspection/frontinspection.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -54,12 +58,15 @@ const routes: Routes = [
   {
     path: 'admin',
     component: DashboardLayoutComponent,
-    
+  
     children: [
       {
         path: 'SafetyManagment',
         children: [
           { path: 'SafetyInspection', component: SafetyInspectionComponent },
+          
+          { path: 'SafetyInspectionDetails/:id', component: DetailsInspectionComponent },
+          { path: 'SafetyInspectionUpdate/:id', component: UpdatesafetyinspectionComponent },
          
         ],
       },
@@ -67,6 +74,7 @@ const routes: Routes = [
         path: 'RestaurantManagment',
         children: [
           { path: 'Restaurant', component: RestaurantComponent },
+          { path: 'RestaurantDetails/:id', component: RestaurantDetailsComponent },
          
         ],
       },
@@ -82,6 +90,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'menu', component: MenusectionComponent },
+      { path: 'inspection', component: FrontinspectionComponent },
 
     ],
   },

@@ -1,0 +1,78 @@
+.hidden {
+    display: none;
+}
+
+.activatedd {
+    display: contents;
+}
+
+
+/* Style for disabled form */
+form:disabled, 
+form[disabled] {
+  opacity: 1; /* Keep full opacity but show as read-only */
+}
+
+form:disabled input,
+form:disabled select,
+form:disabled textarea {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+/* Dropdown item hover effect */
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* Details container animation */
+.details-container {
+  transition: all 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.details-container:not(.hidden) {
+  max-height: 2000px; /* Adjust based on your content */
+  opacity: 1;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}
+
+
+:host ::ng-deep {
+  .fc-event {
+    cursor: pointer;
+    border: none;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  
+  .event-inspection {
+    background-color: #36A2EB !important;
+  }
+  
+  .event-reinspection {
+    background-color: #FF6384 !important;
+  }
+  
+  .fc-toolbar-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .fc-button-group {
+    gap: 5px;
+  }
+}
+
+.btn-group {
+  gap: 10px;
+}
+
+.btn {
+  border-radius: 4px;
+}

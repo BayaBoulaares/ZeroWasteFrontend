@@ -29,6 +29,13 @@ import { UserCreateComponent } from './features/userManagement/Components/admin/
 import { LoginFComponent } from './features/userManagement/Components/main/login/login.component';
 import { RestaurantComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant/restaurant.component';
 import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/safety-inspection/safety-inspection.component';
+import { RestaurantDetailsComponent } from './features/SafetyCompilance/Componets/admin/Restaurant/restaurant-details/restaurant-details.component';
+import { DetailsInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/details-inspection/details-inspection.component';
+import { UpdatesafetyinspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/updatesafetyinspection/updatesafetyinspection.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { FrontinspectionComponent } from './features/SafetyCompilance/Componets/front/frontinspection/frontinspection.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -59,6 +66,10 @@ import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets
     LoginFComponent,
     RestaurantComponent,
     SafetyInspectionComponent,
+    RestaurantDetailsComponent,
+    DetailsInspectionComponent,
+    UpdatesafetyinspectionComponent,
+    FrontinspectionComponent,
 
 
 
@@ -69,8 +80,10 @@ import { SafetyInspectionComponent } from './features/SafetyCompilance/Componets
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgChartsModule
-    
+    NgChartsModule,
+    FullCalendarModule , // Add comma here
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent],
