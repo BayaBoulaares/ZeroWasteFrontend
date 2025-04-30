@@ -1,1 +1,76 @@
-<p>stock-static works!</p>
+<div class="container mt-4">
+    <div class="row">
+      <!-- Charts Section -->
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="stockChart"></canvas>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Tables Section -->
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5>Low Stock Products</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Stock Level</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of lowStockProducts">
+                  <td>{{product.productName}}</td>
+                  <td>{{product.stockLevel}}</td>
+                  <td>{{product.category}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  
+    
+  
+    
+  
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-header">
+            <h5>Top Expensive Products</h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Stock Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of topExpensiveProducts">
+                  <td>{{product.productName}}</td>
+                  <td>{{product.productPrice}}</td>
+                  <td>{{product.stockLevel}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

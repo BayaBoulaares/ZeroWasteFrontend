@@ -32,7 +32,7 @@ export class DashboardSidebarComponent {
         { label: 'Product', link: '/admin/inventory/product' },
 
         { label: 'Stock Transaction', link: '/admin/inventory/stockTransaction' },
-        //{ label: 'Stock Static', link: '/admin/inventory/stockStatic' },
+        { label: 'Stock Static', link: '/admin/inventory/stockStatic' },
         
       ]
     },

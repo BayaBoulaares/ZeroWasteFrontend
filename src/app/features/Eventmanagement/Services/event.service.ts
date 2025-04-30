@@ -16,42 +16,75 @@ export class EventService {
 
   // Get all events
   getEvents(): Observable<Event[]> {
+    console.log('EventService: Fetching events from API endpoint:', `${this.apiUrl}/retrieveAllevents`);
     return this.http.get<any[]>(`${this.apiUrl}/retrieveAllevents`).pipe(
       map((events: any[]) => {
-        console.log('Raw events from backend:', events);
+        console.log('EventService: Raw events from backend:', events);
+        console.log('EventService: Number of events received:', events ? events.length : 0);
+        
+        if (!events || events.length === 0) {
+          console.warn('EventService: No events received from backend');
+          return [];
+        }
         
         // Log each event to see all properties
         if (events && events.length > 0) {
-          console.log('First event properties:');
+          console.log('EventService: First event properties:');
           for (const key in events[0]) {
             console.log(`${key}: ${events[0][key]}`);
           }
         }
         
         // Map each event to ensure Nbr property is properly set
-        return events.map((event: any) => {
+        const mappedEvents = events.map((event: any) => {
           // Log the Nbr property specifically
-          console.log(`Event ID: ${event.eventid}, Title: ${event.title}, Nbr: ${event.nbr}`);
+          console.log(`EventService: Event ID: ${event.eventid}, Title: ${event.title}, Nbr: ${event.nbr}`);
           
           // Create a new Event object with explicit property mapping
-          const mappedEvent = {
-            eventid: event.eventid,
-            title: event.title,
-            description: event.description,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            imagePath: event.imagePath,
-            valeurRemise: event.valeurRemise,
-            // Try all possible property names for Nbr
-            Nbr: event.Nbr !== undefined ? event.Nbr : (event.nbr !== undefined ? event.nbr : 0),
-            menus: event.menus
-          } as Event;
-          
-          console.log('Mapped event Nbr:', mappedEvent.Nbr);
-          return mappedEvent;
+          try {
+            const mappedEvent = new Event(
+              event.eventid,
+              event.title,
+              event.description,
+              event.startDate,
+              event.endDate,
+              event.imagePath,
+              event.valeurRemise,
+              // Try all possible property names for Nbr
+              event.Nbr !== undefined ? event.Nbr : (event.nbr !== undefined ? event.nbr : 0),
+              event.menus
+            );
+            
+            console.log('EventService: Mapped event:', {
+              id: mappedEvent.eventid,
+              title: mappedEvent.title,
+              Nbr: mappedEvent.Nbr
+            });
+            return mappedEvent;
+          } catch (error) {
+            console.error('EventService: Error mapping event:', error, event);
+            // Return a default event if mapping fails
+            return new Event(
+              event.eventid || 0,
+              event.title || 'Unknown Event',
+              event.description || '',
+              event.startDate || new Date().toISOString(),
+              event.endDate || new Date().toISOString(),
+              event.imagePath || '',
+              event.valeurRemise || 0,
+              event.nbr || 0,
+              event.menus
+            );
+          }
         });
+        
+        console.log('EventService: Total mapped events:', mappedEvents.length);
+        return mappedEvents;
       }),
-      catchError(this.handleError)
+      catchError((error) => {
+        console.error('EventService: Error fetching events:', error);
+        return this.handleError(error);
+      })
     );
   }
 

@@ -28,11 +28,17 @@
               <label for="expireDate" class="form-label">Date d’expiration</label>
               <input type="date" class="form-control" id="expireDate" formControlName="expireDate" />
             </div>
-  
-            <div class="col-md-6">
-              <label for="imgPath" class="form-label">Image</label>
-              <input type="text" class="form-control" id="imgPath" formControlName="imgPath" required />
-            </div>
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+              <!-- autres champs -->
+            
+              <div>
+                <label for="image">Image du produit</label>
+                <input type="file" (change)="onFileSelected($event)" accept="image/*">
+              </div>
+            
+              <button type="submit">Enregistrer</button>
+            </form>
+            
   
             <div class="col-md-6">
               <label for="productDescription" class="form-label">Description</label>

@@ -1,9 +1,48 @@
 
 <section id="menu" class="menu section">
+    
+
+  <!-- Recommended Products Section -->
+  <div class="container" data-aos="fade-up" style="margin-bottom: 50px;">
+    <h2>OUR BEST SELLERS</h2>
+  
+    <div class="recommended-products">
+      <div class="product-card" *ngFor="let product of recommendedProducts">
+       
+        <h4>{{ product.product_name }}</h4>
+       
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mb-4 d-flex justify-content-center align-items-center gap-2">
+    <input
+      type="text"
+      class="form-control"
+      style="max-width: 300px;"
+      placeholder="Search product..."
+      [(ngModel)]="searchText"
+    />
+    <button class="btn btn-outline-secondary" (click)="startVoiceRecognition()">
+      🎤
+    </button>
+  </div>
+  <div 
+  *ngIf="filteredProduct.length === 0"
+  class="text-center mt-3"
+  data-aos="zoom-in"
+  data-aos-delay="100"
+  data-aos-duration="800"
+  data-aos-easing="ease-in-out"
+  data-aos-once="true"
+>
+  <p class="text-danger fw-bold fs-4">No products found matching your search.</p>
+</div>
+ 
+  
 
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
-      <h2>Our Product</h2>
       <p><span>Check Our</span> <span class="description-title"> Product</span></p>
     </div><!-- End Section Title -->
   
@@ -30,9 +69,12 @@
   
           <div class="row gy-5">
             <div class="col-lg-4 menu-item" *ngFor="let product of filteredProduct">
-              <a [href]="product.imgPath" class="glightbox">
-                <img  [src]="product.imgPath" class="menu-img img-fluid" alt="">
-              </a>
+             
+              <div *ngIf="product.imgPath" class="publication-image">
+                
+    
+                <img [src]="product.imgPath" alt="Publication image" class="img-fluid rounded">
+              </div>
               <h4>{{ product.productName }}</h4>
               <p class="ingredients">{{ product.productDescription }}</p>
               <p class="price">{{ product.productPrice | currency }}</p>

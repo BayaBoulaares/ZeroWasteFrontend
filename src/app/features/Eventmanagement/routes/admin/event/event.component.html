@@ -41,11 +41,11 @@
     {{ error }}
   </div>
 
-  <!-- Current Events Section -->
-  <div *ngIf="currentEvents.length > 0" class="mb-5">
-    <h2 class="section-title mb-4">Happening Now</h2>
+  <!-- Upcoming Events Section -->
+  <div *ngIf="upcomingEvents.length > 0" class="mb-5">
+    <h2 class="section-title mb-4">Upcoming Events</h2>
     <div class="row">
-      <div *ngFor="let event of currentEvents" class="col-md-4 mb-4">
+      <div *ngFor="let event of upcomingEvents" class="col-md-4 mb-4">
         <div class="card event-card h-100">
           <img [src]="getImageUrl(event.imagePath || '')" class="card-img-top" [alt]="event.title">
           <div class="card-body">
@@ -84,28 +84,36 @@
                   {{ getPriceDisplay(event).aiExplanation }}
                 </div>
               </div>
-              <div class="event-dates">
-                <small class="text-muted">
-                  <i class="fas fa-calendar"></i> 
+              <div class="event-date mb-2">
+                <i class="far fa-calendar-alt me-1"></i>
+                <small>
                   {{ event.startDate | date:'mediumDate' }} - {{ event.endDate | date:'mediumDate' }}
                 </small>
-              </div>
-              <div class="available-places mt-2">
-                <i class="fas fa-users"></i> 
-                <span [ngClass]="{'text-danger': getPlaces(event) <= 5, 'text-warning': getPlaces(event) > 5 && getPlaces(event) <= 10, 'text-success': getPlaces(event) > 10}">
-                  <strong>{{ getPlaces(event) > 0 ? getPlaces(event) + ' places available' : 'No places available' }}</strong>
+                <span class="days-indicator ms-2">
+                  <i class="far fa-clock me-1"></i>
+                  {{ getDaysText(event) }}
                 </span>
               </div>
+              <!-- Places available intentionally removed for past events -->
             </div>
           </div>
           <div class="card-footer">
             <button class="btn" 
                     (click)="registerForEvent(event)" 
-                    [disabled]="getPlaces(event) <= 0"
-                    [ngClass]="{'btn-primary': getPlaces(event) > 0, 'btn-danger': getPlaces(event) <= 0}">
-              <i class="fas fa-ticket-alt me-1" *ngIf="getPlaces(event) > 0"></i>
-              <i class="fas fa-ban me-1" *ngIf="getPlaces(event) <= 0"></i>
-              {{ getPlaces(event) > 0 ? 'Register (' + getPlaces(event) + ' places left)' : 'Sold Out' }}
+                    [disabled]="!isEventAvailableForRegistration(event)"
+                    [ngClass]="{'btn-primary': isEventAvailableForRegistration(event), 
+                                'btn-danger': !isEventAvailableForRegistration(event)}">
+              <i class="fas fa-ticket-alt me-1" *ngIf="isEventAvailableForRegistration(event)"></i>
+              <i class="fas fa-ban me-1" *ngIf="!isEventAvailableForRegistration(event)"></i>
+              <ng-container *ngIf="getPlaces(event) > 0 && !hasEventStarted(event)">
+                Register ({{ getPlaces(event) }} places left)
+              </ng-container>
+              <ng-container *ngIf="getPlaces(event) <= 0 && !hasEventStarted(event)">
+                Sold Out
+              </ng-container>
+              <ng-container *ngIf="hasEventStarted(event)">
+                Event Started
+              </ng-container>
             </button>
           </div>
         </div>
@@ -113,11 +121,11 @@
     </div>
   </div>
 
-  <!-- Upcoming Events Section -->
-  <div *ngIf="upcomingEvents.length > 0">
-    <h2 class="section-title mb-4">Upcoming Events</h2>
+  <!-- Current Events Section -->
+  <div *ngIf="currentEvents.length > 0" class="mb-5">
+    <h2 class="section-title mb-4">Happening Now</h2>
     <div class="row">
-      <div *ngFor="let event of upcomingEvents" class="col-md-4 mb-4">
+      <div *ngFor="let event of currentEvents" class="col-md-4 mb-4">
         <div class="card event-card h-100">
           <img [src]="getImageUrl(event.imagePath || '')" class="card-img-top" [alt]="event.title">
           <div class="card-body">
@@ -171,11 +179,20 @@
           <div class="card-footer">
             <button class="btn" 
                     (click)="registerForEvent(event)" 
-                    [disabled]="getPlaces(event) <= 0"
-                    [ngClass]="{'btn-primary': getPlaces(event) > 0, 'btn-danger': getPlaces(event) <= 0}">
-              <i class="fas fa-ticket-alt me-1" *ngIf="getPlaces(event) > 0"></i>
-              <i class="fas fa-ban me-1" *ngIf="getPlaces(event) <= 0"></i>
-              {{ getPlaces(event) > 0 ? 'Register (' + getPlaces(event) + ' places left)' : 'Sold Out' }}
+                    [disabled]="!isEventAvailableForRegistration(event)"
+                    [ngClass]="{'btn-primary': isEventAvailableForRegistration(event), 
+                                'btn-danger': !isEventAvailableForRegistration(event)}">
+              <i class="fas fa-ticket-alt me-1" *ngIf="isEventAvailableForRegistration(event)"></i>
+              <i class="fas fa-ban me-1" *ngIf="!isEventAvailableForRegistration(event)"></i>
+              <ng-container *ngIf="getPlaces(event) > 0 && !hasEventStarted(event)">
+                Register ({{ getPlaces(event) }} places left)
+              </ng-container>
+              <ng-container *ngIf="getPlaces(event) <= 0 && !hasEventStarted(event)">
+                Sold Out
+              </ng-container>
+              <ng-container *ngIf="hasEventStarted(event)">
+                Event Started
+              </ng-container>
             </button>
           </div>
         </div>
@@ -186,5 +203,63 @@
   <!-- No Events Message -->
   <div *ngIf="!isLoading && events.length === 0" class="text-center">
     <p class="lead">No events found. Try adjusting your search or check back later.</p>
+  </div>
+  
+  <!-- Finished Events Section -->
+  <div *ngIf="finishedEvents.length > 0">
+    <h2 class="section-title mb-4">Past Events</h2>
+    <div class="row">
+      <div *ngFor="let event of finishedEvents" class="col-md-4 mb-4">
+        <div class="card event-card h-100 finished-event">
+          <img [src]="getImageUrl(event.imagePath || '')" class="card-img-top" [alt]="event.title">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text">{{ event.description }}</p>
+            
+            <div class="event-details">
+              <div class="event-date mb-2">
+                <i class="far fa-calendar-alt me-1"></i>
+                <small>
+                  {{ event.startDate | date:'mediumDate' }} - {{ event.endDate | date:'mediumDate' }}
+                </small>
+                <span class="days-indicator ms-2">
+                  <i class="far fa-clock me-1"></i>
+                  {{ getDaysText(event) }}
+                </span>
+              </div>
+              
+              <!-- Menu Section -->
+              <div *ngIf="event.menus" class="menu-section mb-3">
+                <h6 class="menu-title">{{ event.menus.name }}</h6>
+              </div>
+              
+              <!-- Price Section -->
+              <div class="price-section mb-3">
+                <div class="price-info">
+                  <ng-container *ngIf="getPriceDisplay(event).hasDiscount">
+                    <span class="original-price me-2">${{ getPriceDisplay(event).original }}</span>
+                    <span class="discounted-price">${{ getPriceDisplay(event).discounted }}</span>
+                    <span class="discount-badge ms-2" [ngClass]="getPriceDisplay(event).badgeClass">
+                      -{{ getPriceDisplay(event).discountPercentage }}%
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!getPriceDisplay(event).hasDiscount">
+                    <span class="regular-price">${{ getPriceDisplay(event).original }}</span>
+                  </ng-container>
+                </div>
+              </div>
+              
+              <!-- Places available intentionally removed for past events -->
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-secondary" disabled>
+              <i class="fas fa-check-circle me-1"></i>
+              Event Completed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

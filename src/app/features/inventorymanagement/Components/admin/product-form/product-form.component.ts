@@ -14,6 +14,7 @@ export class ProductFormComponent implements OnInit{
   isEditMode = false;
   productId!: number;
   categories = Object.values(ProductCategory);
+  selectedFile!: File;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +29,7 @@ export class ProductFormComponent implements OnInit{
       category: ['', Validators.required],
       stockLevel: [0, [Validators.required, Validators.min(0)]],
       expireDate: [''],
-      imgPath:['',Validators.required],
+      imgPath:[''],
       productDescription:['',Validators.required],
       productPrice:['',Validators.required]
     });
@@ -43,6 +44,11 @@ export class ProductFormComponent implements OnInit{
     });
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+  
+
   loadProduct(id: number) {
     this.inventoryService.getProductById(id).subscribe(product => {
       this.productForm.patchValue(product);
@@ -50,22 +56,23 @@ export class ProductFormComponent implements OnInit{
   }
 
   onSubmit() {
-    if (this.productForm.valid) {
-      const formValue = this.productForm.value;
-
+    if (this.productForm.valid && this.selectedFile) {
+      const formData = new FormData();
+      formData.append('product', new Blob([JSON.stringify(this.productForm.value)], { type: 'application/json' }));
+      formData.append('image', this.selectedFile);
+  
       if (this.isEditMode) {
-        this.inventoryService.updateProduct(this.productId, formValue).subscribe(() => {
+        this.inventoryService.updateProductWithImage(this.productId, formData).subscribe(() => {
           this.router.navigate(['/admin/inventory/product']);
-
         });
       } else {
-        this.inventoryService.addProduct(formValue).subscribe(() => {
+        this.inventoryService.addProductWithImage(formData).subscribe(() => {
           this.router.navigate(['/admin/inventory/product']);
-
         });
       }
     }
   }
+  
 
   onCancel() {
     this.router.navigate(['/products']);

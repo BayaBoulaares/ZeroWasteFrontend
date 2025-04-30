@@ -123,7 +123,6 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     EmployeeShiftRequestsComponent,
     StaffDashboardComponent,
     DashboardComponent,
-    DashboardSidebarComponent,
     LoginComponent,
     RegisterComponent,
     UsersManagementComponent,
@@ -161,38 +160,34 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     SupplierOrdersComponent,
     ChatComponent,
     OrderDetailsComponent,
+    
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
-    NgChartsModule,
-    NgxPaginationModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    ReactiveFormsModule,
+    NgChartsModule,
+    NgxPaginationModule
   ],
   providers: [
     VoiceSearchService,
+    EventService,
+    MenusService,
     EmailService,
     QRCodeService,
     AiDiscountService,
     EventAnalyticsService
   ],
-  bootstrap: [AppComponent],
-  exports: [
-    FooterComponent,
-    NavbarComponent,
-    DashboardSidebarComponent,
-    DashboardNavbarComponent,
-    VoiceSearchComponent
-  ]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

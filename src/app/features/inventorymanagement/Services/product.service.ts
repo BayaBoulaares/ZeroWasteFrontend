@@ -10,6 +10,7 @@ import { BASE_URL } from 'src/consts';
 export class ProductService {
 
   private base_url = `${BASE_URL}/product`;
+  private apiUrl = 'http://localhost:5000'; 
     constructor(private httpClient : HttpClient) { }
   
     getAllProducts(): Observable<Product[]>{
@@ -36,5 +37,9 @@ export class ProductService {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+    getTopProducts(): Observable<any[]> {
+      return this.httpClient.get<any[]>(`${this.apiUrl}/top-products`);
+    }
+    
     
 }
