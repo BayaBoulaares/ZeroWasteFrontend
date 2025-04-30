@@ -95,7 +95,9 @@
 
       <!-- Profile Image after logout button -->
       <div *ngIf="isLoggedIn()" class="avatar-container">
-        <img [src]="profileImageUrl" alt="Profile Image" class="w-px-50 h-px-50 rounded-circle" />
+        <a routerLink="/profile">
+        <img  [src]="profileImageUrl" alt="Profile Image" class="w-px-50 h-px-50 rounded-circle" />
+      </a>
       </div>
     </div>
   </div>

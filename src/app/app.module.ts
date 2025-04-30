@@ -90,6 +90,7 @@ import { InvoiceComponent } from './features/invoiceManagement/Components/admin/
 import { InvoiceCreateComponent } from './features/invoiceManagement/Components/admin/invoice-create/invoice-create.component';
 import { InvoiceUpdateComponent } from './features/invoiceManagement/Components/admin/invoice-update/invoice-update.component';
 import { ShiftRecommendationComponent } from './features/StaffManagement/routes/admin/shift-recommendation/shift-recommendation.component';
+import { ProfileComponent } from './features/userManagement/Components/main/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -160,6 +161,7 @@ import { ShiftRecommendationComponent } from './features/StaffManagement/routes/
     SupplierOrdersComponent,
     ChatComponent,
     OrderDetailsComponent,
+    ProfileComponent,
     
   ],
   imports: [

@@ -59,6 +59,7 @@ import { SupplierListComponent } from './features/orderManagement/Components/adm
 import { SupplierOrdersComponent } from './features/orderManagement/Components/main/supplier-orders/supplier-orders.component';
 import { ChatComponent } from './features/orderManagement/Components/main/chat/chat.component';
 import { OrderDetailsComponent } from './features/orderManagement/Components/admin/order-details/order-details.component';
+import { ProfileComponent } from './features/userManagement/Components/main/profile/profile.component';
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
@@ -69,11 +70,12 @@ const routes: Routes = [
     path: 'reset-password',
     component: ResetPasswordComponent
   },
+  
 
   {
     path: 'admin',
     component: DashboardLayoutComponent,
-    // canActivate: [adminGuard],
+    //canActivate: [adminGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
       {
@@ -180,6 +182,7 @@ const routes: Routes = [
       { path: 'ai-discount-events', component: AiDiscountDashboardComponent },
       { path: 'chat', component: ChatComponent },
       { path: 'supplier/orders', component: SupplierOrdersComponent },
+      { path: 'profile', component: ProfileComponent ,canActivate: [userGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
     ],
   },

@@ -1,0 +1,73 @@
+<div class="profile-wrapper">
+    <div class="profile-container">
+      <h1>Edit Profile</h1>
+      <form (ngSubmit)="handleUpdate()" #form="ngForm">
+        <!-- Profile Picture -->
+        <div class="form-group profile-picture">
+          <label for="profileImage">Profile Picture</label>
+          <div class="image-container">
+            <img 
+              [src]="imagePreviewUrl || 'assets/default-profile.png'" 
+              alt="Profile Preview" 
+              class="profile-image"
+            />
+            <input 
+              type="file" 
+              id="profileImage" 
+              (change)="handleImageUpload($event)" 
+              accept="image/*" 
+            />
+          </div>
+        </div>
+  
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            [(ngModel)]="userData.name"
+            required
+            name="name"
+            placeholder="Enter your full name"
+          />
+        </div>
+  
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="userData.email"
+            name="email"
+            placeholder="Email cannot be changed"
+            disabled
+          />
+          <small class="text-muted">Email cannot be changed.</small>
+        </div>
+  
+        <!-- City -->
+        <div class="form-group">
+          <label for="city">City</label>
+          <input
+            type="text"
+            id="city"
+            [(ngModel)]="userData.city"
+            required
+            name="city"
+            placeholder="Enter your city"
+          />
+        </div>
+  
+        <!-- Error / Success Messages -->
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  
+        <!-- Save Changes Button -->
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>

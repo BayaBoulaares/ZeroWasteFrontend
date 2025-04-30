@@ -93,6 +93,7 @@ export class LoginFComponent implements AfterViewInit {
           this.router.navigate(['admin']);
         }
         this.closeModal();
+        window.location.reload();
         console.log(this.userService.getUser())
       } else {
         this.showError(response.message)
@@ -128,11 +129,20 @@ export class LoginFComponent implements AfterViewInit {
       return;
     }
 
-
     try {
       let imageUrl = null;
 
       if (this.signupData.image) {
+        // Step 1: Moderate the image before uploading
+        const moderationResult = await this.userService.moderateImage(this.signupData.image);
+
+        // Check if the image passed moderation
+        if (moderationResult.verdict !== "approved") {
+          this.showError(`Image rejected: ${moderationResult.reason}`);
+          return;
+        }
+
+        // Step 2: Proceed with Cloudinary upload if image is approved
         const uploadData = new FormData();
         uploadData.append('file', this.signupData.image);
         uploadData.append('upload_preset', 'gaspillagezero');
@@ -143,11 +153,14 @@ export class LoginFComponent implements AfterViewInit {
         });
 
         const cloudinaryResult = await cloudinaryResponse.json();
+        if (!cloudinaryResponse.ok) {
+          throw new Error(cloudinaryResult.error?.message || "Image upload failed");
+        }
         imageUrl = cloudinaryResult.secure_url;
-        //console.log(imageUrl);
         this.signupData.image = imageUrl;
       }
 
+      // Step 3: Proceed with registration
       const response = await this.userService.register(this.signupData);
       if (response.statusCode === 201) {
         this.storeAuthData(response.token, response.role, response.user);
@@ -156,9 +169,9 @@ export class LoginFComponent implements AfterViewInit {
         this.showError(response.message);
       }
     } catch (error: any) {
-      this.showError(error.message);
+      this.showError(error.message || "An error occurred during registration");
     }
-  }
+}
 
   showForgotPassword: boolean = false;
 

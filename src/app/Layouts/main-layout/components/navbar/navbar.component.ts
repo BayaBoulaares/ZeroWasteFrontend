@@ -25,21 +25,24 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   
-  ngOnInit(): void {
-    this.cartService.orderCount$.subscribe(count => {
-      this.orderCount = count;
-    });
+  user: any;
+profileImageUrl: string = '';
+defaultImageUrl: string = 'https://res.cloudinary.com/dmdvu18ki/image/upload/v1745759200/noImage_nhztmy.png';
 
-    this.cartService.orderedProducts$.subscribe(products => {
-      this.orderedProducts = products;
-    });
+ngOnInit(): void {
+  this.cartService.orderCount$.subscribe(count => {
+    this.orderCount = count;
+  });
 
-    
-  }
-  user = this.userService.getUser();
-  orderSuccess = false;
-  defaultImageUrl: string = 'https://res.cloudinary.com/dmdvu18ki/image/upload/v1745759200/noImage_nhztmy.png';
-  profileImageUrl: string = this.user?.image ? this.user.image : this.defaultImageUrl;
+  this.cartService.orderedProducts$.subscribe(products => {
+    this.orderedProducts = products;
+  });
+
+  this.user = this.userService.getUser();
+  this.profileImageUrl = this.user?.image ? this.user.image : this.defaultImageUrl;
+}
+orderSuccess = false;
+
 
   onPay(): void {
     if (!this.isLoggedIn()) {

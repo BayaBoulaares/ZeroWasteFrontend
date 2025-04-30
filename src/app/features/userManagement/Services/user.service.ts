@@ -10,6 +10,18 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  async moderateImage(file: File): Promise<any> {
+    const url = "http://localhost:8000/moderate-image";
+    const formData: FormData = new FormData();
+    formData.append("file", file, file.name);
+
+    try {
+      const response = await this.http.post<any>(url, formData).toPromise();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
   async loginWithGoogle(idToken: string): Promise<any> {
     return this.http.post<any>(`${this.BASE_URL}/auth/google-login`, { idToken }).toPromise();
   }
