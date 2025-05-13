@@ -24,6 +24,7 @@ import { SafetyInspectionService } from './features/SafetyCompilance/Services/sa
 import { DetailsInspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/details-inspection/details-inspection.component';
 import { UpdatesafetyinspectionComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/updatesafetyinspection/updatesafetyinspection.component';
 import { FrontinspectionComponent } from './features/SafetyCompilance/Componets/front/frontinspection/frontinspection.component';
+import { GeminiapiComponent } from './features/SafetyCompilance/Componets/admin/SafetyInspection/geminiapi/geminiapi.component';
 
 const routes: Routes = [
   //{ path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
@@ -91,6 +92,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'menu', component: MenusectionComponent },
       { path: 'inspection', component: FrontinspectionComponent },
+      { path: 'gemi', component: GeminiapiComponent },
 
     ],
   },

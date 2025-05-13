@@ -131,11 +131,38 @@
       <form [formGroup]="inspectionForm" (ngSubmit)="saveInspection()">
         <div class="mb-3">
           <label class="form-label">Inspector Name</label>
-          <input type="text" class="form-control" formControlName="inspector_name">
+          <input type="text" 
+                 class="form-control" 
+                 formControlName="inspector_name"
+                 [ngClass]="{'is-invalid': isFieldInvalid('inspector_name')}">
+          <div class="invalid-feedback" *ngIf="inspectionForm.get('inspector_name')?.errors">
+            {{ getErrorMessage('inspector_name') }}
+          </div>
         </div>
+
         <div class="mb-3">
           <label class="form-label">Premises Name</label>
-          <input type="text" class="form-control" formControlName="premises_name">
+          <input type="text" 
+                 class="form-control" 
+                 formControlName="premises_name"
+                 [ngClass]="{'is-invalid': isFieldInvalid('premises_name')}">
+          <div class="invalid-feedback" *ngIf="inspectionForm.get('premises_name')?.errors">
+            {{ getErrorMessage('premises_name') }}
+          </div>
+        </div>
+        <!-- Add similar validation messages for other fields -->
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Crucial Infractions</label>
+            <input type="number" class="form-control" formControlName="crucial_infractions"
+                   [ngClass]="{'is-invalid': inspectionForm.get('crucial_infractions')?.invalid && inspectionForm.get('crucial_infractions')?.touched}">
+            <div class="invalid-feedback" *ngIf="inspectionForm.get('crucial_infractions')?.errors?.['min']">
+              Value must be 0 or greater
+            </div>
+            <div class="invalid-feedback" *ngIf="inspectionForm.get('crucial_infractions')?.errors?.['max']">
+              Value cannot exceed 100
+            </div>
+          </div>
         </div>
         <div class="mb-3">
           <label class="form-label">Address</label>

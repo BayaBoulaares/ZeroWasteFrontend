@@ -17,6 +17,8 @@ export class RestaurantComponent implements OnInit {
   cuisineChartOptions: any;
 
 
+  
+
 
   selectedRestaurantId: number | null = null;
 
@@ -134,31 +136,37 @@ errorMessage: string = '';
     this.selectedRestaurantId = restaurant.restaurantid;
   }
   
-  UpdateRestaurant() {
-    if (this.restaurantForm.valid && this.selectedRestaurantId) {
-      const updatedRestaurant = {
-        ...this.restaurantForm.value,
-        restaurantid: this.selectedRestaurantId
-      };
-  
-      this.restService.updateRestaurant(updatedRestaurant, this.selectedRestaurantId).subscribe({
-        next: (response) => {
-          // Update the restaurant in the local arrays
-          const index = this.restaurantList.findIndex((r: Restaurant) => r.restaurantid === this.selectedRestaurantId);
-          if (index !== -1) {
-            this.restaurantList[index] = response;
-            this.filteredRestaurants = [...this.restaurantList];
-          }
-          alert('Restaurant updated successfully');
-          this.ngOnInit();
-        },
-        error: (error) => {
-          console.error('Error updating restaurant:', error);
-          alert('Error updating restaurant');
+ // ... existing code ...
+
+UpdateRestaurant() {
+  if (this.restaurantForm.valid && this.selectedRestaurantId) {
+    const formValues = this.restaurantForm.value;
+    const updatedRestaurant = {
+      ...formValues,
+      restaurantid: this.selectedRestaurantId,
+      openingTime: this.appendSeconds(formValues.openingTime),
+      closingTime: this.appendSeconds(formValues.closingTime)
+    };
+
+    this.restService.updateRestaurant(updatedRestaurant, this.selectedRestaurantId).subscribe({
+      next: (response) => {
+        const index = this.restaurantList.findIndex((r: Restaurant) => r.restaurantid === this.selectedRestaurantId);
+        if (index !== -1) {
+          this.restaurantList[index] = response;
+          this.filteredRestaurants = [...this.restaurantList];
         }
-      });
-    }
+        alert('Restaurant updated successfully');
+        this.ngOnInit();
+      },
+      error: (error) => {
+        console.error('Error updating restaurant:', error);
+        alert('Error updating restaurant');
+      }
+    });
   }
+}
+
+// ... existing code ...
   Details(arg0: number) {
     throw new Error('Method not implemented.');
     }

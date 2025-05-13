@@ -102,19 +102,29 @@ export class SafetyInspectionComponent implements OnInit {
   initializeForm(): void {
     this.inspectionForm = this.fb.group({
       inspectionID: [null],
-      inspector_name: ['', Validators.required],
-      premises_name: ['', Validators.required],
-      address: ['', Validators.required],
+      inspector_name: ['', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.maxLength(50),
+        Validators.pattern(/^[a-zA-Z\s]*$/)
+      ]],
+      premises_name: ['', [
+        Validators.required, 
+        Validators.minLength(3), 
+        Validators.maxLength(100),
+        Validators.pattern(/^[a-zA-Z\s]*$/)
+      ]],
+      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
       inspection_date: ['', Validators.required],
-      inspectionType: [InspectionType.Inspection],
-      inspectionStatus: [InspectionStatus.Pass],
-      infractions: [''],
-      crucial_infractions: [0],
-      significant_infractions: [0],
-      minor_infractions: [0],
-      corrected_during_inspection: [0],
+      inspectionType: [InspectionType.Inspection, Validators.required],
+      inspectionStatus: [InspectionStatus.Pass, Validators.required],
+      infractions: ['', Validators.maxLength(500)],
+      crucial_infractions: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      significant_infractions: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      minor_infractions: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      corrected_during_inspection: [0, [Validators.required, Validators.min(0)]],
       report_time: [''],
-      description: [''],
+      description: ['', Validators.maxLength(1000)],
       reinspectionDate: [''],
       isOutOfBusiness: [false],
       restaurant: [null]
@@ -295,5 +305,27 @@ export class SafetyInspectionComponent implements OnInit {
   onFilterChange(filter: 'all' | 'closeInspection' | 'reinspection'): void {
     this.selectedFilter = filter;
     this.loadCalendarEvents();
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.inspectionForm.get(fieldName);
+    return field ? field.invalid && (field.dirty || field.touched) : false;
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.inspectionForm.get(fieldName);
+    if (control?.errors) {
+      if (control.errors['required']) return `${fieldName} is required`;
+      if (control.errors['minlength']) return `${fieldName} must be at least ${control.errors['minlength'].requiredLength} characters`;
+      if (control.errors['maxlength']) return `${fieldName} cannot exceed ${control.errors['maxlength'].requiredLength} characters`;
+      if (control.errors['pattern']) {
+        if (fieldName === 'inspector_name' || fieldName === 'premises_name') {
+          return `${fieldName} must contain only letters and spaces`;
+        }
+      }
+      if (control.errors['min']) return `Value must be ${control.errors['min'].min} or greater`;
+      if (control.errors['max']) return `Value cannot exceed ${control.errors['max'].max}`;
+    }
+    return '';
   }
 }
